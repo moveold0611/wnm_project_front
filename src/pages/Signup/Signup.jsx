@@ -37,7 +37,15 @@ function Signup(props) {
                 
                 } 
                 document.getElementById('sample6_postcode').value = data.zonecode;
+                setSignupUser({
+                    ...signupUser,
+                    defaultAddressNumber: data.zonecode
+                });
                 document.getElementById("sample6_address").value = addr;
+                setSignupUser({
+                    ...signupUser,
+                    defaultAddressName: addr
+                });
                 document.getElementById("sample6_detailAddress").focus();
             }
             }).open();
@@ -59,7 +67,7 @@ function Signup(props) {
         nickname: "",
         email: "",
         phoneNumber: "",
-        defaultAddressNumber:"",
+        defaultAddressNumber:0,
         defaultAddressName:"",
         defaultAddressDetailName:""
     }
@@ -99,7 +107,7 @@ function Signup(props) {
                     <div><h4 css={S.Sh4}>닉네임</h4></div>
                     <div><input type="text" name='nickname' placeholder='닉네임을 입력해주세요' onChange={handleInputChange} css={S.Sinput} /></div>
                     <div><h4 css={S.Sh4}>전화번호</h4></div>
-                    <div><input type="text" name='phonenumber' placeholder='전화번호를 입력해주세요' onChange={handleInputChange} css={S.Sinput} /></div>
+                    <div><input type="text" name='phoneNumber' placeholder='전화번호를 입력해주세요' onChange={handleInputChange} css={S.Sinput} /></div>
                     <div><h4 css={S.Sh4}>주소</h4></div>
                     <div><input type="text" name='defaultAddressNumber' id="sample6_postcode" placeholder="우편번호" onChange={handleInputChange} css={S.Sinput} /></div>
                     <div><input type="button" name='findDefaultAddressNumber' onClick={sample6_execDaumPostcode} value="우편번호 찾기" css={S.Sbutton} /></div>
