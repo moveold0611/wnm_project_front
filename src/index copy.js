@@ -4,18 +4,13 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from 'react-query';
-
-const quertClient = new QueryClient();
-
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <QueryClientProvider client={quertClient}>
+
       <BrowserRouter>
         <App /> 
       </BrowserRouter>
-    </QueryClientProvider>
 
 );
 
