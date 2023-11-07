@@ -2,9 +2,14 @@ import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home/Home";
 import Signin from "./pages/Signin/Signin";
 import Signup from "./pages/Signup/Signup";
+<<<<<<< HEAD
 import EditUserInformation from "./pages/Mypage/EditUserInformation";
 import { useQuery } from "react-query";
 import { instance } from "./apis/config/instance";
+=======
+import Products from "./pages/Products/Products";
+import Product from "./pages/Product/Product";
+>>>>>>> 86e53d2347052468d1890c72fc84b57bd7ee47e7
 
 function App() {
 
@@ -35,7 +40,11 @@ function App() {
         <Route path="/" element={ <Home /> } />
         <Route path="/auth/signup" element={ <Signup /> } />
         <Route path="/auth/signin" element={ <Signin /> } />
+<<<<<<< HEAD
         <Route path="/useredit/:userId" element={ <EditUserInformation /> } />
+=======
+        <Route path="/product/:productId" element={ < Product/> } />
+>>>>>>> 86e53d2347052468d1890c72fc84b57bd7ee47e7
       </Routes>
   );
 }

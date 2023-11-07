@@ -13,8 +13,14 @@
     "react-dom": "^18.2.0",
     "react-query": "^3.39.3",
     "react-router-dom": "^6.18.0",
+<<<<<<< HEAD
     "react-scripts": "^5.0.1",
     "router-dom": "^2.2.11",
+=======
+    "react-scripts": "5.0.1",
+    "react-select": "^5.7.7",
+    "select": "^1.1.2",
+>>>>>>> 86e53d2347052468d1890c72fc84b57bd7ee47e7
     "styled-reset": "^4.5.1",
     "web-vitals": "^2.1.4"
   },

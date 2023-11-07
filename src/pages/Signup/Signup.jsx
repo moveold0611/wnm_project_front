@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import * as S from "./Style";
+<<<<<<< HEAD
 import { useSearchParams } from 'react-router-dom';
+=======
+import { useNavigate, useSearchParams } from 'react-router-dom';
+>>>>>>> 86e53d2347052468d1890c72fc84b57bd7ee47e7
 import { instance } from '../../apis/config/instance';
 /**@jsxImportSource @emotion/react */
 
@@ -35,8 +39,13 @@ function Signup(props) {
                         extraAddr = ' (' + extraAddr + ')';
                     }
                 
+<<<<<<< HEAD
                 } 
                 console.log(data.zonecode);
+=======
+                }
+                console.log(data.zonecode)
+>>>>>>> 86e53d2347052468d1890c72fc84b57bd7ee47e7
                 document.getElementById('sample6_postcode').value = data.zonecode;
                 document.getElementById("sample6_address").value = addr;
                 setSignupUser({
@@ -68,8 +77,10 @@ function Signup(props) {
         defaultAddressDetailName:""
     }
 
+    
     const [ signupUser, setSignupUser ] = useState(user);
-
+    
+    console.log(signupUser)
     const handleInputChange = (e) => {
         setSignupUser({
             ...signupUser,
