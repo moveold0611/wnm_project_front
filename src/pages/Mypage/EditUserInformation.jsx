@@ -32,6 +32,7 @@ function EditUserInformation(props) {
         onSuccess: userresponse => {
             setUser(userresponse.data)
             setUserData(userresponse.data)
+            setProfileImgSrc(userresponse.data.profileUrl)
         }
     })
 
@@ -132,7 +133,7 @@ function EditUserInformation(props) {
             <div css={S.SinfoHeader}>
                 <div>
                     <div css={S.SimgBox} onClick={HandleProfileUploadClick}>
-                        <img src={profileImgSrc} alt="프로필 이미지" />
+                        <img src={profileImgSrc} defaultValue={user.profileUrl} alt="프로필 이미지" />
                     </div>
                     <input css={S.Sfile} type="file" onChange={HandleProfileChange} ref={profileFileRef} />
                 </div>
