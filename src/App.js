@@ -39,6 +39,7 @@ function App() {
         <Route path="/auth/signup" element={ <Signup /> } />
         <Route path="/auth/signin" element={ <Signin /> } />
         <Route path="/auth/oauth2/signin" element={ <OAuth2Signin /> } />
+        <Route path="/useredit/:userId" element={ <EditUserInformation /> } />
         <Route path="/product/:productId" element={ <Product/> } />
       </Routes>
   );
