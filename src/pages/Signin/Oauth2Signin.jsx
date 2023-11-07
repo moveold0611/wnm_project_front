@@ -6,8 +6,9 @@ function OAuth2Signin(props) {
     const [ searchParams, setSearchParams ] = useSearchParams();
 
     useEffect(() => {
+        console.log(searchParams)
         localStorage.setItem("accessToken", "Bearer " + searchParams.get("token"));
-    })
+    }, [])
 
     return <Navigate to={"/"}/>;
 }
