@@ -16,7 +16,10 @@ function Product(props) {
 
     const getProduct = useQuery(["getProduct"], async () => {
         try {
-            return await instance.get(`/api/product/${productId}`);
+            const response = instance.get(`/api/product/${productId}`);
+            console.log(response)
+            return await response
+            
         } catch(error) {
             console.log(error)
         }

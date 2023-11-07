@@ -32,9 +32,10 @@ function EditUserInformation(props) {
         onSuccess: userresponse => {
             setUser(userresponse.data)
             setUserData(userresponse.data)
-
+            setProfileImgSrc(userresponse.data.profileUrl)
         }
     })
+
 
     const HandleUserEditChange = (e) => {
         setUserData({
@@ -58,10 +59,13 @@ function EditUserInformation(props) {
                 alert("이미 사용중인 닉네임입니다. 다시 입력하세요.");
             }
         }
+    }
+
         const HandleCancle = () => {
             window.location.replace("/");
         }
     
+
         const HandleDeleteUser = async () => {
             try {
                 const response = await instance.delete(`/api/user/56`);
@@ -76,12 +80,14 @@ function EditUserInformation(props) {
             }
         }
     
+
         const HandleProfileUploadClick = () => {
             if(window.confirm("프로필 사진을 변경하시겠습니까?")) {
                 profileFileRef.current.click();
             }
         }
     
+
         const HandleProfileChange = (e) => {
             const files = e.target.files;
     
@@ -106,47 +112,37 @@ function EditUserInformation(props) {
                 .then((uploadTaskSnapshot) => {
                     getDownloadURL(storageRef)
                         .then((downloadUrl) => {
-                            const option = {
-                                headers: {
-                                    Authorization: localStorage.getItem("accessToken")
-                                }
-                            };
-    
-                            instance.put(`/api/user/56`, { profileUrl: downloadUrl }, option)
-                                .then((response) => {
-                                    alert("프로필 사진이 변경되었습니다.");
-                                    window.location.reload();
-                                })
-                                .catch((apiError) => {
-                                    console.error("API error:", apiError);
-                                });
+                            setUserData({
+                                ...userData,
+                                profileUrl: downloadUrl
+                            })
                         })
-                        .catch((urlError) => {
-                            console.error("URL error:", urlError);
-                        });
                 })
-                .catch((uploadError) => {
-                    console.error("Upload error:", uploadError);
-                });
         };
     
         reader.readAsDataURL(file);
     };
+
+
+    const handelOnClick = () => {
+        console.log(userData);
+    }
+
     return (
         <div>
             <div css={S.SinfoHeader}>
                 <div>
                     <div css={S.SimgBox} onClick={HandleProfileUploadClick}>
-                        <img src={profileImgSrc} alt="프로필 이미지" />
+                        <img src={profileImgSrc} defaultValue={user.profileUrl} alt="프로필 이미지" />
                     </div>
                     <input css={S.Sfile} type="file" onChange={HandleProfileChange} ref={profileFileRef} />
                 </div>
             </div>
             <div>
                 <div>닉네임 <input type="text" name='nickname' defaultValue={userData.nickname} onChange={HandleUserEditChange} /></div>
-                <div>이름 <input type="text" value={user.name} disabled /></div>
-                <div>이메일 <input type="text" value={user.email} disabled /></div>
-                <div>휴대전화 <input type="text" value={user.phoneNumber} disabled /></div>
+                <div>이름 <input type="text" defaultValue={user.name} disabled /></div>
+                <div>이메일 <input type="text" defaultValue={user.email} disabled /></div>
+                <div>휴대전화 <input type="text" defaultValue={user.phoneNumber} disabled /></div>
                 <div>우편번호 <input type="text"  name='defaultAddressNumber' defaultValue={userData.defaultAddressNumber} onChange={HandleUserEditChange}/></div>
                 <div>주소 <input type="text"  name='defaultAddressName' defaultValue={userData.defaultAddressName} onChange={HandleUserEditChange}/></div>
                 <div>상세주소 <input type="text"  name='defaultAddressDetailName' defaultValue={user.defaultAddressDetailName} onChange={HandleUserEditChange}/></div>
@@ -154,9 +150,10 @@ function EditUserInformation(props) {
             <div><button onClick={HandleEditUser}>회원정보수정</button></div>
             <div><button onClick={HandleCancle}>취소</button></div>
             <div><button onClick={HandleDeleteUser}>회원탈퇴</button></div>
+            <button onClick={handelOnClick}>클릭</button>
         </div>
         );
     }
-}
+
 
 export default EditUserInformation;

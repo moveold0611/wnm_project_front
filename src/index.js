@@ -6,20 +6,12 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
-<<<<<<< HEAD
-const quertClient = new QueryClient();
-
-
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-    <QueryClientProvider client={quertClient}>
-=======
 const queryClient = new QueryClient();
 
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <QueryClientProvider client={queryClient} >
->>>>>>> 86e53d2347052468d1890c72fc84b57bd7ee47e7
+    <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <App /> 
       </BrowserRouter>
