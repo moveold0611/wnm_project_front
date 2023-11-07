@@ -6,7 +6,7 @@ import EditUserInformation from "./pages/Mypage/EditUserInformation";
 import { useQuery } from "react-query";
 import { instance } from "./apis/config/instance";
 import Product from "./pages/Product/Product";
-import OAuth2Signin from "./pages/Signin/Oauth2Signin";
+import OAuth2Signin from "./pages/Signin/OAuth2Signin";
 
 
 function App() {
@@ -39,6 +39,7 @@ function App() {
         <Route path="/auth/signup" element={ <Signup /> } />
         <Route path="/auth/signin" element={ <Signin /> } />
         <Route path="/auth/oauth2/signin" element={ <OAuth2Signin /> } />
+        <Route path="/useredit/:userId" element={ <EditUserInformation /> } />
         <Route path="/product/:productId" element={ <Product/> } />
       </Routes>
   );

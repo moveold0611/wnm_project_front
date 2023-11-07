@@ -31,3 +31,8 @@ export const Sfile = css`
     display: none;
 `;
 
+export const Sbutton = css`
+    height: 28px;
+    margin-left: 10px;
+`
+
