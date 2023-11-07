@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import * as S from "../Signup/Style";
+import * as S from "./Style";
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { instance } from '../../apis/config/instance';
 /**@jsxImportSource @emotion/react */
@@ -35,7 +35,8 @@ function Signup(props) {
                         extraAddr = ' (' + extraAddr + ')';
                     }
                 
-                } 
+                }
+                console.log(data.zonecode)
                 document.getElementById('sample6_postcode').value = data.zonecode;
                 setSignupUser({
                     ...signupUser,
@@ -72,8 +73,10 @@ function Signup(props) {
         defaultAddressDetailName:""
     }
 
+    
     const [ signupUser, setSignupUser ] = useState(user);
-
+    
+    console.log(signupUser)
     const handleInputChange = (e) => {
         setSignupUser({
             ...signupUser,
