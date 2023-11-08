@@ -85,7 +85,6 @@ function EditUserInformation(props) {
             setUser(userresponse.data)
             setUserData(userresponse.data)
             setProfileImgSrc(userresponse.data.profileUrl)
-            console.log(userId)
         }
     })
 
@@ -120,6 +119,7 @@ function EditUserInformation(props) {
     
 
         const HandleDeleteUser = async () => {
+            if(window.confirm("정말로 탈퇴하시겠습니까?")) {
             try {
                 const response = await instance.delete(`/api/user/${userId}`);
                 if (response.status === 200) {
@@ -130,6 +130,9 @@ function EditUserInformation(props) {
                 }
             } catch (error) {
                 console.error(error);
+            }
+            }else {
+                return;
             }
         }
     
@@ -143,15 +146,8 @@ function EditUserInformation(props) {
 
         const HandleProfileChange = (e) => {
             const files = e.target.files;
-    
-            if (!files.length) {
-                setUploadFiles([]);
-                setProfileImgSrc("");
-                return;
-            } 
-    
-            const file = files[0];
-            setUploadFiles([file]);
+
+            setUploadFiles([files[0]]);
     
             const reader = new FileReader();
     
