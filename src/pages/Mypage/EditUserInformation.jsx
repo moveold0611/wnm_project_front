@@ -46,6 +46,8 @@ function EditUserInformation(props) {
     }
 
     const HandleEditUser = async () => {
+
+        
         try {
             const response = await instance.put(`/api/user/56`, userData);
             if (response.status === 200) {
