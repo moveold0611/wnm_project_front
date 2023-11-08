@@ -7,7 +7,7 @@ function OAuth2Signin(props) {
 
     useEffect(() => {
         localStorage.setItem("accessToken", "Bearer " + searchParams.get("token"));
-    },[])
+    })
 
     return <Navigate to={"/"}/>;
 }
