@@ -16,7 +16,7 @@
 		"body": [
 			"/** @jsxImportSource @emotion/react */",
 			"import { css } from '@emotion/react';"
-			"import * as S from '../Signup/Style';"
+			"import * as S from './Style';"
 		],
 		"description": "Log output to console"
 	}
