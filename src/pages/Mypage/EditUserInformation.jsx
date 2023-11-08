@@ -4,6 +4,7 @@ import { instance } from '../../apis/config/instance';
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { storage } from '../../apis/firebase/firebase';
 import { useQuery } from 'react-query';
+import { useParams, useSearchParams } from 'react-router-dom';
 /** @jsxImportSource @emotion/react */
 
 function EditUserInformation(props) {
@@ -60,6 +61,7 @@ function EditUserInformation(props) {
     const profileFileRef = useRef();
     const [uploadFiles, setUploadFiles] = useState([]);
     const [profileImgSrc, setProfileImgSrc] = useState(); 
+    const { userId } = useParams();
 
     const [userData, setUserData] = useState({
         nickname: '',
@@ -73,7 +75,7 @@ function EditUserInformation(props) {
 
     const getUser = useQuery(["getUser"], async () => {
         try {
-            return await instance.get(`/api/user/56`);
+            return await instance.get(`/api/user/${userId}`);
         }catch(error) {
             console.log(error)
         }
@@ -83,6 +85,7 @@ function EditUserInformation(props) {
             setUser(userresponse.data)
             setUserData(userresponse.data)
             setProfileImgSrc(userresponse.data.profileUrl)
+            console.log(userId)
         }
     })
 
@@ -97,7 +100,7 @@ function EditUserInformation(props) {
 
     const HandleEditUser = async () => {
         try {
-            const response = await instance.put(`/api/user/56`, userData);
+            const response = await instance.put(`/api/user/${userId}`, userData);
             if (response.status === 200) {
                 alert("회원정보 수정이 완료되었습니다.");
             } else {
@@ -118,7 +121,7 @@ function EditUserInformation(props) {
 
         const HandleDeleteUser = async () => {
             try {
-                const response = await instance.delete(`/api/user/56`);
+                const response = await instance.delete(`/api/user/${userId}`);
                 if (response.status === 200) {
                     alert("회원 탈퇴 처리가 완료되었습니다.");
                     window.location.replace("/");
@@ -174,9 +177,9 @@ function EditUserInformation(props) {
     };
 
 
-    const handelOnClick = () => {
-        console.log(userData);
-    }
+    // const testButtonOnClick = () => {
+    //     console.log(userId);
+    // }
 
 return (
     <div>
@@ -193,14 +196,15 @@ return (
             <div>이름 <input type="text" defaultValue={user.name} disabled /></div>
             <div>이메일 <input type="text" defaultValue={user.email} disabled /></div>
             <div>휴대전화 <input type="text" defaultValue={user.phoneNumber} disabled /></div>
-            <div>우편번호 <input type="text"  name='defaultAddressNumber' id="sample6_postcode" defaultValue={userData.defaultAddressNumber} onChange={HandleUserEditChange}/></div>
+            <div>우편번호 <input type="text" disabled name='defaultAddressNumber' id="sample6_postcode" defaultValue={userData.defaultAddressNumber} onChange={HandleUserEditChange}/></div>
             <div><input type="button" name='findDefaultAddressNumber' onClick={sample6_execDaumPostcode} defaultValue="우편번호 찾기" css={S.Sbutton} /></div>
-            <div>주소 <input type="text"  name='defaultAddressName' id="sample6_address" defaultValue={userData.defaultAddressName} onChange={HandleUserEditChange}/></div>
-            <div>상세주소 <input type="text"  name='defaultAddressDetailName' id="sample6_detailAddress" defaultValue={user.defaultAddressDetailName} onChange={HandleUserEditChange}/></div>
+            <div>주소 <input type="text" disabled name='defaultAddressName' id="sample6_address" defaultValue={userData.defaultAddressName} onChange={HandleUserEditChange}/></div>
+            <div>상세주소 <input type="text" name='defaultAddressDetailName' id="sample6_detailAddress" defaultValue={user.defaultAddressDetailName} onChange={HandleUserEditChange}/></div>
         </div>
         <div><button onClick={HandleEditUser}>회원정보수정</button></div>
         <div><button onClick={HandleCancle}>취소</button></div>
         <div><button onClick={HandleDeleteUser}>회원탈퇴</button></div>
+        {/* <div><button onClick={testButtonOnClick}>테스트 버튼</button></div> */}
     </div>
     );
 }
