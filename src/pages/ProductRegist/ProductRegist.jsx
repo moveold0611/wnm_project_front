@@ -9,7 +9,8 @@ function ProductRegist(props) {
     
     const profileFileRef = useRef();
     const [uploadFiles, setUploadFiles] = useState([]);
-    const [profileImgSrc, setProfileImgSrc] = useState(); 
+    const [productThumbnailImgSrc , setProductThumbnailImgSrc ] = useState(); 
+    const [productDetailImgSrc, setProductDetailImgSrc] = useState(); 
 
     const petTypes = [
         { value: 1, label: "강아지" },
@@ -30,7 +31,7 @@ function ProductRegist(props) {
         productDetailText: "",
         productThumbnail: "",
         productDetailImg: "",
-        petTypeId: 0,
+        petTypeId: categoeies.value,
         productCategoryId: "",
         noSize: 0,
         productSizeXS: 0,
@@ -48,30 +49,24 @@ function ProductRegist(props) {
         }
     }
 
-    const handleProductImgChange = (e) => {
+    const handleProductThumnailImgChange = (e) => {
         const files = [];
         files.push(e.target.files);
-        console.log(files);
     
         if(!files.length) {
             setUploadFiles([]);
-            setProfileImgSrc("");
+            setProductThumbnailImgSrc("");
             return;
         } 
     
-        files.map(file => {
-            setUploadFiles([file]);
-        });
-
-        const file = files.forEach(file => {
-
-        })
+        const file = files[0];
+        setUploadFiles([file]);
 
         const reader = new FileReader();
     
         reader.onload = (e) => {
             const profileImageUrl = e.target.result;
-            setProfileImgSrc(profileImageUrl);
+            setProductThumbnailImgSrc(profileImageUrl);
 
             const storageRef = ref(storage, `files/product/${file.name}`);
 
@@ -82,6 +77,39 @@ function ProductRegist(props) {
                         setProduct({
                             ...product,
                             productThumbnail: downloadUrl,
+                        })
+                    })
+            })
+        }
+    }
+
+    const handleProductDetailImgChange = (e) => {
+        const files = [];
+        files.push(e.target.files);
+    
+        if(!files.length) {
+            setUploadFiles([]);
+            setProductDetailImgSrc("");
+            return;
+        } 
+
+        const file = files[0];
+        setUploadFiles([file]);
+
+        const reader = new FileReader();
+    
+        reader.onload = (e) => {
+            const profileImageUrl = e.target.result;
+            setProductDetailImgSrc(profileImageUrl);
+
+            const storageRef = ref(storage, `files/product/${file.name}`);
+
+            uploadBytesResumable(storageRef, file)
+            .then((uploadTaskSnapshot) => {
+                getDownloadURL(storageRef)
+                    .then((downloadUrl) => {
+                        setProduct({
+                            ...product,
                             productDetailImg: downloadUrl
                         })
                     })
@@ -104,13 +132,13 @@ function ProductRegist(props) {
     }
 
     const handleProductSubmitClick = async () => {
-        // const option = {
-        //     headers: {
-        //         Authorization: "accessToken"
-        //     }
-        // }
+        const option = {
+            headers: {
+                Authorization: localStorage.getItem("accessToken")
+            }
+        }
         console.log(product)
-        await instance.post("/api/admin/product", product)
+        await instance.post("/api/admin/product", product, option)
     }
 
     return (
@@ -118,10 +146,16 @@ function ProductRegist(props) {
             <div css={S.SContainer}>
                 <div>
                     <div css={S.SImgBox} onClick={handleProductImgUploadClick}>
-                        <img src={profileImgSrc} />
+                        <img src={productThumbnailImgSrc} alt=''/>
                     </div>
                     <div>
-                        <input css={S.Sfile} type="file" onChange={handleProductImgChange} ref={profileFileRef}/>
+                        <input css={S.Sfile} type="file" onChange={handleProductThumnailImgChange} ref={profileFileRef}/>
+                    </div>
+                    <div css={S.SImgBox} onClick={handleProductImgUploadClick}>
+                        <img src={productDetailImgSrc} alt=''/>
+                    </div>
+                    <div>
+                        <input css={S.Sfile} type="file" onChange={handleProductDetailImgChange} ref={profileFileRef}/>
                     </div>
                 </div>
                 <div css={S.SInputBox}>
