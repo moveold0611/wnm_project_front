@@ -177,6 +177,7 @@ function EditUserInformation(props) {
     const handelOnClick = () => {
         console.log(userData);
     }
+
 return (
     <div>
         <div css={S.SinfoHeader}>
@@ -204,4 +205,6 @@ return (
     );
 }
     
+
+
 export default EditUserInformation;
