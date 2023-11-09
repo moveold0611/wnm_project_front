@@ -6,7 +6,7 @@ import EditUserInformation from "./pages/Mypage/EditUserInformation";
 import { useQuery } from "react-query";
 import { instance } from "./apis/config/instance";
 import Product from "./pages/Product/Product";
-import Oauth2Signin from "./pages/Signin/Oauth2Signin";
+import Oauth2Signin from "./pages/Signin/OAuth2Signin2";
 
 
 function App() {
