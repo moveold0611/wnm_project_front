@@ -5,6 +5,7 @@ import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { storage } from '../../apis/firebase/firebase';
 import { useQuery } from 'react-query';
 import { useParams, useSearchParams } from 'react-router-dom';
+import { deleteUserApi, getUserApi, updateUserApi } from '../../apis/api/user';
 /** @jsxImportSource @emotion/react */
 
 function EditUserInformation(props) {
@@ -76,7 +77,7 @@ function EditUserInformation(props) {
 
     const getUser = useQuery(["getUser"], async () => {
         try {
-            return await instance.get(`/api/user/${userId}`);
+            return await getUserApi(userId);
         }catch(error) {
             console.log(error)
         }
@@ -113,7 +114,7 @@ function EditUserInformation(props) {
         const HandleDeleteUser = async () => {
             if(window.confirm("정말로 탈퇴하시겠습니까?")) {
             try {
-                const response = await instance.delete(`/api/user/${userId}`);
+                const response = await deleteUserApi(userId);
                 if (response.status === 200) {
                     alert("회원 탈퇴 처리가 완료되었습니다.");
                     window.location.replace("/");
@@ -158,7 +159,7 @@ function EditUserInformation(props) {
                             getDownloadURL(storageRef)
                                 .then((downloadUrl) => {
                                     userData.profileUrl = downloadUrl;
-                                    instance.put(`/api/user/${userId}`, userData).then((response) => {
+                                    updateUserApi(userId, userData).then((response) => {
                                         if (response.status === 200) {
                                             alert("회원정보 수정이 완료되었습니다.");
                                             window.location.reload();
@@ -170,7 +171,7 @@ function EditUserInformation(props) {
                         });
                 }else {
                     console.log(userData)
-                    const response = await instance.put(`/api/user/${userId}`, userData)
+                    const response = await updateUserApi(userId, userData)
                         if (response.status === 200) {
                             alert("회원정보 수정이 완료되었습니다.");
                             window.location.reload();

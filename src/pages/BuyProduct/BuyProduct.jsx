@@ -6,6 +6,7 @@ import { useQuery } from 'react-query';
 import { instance } from '../../apis/config/instance';
 import Select from 'react-select';
 import { useParams } from 'react-router-dom';
+import { getProductApi } from '../../apis/api/product';
 
 function BuyProduct(props) {
 
@@ -16,7 +17,7 @@ function BuyProduct(props) {
 
     const getProduct = useQuery(["getProduct"], async () => {
         try {
-            const response = instance.get(`/api/product/${productId}`);
+            const response = getProductApi(productId);
             console.log(response)
             return await response
             
@@ -53,7 +54,6 @@ function BuyProduct(props) {
     }
 
     const productAddOnClick = () => {
-
     }
 
     const countOnChange = (value, index) => {

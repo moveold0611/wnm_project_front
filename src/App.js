@@ -6,35 +6,34 @@ import EditUserInformation from "./pages/Mypage/EditUserInformation";
 import OAuth2Signin from "./pages/Signin/OAuth2Signin";
 import RootLayout from "./components/RootLayout/RootLayout";
 import BuyProduct from "./pages/BuyProduct/BuyProduct";
+import { useQuery } from "react-query";
+import { instance } from "./apis/config/instance";
+import { getPrincipalApi } from "./apis/api/account";
+import MypageMain from "./pages/Mypage/MypageMain/MypageMain";
 
 
 function App() {
 
-  // const getPrincipal = useQuery(["getPrincipal"], async () => {
-  //   try{
-  //     const option = {
-  //       headers: {
-  //         Authorization: localStorage.getItem("accessToken")
-  //       }
-  //     }
-  //     return await instance.get("/account/principal", option);
+  const getPrincipal = useQuery(["getPrincipal"], async () => {
+    try{
+      return await getPrincipalApi();
+    }catch(error) {
+      throw new Error(error);
+    }
+  }, {
+    retry: 0,
+    refetchInterval: 1000 * 60 * 10,
+    refetchOnWindowFocus: false
+  });
 
-  //   }catch(error) {
-  //     throw new Error(error);
-  //   }
-  // }, {
-  //   retry: 0,
-  //   refetchInterval: 1000 * 60 * 10,
-  //   refetchOnWindowFocus: false
-  // });
-
-  // if(getPrincipal.isLoading){
-  //   return <></>
-  // }
+  if(getPrincipal.isLoading){
+    return <></>
+  }
 
   return (
     <RootLayout>
       <Routes>
+        <Route path="/mypage" element={ <MypageMain /> }/>
         <Route path="/" element={ <Home /> } />
         <Route path="/auth/signup" element={ <Signup /> } />
         <Route path="/auth/signin" element={ <Signin /> } />
