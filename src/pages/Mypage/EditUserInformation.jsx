@@ -104,28 +104,7 @@ function EditUserInformation(props) {
         });
         console.log(userData)
     }
-
-<<<<<<< HEAD
-    const HandleEditUser = async () => {
-
-        
-        try {
-            const response = await instance.put(`/api/user/56`, userData);
-            if (response.status === 200) {
-                alert("회원정보 수정이 완료되었습니다.");
-            } else {
-                throw new Error("회원정보 수정 실패");
-            }
-        } catch (error) {
-            console.error(error);
-            if (Object.keys(error.response.data).includes("nickname")) {
-                alert("이미 사용중인 닉네임입니다. 다시 입력하세요.");
-            }
-        }
-    }
-
-=======
->>>>>>> 6c2d9915c2eba10ec9a826ea0f89749e41cb4a32
+    
         const HandleCancle = () => {
             window.location.replace("/");
         }
@@ -189,6 +168,7 @@ function EditUserInformation(props) {
                                     });
                                 })
                         });
+                        
                 }else {
                     console.log(userData)
                     const response = await instance.put(`/api/user/${userId}`, userData)

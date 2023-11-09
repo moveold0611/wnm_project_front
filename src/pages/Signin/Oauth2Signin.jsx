@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Navigate, useSearchParams } from 'react-router-dom';
+import { Navigate, useParams, useSearchParams } from 'react-router-dom';
 
 function OAuth2Signin(props) {
     
@@ -7,7 +7,7 @@ function OAuth2Signin(props) {
 
     useEffect(() => {
         localStorage.setItem("accessToken", "Bearer " + searchParams.get("token"));
-    },[])
+    })
 
     return <Navigate to={"/"}/>;
 }

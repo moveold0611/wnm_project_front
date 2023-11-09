@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 /** @jsxImportSource @emotion/react */
 import * as S from "./Style";
 import { instance } from '../../apis/config/instance';
@@ -7,10 +7,24 @@ import { storage } from '../../apis/firebase/firebase';
 
 function ProductRegist(props) {
     
-    const profileFileRef = useRef();
+    const productThumnailImgRef = useRef();
+    const productDetailImgRef = useRef();
     const [uploadFiles, setUploadFiles] = useState([]);
+    const [uploadDetailImgFile, setUploadDetailImgFile] = useState([]);
     const [productThumbnailImgSrc , setProductThumbnailImgSrc ] = useState(); 
     const [productDetailImgSrc, setProductDetailImgSrc] = useState(); 
+    
+    const [ text, setText ] = useState({
+        noSize: "",
+        productSizeXS: "",
+        productSizeS: "",
+        productSizeM: "",
+        productSizeL: "",
+        productSizeXL: "",
+        productSizeXXL: ""
+    });
+
+    const reader = new FileReader();
 
     const petTypes = [
         { value: 1, label: "강아지" },
@@ -31,132 +45,198 @@ function ProductRegist(props) {
         productDetailText: "",
         productThumbnail: "",
         productDetailImg: "",
-        petTypeId: categoeies.value,
-        productCategoryId: "",
-        noSize: 0,
-        productSizeXS: 0,
-        productSizeS: 0,
-        productSizeM: 0,
-        productSizeL: 0,
-        productSizeXL: 0,
-        productSizeXXL: 0,
+        // default값을 각 옵션들의 defalut값의 value로 맞춰놈
+        petTypeId: 1,
+        productCategoryId: 1,
+        noSize: "",
+        productSizeXS: "",
+        productSizeS: "",
+        productSizeM: "",
+        productSizeL: "",
+        productSizeXL: "",
+        productSizeXXL: "",
         stock: 0
     })
 
-    const handleProductImgUploadClick = () => {
+    useEffect(() => {
+        setText({
+            noSize: "",
+            productSizeXS: "",
+            productSizeS: "",
+            productSizeM: "",
+            productSizeL: "",
+            productSizeXL: "",
+            productSizeXXL: ""
+        })
+    }, [])
+
+    const handleProductDetailImgUploadClick = () => {
         if(window.confirm("상품 사진을 등록하시겠습니까?")) {
-            profileFileRef.current.click();
+            productThumnailImgRef.current.click();
+        }
+    }
+
+    const handleProductThumnailImgUploadClick = () => {
+        if(window.confirm("상품 사진을 등록하시겠습니까?")) {
+            productDetailImgRef.current.click();
         }
     }
 
     const handleProductThumnailImgChange = (e) => {
-        const files = [];
-        files.push(e.target.files);
-    
-        if(!files.length) {
+        const file = e.target.files[0];
+        console.log(file)
+        setProductThumbnailImgSrc(file);
+
+        if(file === "") {
             setUploadFiles([]);
             setProductThumbnailImgSrc("");
             return;
         } 
-    
-        const file = files[0];
+  
         setUploadFiles([file]);
 
-        const reader = new FileReader();
-    
         reader.onload = (e) => {
-            const profileImageUrl = e.target.result;
-            setProductThumbnailImgSrc(profileImageUrl);
+            const productThumnailImageUrl = e.target.result;
+            setProductThumbnailImgSrc(productThumnailImageUrl);
 
-            const storageRef = ref(storage, `files/product/${file.name}`);
-
-            uploadBytesResumable(storageRef, file)
-            .then((uploadTaskSnapshot) => {
-                getDownloadURL(storageRef)
-                    .then((downloadUrl) => {
-                        setProduct({
-                            ...product,
-                            productThumbnail: downloadUrl,
-                        })
-                    })
-            })
+            if(!!uploadFiles) {
+                const storageRef = ref(storage, `files/product/${file.name}`);
+    
+                uploadBytesResumable(storageRef, file)
+                .then((uploadTaskSnapshot) => {
+                    getDownloadURL(storageRef)
+                        .then((downloadUrl) => {
+                            setProduct({
+                                ...product,
+                                productThumbnail: downloadUrl,
+                            });
+                        });
+                });
+            }
         }
+        reader.readAsDataURL(file);
     }
 
     const handleProductDetailImgChange = (e) => {
-        const files = [];
-        files.push(e.target.files);
-    
-        if(!files.length) {
+        const file = e.target.files[0];
+        setUploadDetailImgFile(file);
+
+        if(file === "") {
             setUploadFiles([]);
-            setProductDetailImgSrc("");
+            setProductThumbnailImgSrc("");
             return;
         } 
 
-        const file = files[0];
-        setUploadFiles([file]);
-
-        const reader = new FileReader();
-    
         reader.onload = (e) => {
-            const profileImageUrl = e.target.result;
-            setProductDetailImgSrc(profileImageUrl);
+            const productDetaimgUrl = e.target.result;
+            setProductDetailImgSrc(productDetaimgUrl);
 
-            const storageRef = ref(storage, `files/product/${file.name}`);
-
-            uploadBytesResumable(storageRef, file)
-            .then((uploadTaskSnapshot) => {
-                getDownloadURL(storageRef)
-                    .then((downloadUrl) => {
-                        setProduct({
-                            ...product,
-                            productDetailImg: downloadUrl
-                        })
-                    })
-            })
-        }
+            if(!!uploadFiles) {
+                const storageRef = ref(storage, `files/product/${file.name}`);
+    
+                uploadBytesResumable(storageRef, file)
+                .then((uploadTaskSnapshot) => {
+                    getDownloadURL(storageRef)
+                        .then((downloadUrl) => {
+                            setProduct({
+                                ...product,
+                                productDetailImg: downloadUrl,
+                            });
+                        });
+                });
+            }
+        };
+        reader.readAsDataURL(file);
     }
+
+    const handleProductSubmitClick = async () => {
+        try {
+            const option = {
+                headers: {
+                    Authorization: localStorage.getItem("accessToken")
+                }
+            }
+            await instance.post(`/api/admin/product/`, product, option);
+        } catch (error) {
+            console.error(error);
+        }    
+    }     
 
     const handleInputChange = (e) => {
         setProduct({
             ...product,
             [e.target.name]: e.target.value
         })
+
+        setText({
+            [e.target.name]: e.target.value
+        })
+    }
+
+    const handleCategoryTypeOptionChange = (e) => {
+        setProduct({
+            ...product,
+            productCategoryId: parseInt(e.target.value),
+            noSize: "",
+            productSizeXS: "",
+            productSizeS: "",
+            productSizeM: "",
+            productSizeL: "",
+            productSizeXL: "",
+            productSizeXXL: ""
+        })
+        console.log("카테고리 바꾸고 나서");
+        console.log(product)
+
+        setText({
+            noSize: "",
+            productSizeXS: "",
+            productSizeS: "",
+            productSizeM: "",
+            productSizeL: "",
+            productSizeXL: "",
+            productSizeXXL: ""
+        })
+  
     }
 
     const handlePetTypeOptionChange = (e) => {
         setProduct({
             ...product,
-            petTypeId: parseInt(e.target.value)
+            petTypeId: parseInt(e.target.value),
+            noSize: "",
+            productSizeXS: "",
+            productSizeS: "",
+            productSizeM: "",
+            productSizeL: "",
+            productSizeXL: "",
+            productSizeXXL: ""
         })
-    }
 
-    const handleProductSubmitClick = async () => {
-        const option = {
-            headers: {
-                Authorization: localStorage.getItem("accessToken")
-            }
-        }
-        console.log(product)
-        await instance.post("/api/admin/product", product, option)
+        setText({
+            noSize: "",
+            productSizeXS: "",
+            productSizeS: "",
+            productSizeM: "",
+            productSizeL: "",
+            productSizeXL: "",
+            productSizeXXL: ""
+        })
     }
 
     return (
         <div css={S.SLayout}>
             <div css={S.SContainer}>
                 <div>
-                    <div css={S.SImgBox} onClick={handleProductImgUploadClick}>
-                        <img src={productThumbnailImgSrc} alt=''/>
+                    <div css={S.SImgBox} onClick={handleProductDetailImgUploadClick}>
+                        <img src={productThumbnailImgSrc} alt='썸네일 이미지'/>
                     </div>
-                    <div>
-                        <input css={S.Sfile} type="file" onChange={handleProductThumnailImgChange} ref={profileFileRef}/>
+                    <input css={S.Sfile} type="file" onChange={handleProductThumnailImgChange} ref={productThumnailImgRef}/>
+                    <div css={S.SImgBox} onClick={handleProductThumnailImgUploadClick}>
+                        <img src={productDetailImgSrc} alt='상품 디테일 이미지'/>
                     </div>
-                    <div css={S.SImgBox} onClick={handleProductImgUploadClick}>
-                        <img src={productDetailImgSrc} alt=''/>
-                    </div>
-                    <div>
-                        <input css={S.Sfile} type="file" onChange={handleProductDetailImgChange} ref={profileFileRef}/>
-                    </div>
+                    <input css={S.Sfile} type="file" onChange={handleProductDetailImgChange} ref={productDetailImgRef}/>
+                   
                 </div>
                 <div css={S.SInputBox}>
                     <div>상품명 : <input type="text" name='productName' onChange={handleInputChange}/></div>
@@ -164,9 +244,12 @@ function ProductRegist(props) {
                     <div>상품설명 : <input type="text" name='productDetailText' onChange={handleInputChange}/></div>
                     <div>
                         카테고리 :
-                        <select>
+                        <select
+                            options={categoeies}
+                            onChange={handleCategoryTypeOptionChange}
+                            >
                             {categoeies.map(category => {
-                                return <option value={category.value} label={category.label}>{category.label}</option>
+                                return <option key={category.value} value={category.value} label={category.label}>{category.label}</option>
                             })}
                         </select> 
                     </div>
@@ -176,22 +259,29 @@ function ProductRegist(props) {
                         onChange={handlePetTypeOptionChange}>
                         
                         {petTypes.map(type => {
-                            return <option value={type.value} label={type.label}>{type.label}</option>
+                            return <option key={type.value} value={type.value} label={type.label}>{type.label}</option>
                         })}
                     </select>
-                    {product.petTypeId === 2 ? 
+                    {product.petTypeId === 1 && product.productCategoryId === 4 ? 
                         <div>
-                            <input type="text" name='noSize' placeholder='noSize' onChange={handleInputChange}/>
+                            <input type="text" name='noSize' placeholder='noSize' onChange={handleInputChange} disabled value={text.noSize}/>
+                            <input type="text" name='productSizeXS' placeholder='XS Size' onChange={handleInputChange} value={text.productSizeXS}/>
+                            <input type="text" name='productSizeS' placeholder='S Size' onChange={handleInputChange} value={text.productSizeS}/>
+                            <input type="text" name='productSizeM' placeholder='M Size' onChange={handleInputChange} value={text.productSizeM}/>
+                            <input type="text" name='productSizeL' placeholder='L Size' onChange={handleInputChange} value={text.productSizeL}/>
+                            <input type="text" name='productSizeXL' placeholder='XL Size' onChange={handleInputChange} value={text.productSizeXL} />
+                            <input type="text" name='productSizeXXL' placeholder='XXL Size' onChange={handleInputChange} value={text.productSizeXXL}/>
                         </div>
                         : 
                         <div>
-                            <input type="text" name='productSizeXS' placeholder='XS Size' onChange={handleInputChange}/>
-                            <input type="text" name='productSizeS' placeholder='S Size' onChange={handleInputChange}/>
-                            <input type="text" name='productSizeM' placeholder='M Size' onChange={handleInputChange}/>
-                            <input type="text" name='productSizeL' placeholder='L Size' onChange={handleInputChange}/>
-                            <input type="text" name='productSizeXL' placeholder='XL Size' onChange={handleInputChange}/>
-                            <input type="text" name='productSizeXXL' placeholder='XXL Size' onChange={handleInputChange}/>
-                        </div> 
+                            <input type="text" name='noSize' placeholder='noSize' onChange={handleInputChange}  value={text.noSize}/>
+                            <input type="text" name='productSizeXS' placeholder='XS Size' onChange={handleInputChange} disabled value={text.productSizeXS}/>
+                            <input type="text" name='productSizeS' placeholder='S Size' onChange={handleInputChange} disabled value={text.productSizeS}/>
+                            <input type="text" name='productSizeM' placeholder='M Size' onChange={handleInputChange} disabled value={text.productSizeM}/>
+                            <input type="text" name='productSizeL' placeholder='L Size' onChange={handleInputChange} disabled value={text.productSizeL}/>
+                            <input type="text" name='productSizeXL' placeholder='XL Size' onChange={handleInputChange} disabled value={text.productSizeXL} />
+                            <input type="text" name='productSizeXXL' placeholder='XXL Size' onChange={handleInputChange} disabled value={text.productSizeXXL}/>
+                        </div>
                     }
                 </div>
                 <div>

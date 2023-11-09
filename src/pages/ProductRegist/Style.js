@@ -16,18 +16,17 @@ export const SContainer = css`
 
 export const SImgBox = css`
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
     margin-bottom: 50px;
     border: 1px solid black;
-    width: 500px;
-    height: 300px;
+    width: 100%;
     
     & img {
         overflow: hidden;
         box-sizing: border-box;
-        border: 1px solid black;
-        width: 100%;
         height: 300px;
+        width: 300px;
     }
 `
 
