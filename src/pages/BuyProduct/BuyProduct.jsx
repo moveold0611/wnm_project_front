@@ -1,4 +1,4 @@
-import React, { Profiler, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 /** @jsxImportSource @emotion/react */
 import * as S from "./Style";
 import { css } from '@emotion/react';
@@ -7,7 +7,7 @@ import { instance } from '../../apis/config/instance';
 import Select from 'react-select';
 import { useParams } from 'react-router-dom';
 
-function Product(props) {
+function BuyProduct(props) {
 
     const { productId } = useParams();
 
@@ -109,4 +109,4 @@ function Product(props) {
     );
 }
 
-export default Product;
+export default BuyProduct;

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import * as S from "./Style";
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { instance } from '../../apis/config/instance';
 /**@jsxImportSource @emotion/react */
 

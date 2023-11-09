@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Oauth2GoogleImg from '../../images/oauth2/google.png';
 import Oauth2KakaoImg from '../../images/oauth2/kakao.png';
 import Oauth2NaverImg from '../../images/oauth2/naver.png';
