@@ -104,7 +104,7 @@ function EditUserInformation(props) {
         });
         console.log(userData)
     }
-
+    
         const HandleCancle = () => {
             window.location.replace("/");
         }
@@ -168,6 +168,7 @@ function EditUserInformation(props) {
                                     });
                                 })
                         });
+                        
                 }else {
                     console.log(userData)
                     const response = await instance.put(`/api/user/${userId}`, userData)
