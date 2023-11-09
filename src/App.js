@@ -7,7 +7,6 @@ import OAuth2Signin from "./pages/Signin/OAuth2Signin";
 import RootLayout from "./components/RootLayout/RootLayout";
 import BuyProduct from "./pages/BuyProduct/BuyProduct";
 import { useQuery } from "react-query";
-import { instance } from "./apis/config/instance";
 import { getPrincipalApi } from "./apis/api/account";
 import MypageMain from "./pages/Mypage/MypageMain/MypageMain";
 
@@ -16,8 +15,11 @@ function App() {
 
   const getPrincipal = useQuery(["getPrincipal"], async () => {
     try{
-      return await getPrincipalApi();
+      const response = await getPrincipalApi();
+      console.log("로그인 상태")
+      return response;
     }catch(error) {
+      console.log("비로그인 상태")
       throw new Error(error);
     }
   }, {
@@ -27,9 +29,8 @@ function App() {
   });
 
   if(getPrincipal.isLoading){
-    return <></>
+    return <>로딩</>
   }
-
   return (
     <RootLayout>
       <Routes>
