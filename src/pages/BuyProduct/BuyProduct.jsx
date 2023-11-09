@@ -1,4 +1,4 @@
-import React, { Profiler, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 /** @jsxImportSource @emotion/react */
 import * as S from "./Style";
 import { css } from '@emotion/react';
@@ -6,8 +6,9 @@ import { useQuery } from 'react-query';
 import { instance } from '../../apis/config/instance';
 import Select from 'react-select';
 import { useParams } from 'react-router-dom';
+import { getProductApi } from '../../apis/api/product';
 
-function Product(props) {
+function BuyProduct(props) {
 
     const { productId } = useParams();
 
@@ -16,7 +17,7 @@ function Product(props) {
 
     const getProduct = useQuery(["getProduct"], async () => {
         try {
-            const response = instance.get(`/api/product/${productId}`);
+            const response = getProductApi(productId);
             console.log(response)
             return await response
             
@@ -53,7 +54,6 @@ function Product(props) {
     }
 
     const productAddOnClick = () => {
-
     }
 
     const countOnChange = (value, index) => {
@@ -109,4 +109,4 @@ function Product(props) {
     );
 }
 
-export default Product;
+export default BuyProduct;

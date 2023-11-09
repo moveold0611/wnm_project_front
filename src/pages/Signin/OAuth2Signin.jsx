@@ -1,15 +1,23 @@
 import React, { useEffect } from 'react';
-import { Navigate, useSearchParams } from 'react-router-dom';
+import { useQuery } from 'react-query';
+import { useSearchParams } from 'react-router-dom';
 
 function OAuth2Signin(props) {
-    
     const [ searchParams, setSearchParams ] = useSearchParams();
 
-    useEffect(() => {
-        localStorage.setItem("accessToken", "Bearer " + searchParams.get("token"));
-    }, [])
 
-    return <Navigate to={"/"}/>;
+    const login = useQuery(["login"], async () => {
+            localStorage.setItem("accessToken", "Bearer " + searchParams.get("token"));
+        }, {
+            retry: 0,
+            refetchOnWindowFocus: false,
+            onSuccess: () => window.location.replace("/")
+        }
+    )
+
+    if(login.isLoading) {
+        return <>로그인중...</>
+    }
 }
 
 export default OAuth2Signin;

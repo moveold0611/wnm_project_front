@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import * as S from "./Style";
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { instance } from '../../apis/config/instance';
+import { signupApi } from '../../apis/api/sign';
 /**@jsxImportSource @emotion/react */
 
 function Signup(props) {
@@ -81,9 +82,9 @@ function Signup(props) {
 
     const handleSignupSubmit = async () => {
         try {
-            await instance.post("/api/auth/signup", signupUser);
+            await signupApi(signupUser);
             alert("회원가입 완료");
-            window.location.replace("/");
+            window.location.replace("/auth/oauth2/signin");
         }catch(error) {
             console.error(error);
             //if(Object.keys(error.response.data).includes("nickname")) {
