@@ -4,6 +4,7 @@ import * as S from "./Style";
 import { instance } from '../../apis/config/instance';
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { storage } from '../../apis/firebase/firebase';
+import { addProductApi } from '../../apis/api/product';
 
 function ProductRegist(props) {
     
@@ -153,10 +154,11 @@ function ProductRegist(props) {
         try {
             const option = {
                 headers: {
-                    Authorization: localStorage.getItem("accessToken")
+                    Authorization: !!localStorage.getItem("accessToken")
+                    ? localStorage.getItem("accessToken") : ""
                 }
             }
-            await instance.post(`/api/admin/product/`, product, option);
+            await addProductApi(product, option);
         } catch (error) {
             console.error(error);
         }    

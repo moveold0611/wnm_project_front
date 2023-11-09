@@ -6,6 +6,7 @@ import { buyProductListAtom } from '../../store/Atoms/productAtom';
 import { useRecoilState } from 'recoil';
 import { useQuery, useQueryClient } from 'react-query';
 import { instance } from '../../apis/config/instance';
+import { getProductApi } from '../../apis/api/product';
 
 function BuyInfo(props) {
 
@@ -19,7 +20,7 @@ function BuyInfo(props) {
             const buyProductIds = [...set];
             const promises = buyProductIds.map(productId => {
                 return new Promise((resolve, reject) => {
-                    resolve(instance.get(`/api/product/${productId}`));
+                    resolve(getProductApi(productId));
                 })
             })
 
