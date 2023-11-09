@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Oauth2GoogleImg from '../../images/oauth2/google.png';
 import Oauth2KakaoImg from '../../images/oauth2/kakao.png';
 import Oauth2NaverImg from '../../images/oauth2/naver.png';
 import * as S from "./Style";
+import { reverseAuthenticate } from '../../utils/Authenticate';
 /**@jsxImportSource @emotion/react */
 
 function Signin(props) {
+
+    useEffect(() => {
+        reverseAuthenticate();
+    }, [])
 
     const handleGoogleLogin = () => {
         window.location.href = "http://localhost:8080/oauth2/authorization/google"

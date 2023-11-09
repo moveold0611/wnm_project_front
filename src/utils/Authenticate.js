@@ -7,3 +7,10 @@ export const tokenAuthenticate = (principal) => {
         window.location.replace("/")
     }
 }
+
+export const reverseAuthenticate = () => {
+    if(!!localStorage.getItem("accessToken")) {
+        alert("이미 로그인 상태입니다..")
+        window.location.replace("/")
+    }
+}

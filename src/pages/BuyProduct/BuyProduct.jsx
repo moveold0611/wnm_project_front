@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import * as S from "./Style";
 import { css } from '@emotion/react';
 import { useQuery } from 'react-query';
-import { instance } from '../../apis/config/instance';
 import Select from 'react-select';
 import { useParams } from 'react-router-dom';
 import { getProductApi } from '../../apis/api/product';
