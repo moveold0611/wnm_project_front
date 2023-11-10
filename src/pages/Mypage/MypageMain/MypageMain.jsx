@@ -8,6 +8,8 @@ function MypageMain(props) {
     const queryClient = useQueryClient();
     const principal = queryClient.getQueryState("getPrincipal");
 
+    console.log(principal)
+
     useEffect(() => {
         tokenAuthenticate(principal);
     }, [])

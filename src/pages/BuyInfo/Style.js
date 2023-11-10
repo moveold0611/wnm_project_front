@@ -60,3 +60,13 @@ export const SProductImg = css`
     width: 75px;
 `;
 
+export const SPayButtonBox = css`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    & > button {
+        margin: 5px ;
+    }
+`;
+
