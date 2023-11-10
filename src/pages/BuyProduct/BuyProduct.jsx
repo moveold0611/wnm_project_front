@@ -3,11 +3,14 @@ import React, { useState } from 'react';
 import * as S from "./Style";
 import { css } from '@emotion/react';
 import { useQuery } from 'react-query';
+import { instance } from '../../apis/config/instance';
 import Select from 'react-select';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getProductApi } from '../../apis/api/product';
+import { clear } from '@testing-library/user-event/dist/clear';
 
 function BuyProduct(props) {
+    const navigate = useNavigate();
 
     const { productId } = useParams();
 
@@ -17,7 +20,6 @@ function BuyProduct(props) {
     const getProduct = useQuery(["getProduct"], async () => {
         try {
             const response = getProductApi(productId);
-            console.log(response)
             return await response
             
         } catch(error) {
@@ -29,6 +31,8 @@ function BuyProduct(props) {
             setProduct(response.data)
         }
     })
+
+    localStorage.removeItem("orderData")
 
     if(getProduct.isLoading) {
         return<></>
@@ -47,13 +51,12 @@ function BuyProduct(props) {
         const newSelectedProduct = {
             size: option.value.replace("productSize", ""),
             count: 1,
-            totalPrice: product.productPrice
+            totalPrice: product.productPrice,
+            productId: product.productId
         }
         setSelectedProducts([...selectedProducts, newSelectedProduct]);
     }
 
-    const productAddOnClick = () => {
-    }
 
     const countOnChange = (value, index) => {
         const updateSelectedPorudcts = [...selectedProducts];
@@ -61,6 +64,20 @@ function BuyProduct(props) {
         updateSelectedPorudcts[index].totalPrice = product.productPrice * parseInt(value);
 
         setSelectedProducts([...updateSelectedPorudcts]);
+    }
+
+    const handleDeleteProductOnClick = (index) => {
+        
+        const DeleteProduct = [...selectedProducts]
+
+        DeleteProduct.splice(index, 1);
+
+        setSelectedProducts(DeleteProduct);
+    }
+
+    const buyNowOnClick = () => {
+        localStorage.setItem("orderData", JSON.stringify(selectedProducts));
+        navigate("/order")
     }
 
     return (
@@ -84,19 +101,20 @@ function BuyProduct(props) {
                             ]
                         }/> : <div>NoSize</div>}
                     </div>
-                    <ul>
+                    <ul css={S.SOrderListBox}>
                         {selectedProducts.map((selectedProduct, index) => 
                             <li key={index}>
                                 {product.productName}-{selectedProduct.size}
                                 <input type="number" defaultValue={1} min={1} max={3} onChange={(e) => countOnChange(e.target.value, index)}/>
                                 {selectedProduct.totalPrice.toLocaleString("ko-KR") + "원"}
+                                <button onClick={() => handleDeleteProductOnClick(index)}>X</button>
                             </li>
                         )}
                     </ul>
                     <h3>{selectedProducts.reduce((total, selectedProduct) => {
                         return total += selectedProduct.totalPrice}, 0).toLocaleString("ko-KR")}원</h3>
                     <div>
-                        <button onClick={null}>BUY BOW</button>
+                        <button onClick={buyNowOnClick}>BUY BOW</button>
                         <button>ADD TO CART</button>
                     </div>
                 </div>

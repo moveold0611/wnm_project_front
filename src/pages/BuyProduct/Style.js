@@ -28,6 +28,16 @@ export const SSelect = css`
     width: 200px;
 `;
 
+export const SOrderListBox = css`
+    padding: 0px;
+
+    & > li {
+        padding: 5px 0px;
+        list-style-type: none;
+        
+    }
+`;
+
 export const SDetailContainer = css`
     display: flex;
     justify-content: center;
@@ -37,5 +47,3 @@ export const SDetailContainer = css`
 export const SDDetailImg = css`
     width: 920px;
 `;
-
-

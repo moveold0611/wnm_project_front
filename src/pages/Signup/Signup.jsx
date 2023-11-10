@@ -84,7 +84,7 @@ function Signup(props) {
         try {
             await signupApi(signupUser);
             alert("회원가입 완료");
-            window.location.replace("/auth/oauth2/signin");
+            window.location.replace("/auth/signin");
         }catch(error) {
             console.error(error);
             //if(Object.keys(error.response.data).includes("nickname")) {

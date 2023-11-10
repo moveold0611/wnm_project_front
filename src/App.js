@@ -12,6 +12,7 @@ import BuyProduct from "./pages/BuyProduct/BuyProduct";
 import { getPrincipalApi } from "./apis/api/account";
 import MypageMain from "./pages/Mypage/MypageMain/MypageMain";
 import ProductRegist from "./pages/ProductRegist/ProductRegist";
+import BuyInfo from "./pages/BuyInfo/BuyInfo";
 
 
 function App() {
@@ -19,12 +20,12 @@ function App() {
   const getPrincipal = useQuery(["getPrincipal"], async () => {
     try{
 
-    const option = {
-      headers: {
-        Authorization: !!localStorage.getItem("accessToken")
-        ? localStorage.getItem("accessToken") : ""
+      const option = {
+        headers: {
+          Authorization: !!localStorage.getItem("accessToken")
+          ? localStorage.getItem("accessToken") : ""
+        }
       }
-    }
 
       const response = await getPrincipalApi(option);
       console.log("로그인 상태")
@@ -42,6 +43,7 @@ function App() {
   if(getPrincipal.isLoading){
     return <>로딩</>
   }
+
   return (
     <RootLayout>
       <Routes>
@@ -52,9 +54,10 @@ function App() {
         <Route path="/auth/oauth2/signin" element={ <OAuth2Signin /> } />
         <Route path="/useredit/:userId" element={ <EditUserInformation /> } />
         <Route path="/product/:productId" element={ <BuyProduct/> } />
+        <Route path="/order/" element={ <BuyInfo/> } />
         <Route path="/admin/product" element={ <ProductRegist/> } />
       </Routes>
-      </RootLayout>
+    </RootLayout>
   );
 }
 

@@ -49,6 +49,7 @@ function EditUserInformation(props) {
                     defaultAddressNumber: data.zonecode,
                     defaultAddressName: addr
                 });
+                document.getElementById("sample6_detailAddress").value = "";
                 document.getElementById("sample6_detailAddress").focus();
             }
             }).open();
@@ -103,7 +104,6 @@ function EditUserInformation(props) {
             ...userData,
             [e.target.name]: e.target.value
         });
-        console.log(userData)
     }
     
         const HandleCancle = () => {
