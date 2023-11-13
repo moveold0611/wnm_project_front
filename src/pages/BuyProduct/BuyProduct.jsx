@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 /** @jsxImportSource @emotion/react */
 import * as S from "./Style";
 import { css } from '@emotion/react';
-import { useQuery } from 'react-query';
+import { QueryClient, useQuery, useQueryClient } from 'react-query';
 import { instance } from '../../apis/config/instance';
 import Select from 'react-select';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getProductApi } from '../../apis/api/product';
+import { addCartApi, getProductApi } from '../../apis/api/product';
 import { clear } from '@testing-library/user-event/dist/clear';
 
 function BuyProduct(props) {
@@ -16,6 +16,8 @@ function BuyProduct(props) {
 
     const [ product, setProduct ] = useState({});
     const [ selectedProducts, setSelectedProducts ] = useState([]);
+    const queryClient = useQueryClient();
+    const principal = queryClient.getQueryState("getPrincipal");
 
     const getProduct = useQuery(["getProduct"], async () => {
         try {
@@ -80,6 +82,24 @@ function BuyProduct(props) {
         navigate("/order")
     }
 
+    const handleAddCartClick = async () => {
+            try {
+                const option = {
+                    headers: {
+                        Authorization: localStorage.getItem("accessToken")
+                    }
+                }
+
+                let userId = principal?.data?.data?.userId;
+                const response = await addCartApi(userId, selectedProducts, option);
+                if(response === "200") {
+                    alert("장바구니에 등록 되었습니다.")
+                }
+            } catch (error) {
+                
+            }
+    }
+
     return (
         <div>
             <div css={S.STopContainer} >
@@ -115,7 +135,7 @@ function BuyProduct(props) {
                         return total += selectedProduct.totalPrice}, 0).toLocaleString("ko-KR")}원</h3>
                     <div>
                         <button onClick={buyNowOnClick}>BUY BOW</button>
-                        <button>ADD TO CART</button>
+                        <button onClick={handleAddCartClick}>ADD TO CART</button>
                     </div>
                 </div>
             </div>
