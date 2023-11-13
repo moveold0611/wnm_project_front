@@ -13,6 +13,8 @@ import { getPrincipalApi } from "./apis/api/account";
 import MypageMain from "./pages/Mypage/MypageMain/MypageMain";
 import ProductRegist from "./pages/ProductRegist/ProductRegist";
 import BuyInfo from "./pages/BuyInfo/BuyInfo";
+import EditProduct from "./pages/EditProduct/EditProduct";
+import EditProductDetailPage from "./pages/EditProduct/EditProductDetailPage/EditProductDetailPage";
 
 
 function App() {
@@ -56,6 +58,8 @@ function App() {
         <Route path="/product/:productId" element={ <BuyProduct/> } />
         <Route path="/order/" element={ <BuyInfo/> } />
         <Route path="/admin/product" element={ <ProductRegist/> } />
+        <Route path="/admin/product/edit" element={ <EditProduct/> }/>
+        <Route path="/admin/edit/product/:productId" element={ <EditProductDetailPage/> }/>        
       </Routes>
     </RootLayout>
   );

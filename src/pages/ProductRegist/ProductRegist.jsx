@@ -238,7 +238,6 @@ function ProductRegist(props) {
                         <img src={productDetailImgSrc} alt='상품 디테일 이미지'/>
                     </div>
                     <input css={S.Sfile} type="file" onChange={handleProductDetailImgChange} ref={productDetailImgRef}/>
-                   
                 </div>
                 <div css={S.SInputBox}>
                     <div>상품명 : <input type="text" name='productName' onChange={handleInputChange}/></div>
