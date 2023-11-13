@@ -93,7 +93,7 @@ function ProductRegist(props) {
             setProductThumbnailImgSrc("");
             return;
         } 
-  
+
         setUploadFiles([file]);
 
         reader.onload = (e) => {

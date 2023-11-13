@@ -4,7 +4,6 @@ import Signin from "./pages/Signin/Signin";
 import Signup from "./pages/Signup/Signup";
 import EditUserInformation from "./pages/Mypage/EditUserInformation";
 import { useQuery } from "react-query";
-import { instance } from "./apis/config/instance";
 import OAuth2Signin from "./pages/Signin/OAuth2Signin";
 
 import RootLayout from "./components/RootLayout/RootLayout";
