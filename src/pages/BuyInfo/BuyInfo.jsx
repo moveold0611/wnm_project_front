@@ -62,7 +62,7 @@ function BuyInfo(props) {
     }, [])
 
     useEffect(() => {
-        const buyPricetotal = buyProductList.reduce((total, buyProducts) => total += buyProducts.totalPrice, 0)
+        const buyPricetotal = buyProductList.reduce((total, buyProducts) => total += buyProducts.totalPrice || buyProducts.productPrice * parseInt(buyProducts.count), 0)
         const shippingCost = buyPricetotal >= 50000 ? 0 : 5000;
         const finalPrice = (shippingCost + buyPricetotal);
 
@@ -170,7 +170,8 @@ function BuyInfo(props) {
                     shippingAddressNumber: shippingUserInfo.addressNumber,
                     shippingAddressName: shippingUserInfo.addressName,
                     shippingAddressDetailName: shippingUserInfo.addressDetailName,
-                    orderData: [...buyProductList]
+                    orderData: [...buyProductList],
+                    isCart: false
                 }
 
                 addOrderApi(order, option)
@@ -258,10 +259,10 @@ function BuyInfo(props) {
                 <h3>주문상세내역</h3>
                 {buyProductList.map((product, index) => 
                 <li key={index}>
-                    <img css={S.SProductImg} src={products?.filter(p => p.productId === product.productId)[0]?.productThumbnail} alt="" />
+                    <img css={S.SProductImg} src={products?.filter(p => p.productId === product.productId)[0]?.productThumbnail} />
                     <p>상품 사이즈: {product.size}</p>
                     <p>상품 수량: {product.count}</p>
-                    <p>가격: {product.totalPrice}원</p>
+                    <p>가격: {product.totalPrice || product.productPrice * parseInt(product.count)}원</p>
                 </li>
                 )}
             </div>
