@@ -78,6 +78,7 @@ function BuyProduct(props) {
 
     const buyNowOnClick = () => {
         localStorage.setItem("orderData", JSON.stringify(selectedProducts));
+        localStorage.setItem("isCart", false);
         navigate("/order")
     }
 
