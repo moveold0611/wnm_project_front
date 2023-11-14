@@ -94,6 +94,7 @@ function CartProducts(props) {
 
     const handleBuyOnClick = () => {
         localStorage.setItem("orderData", JSON.stringify(selectedCartProduct))
+        localStorage.setItem("isCart", true);
         navigate("/order")
     }
 

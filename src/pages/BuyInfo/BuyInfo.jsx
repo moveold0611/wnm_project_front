@@ -171,7 +171,7 @@ function BuyInfo(props) {
                     shippingAddressName: shippingUserInfo.addressName,
                     shippingAddressDetailName: shippingUserInfo.addressDetailName,
                     orderData: [...buyProductList],
-                    isCart: false
+                    isCart: localStorage.getItem("isCart")
                 }
 
                 addOrderApi(order, option)
