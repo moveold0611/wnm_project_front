@@ -4,7 +4,6 @@ import Signin from "./pages/Signin/Signin";
 import Signup from "./pages/Signup/Signup";
 import EditUserInformation from "./pages/Mypage/EditUserInformation";
 import { useQuery } from "react-query";
-import { instance } from "./apis/config/instance";
 import OAuth2Signin from "./pages/Signin/OAuth2Signin";
 
 import RootLayout from "./components/RootLayout/RootLayout";
@@ -14,6 +13,8 @@ import MypageMain from "./pages/Mypage/MypageMain/MypageMain";
 import ProductRegist from "./pages/ProductRegist/ProductRegist";
 import BuyInfo from "./pages/BuyInfo/BuyInfo";
 import CartProducts from "./pages/CartProducts/CartProducts";
+import EditProduct from "./pages/EditProduct/EditProduct";
+import EditProductDetailPage from "./pages/EditProduct/EditProductDetailPage/EditProductDetailPage";
 
 
 function App() {
@@ -58,6 +59,8 @@ function App() {
         <Route path="/order/" element={ <BuyInfo/> } />
         <Route path="/product/cart/:userId" element={ <CartProducts/> } />
         <Route path="/admin/product" element={ <ProductRegist/> } />
+        <Route path="/admin/product/edit" element={ <EditProduct/> }/>
+        <Route path="/admin/edit/product/:productId" element={ <EditProductDetailPage/> }/>        
       </Routes>
     </RootLayout>
   );
