@@ -12,7 +12,6 @@ function BuyProduct(props) {
     const navigate = useNavigate();
 
     const { productId } = useParams();
-
     const [ product, setProduct ] = useState({});
     const [ selectedProducts, setSelectedProducts ] = useState([]);
     const queryClient = useQueryClient();

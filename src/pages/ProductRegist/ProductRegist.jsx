@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 /** @jsxImportSource @emotion/react */
 import * as S from "./Style";
-import { instance } from '../../apis/config/instance';
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { storage } from '../../apis/firebase/firebase';
 import { addProductApi } from '../../apis/api/product';
@@ -12,63 +11,43 @@ function ProductRegist(props) {
     const productDetailImgRef = useRef();
     const [uploadFiles, setUploadFiles] = useState([]);
     const [uploadDetailImgFile, setUploadDetailImgFile] = useState([]);
-    const [productThumbnailImgSrc , setProductThumbnailImgSrc ] = useState(); 
-    const [productDetailImgSrc, setProductDetailImgSrc] = useState(); 
+    const [productThumbnailUrlSrc , setProductThumbnailUrlSrc ] = useState(); 
+    const [productDetailUrlSrc, setProductDetailUrlSrc] = useState(); 
     
-    const [ text, setText ] = useState({
-        noSize: "",
-        productSizeXS: "",
-        productSizeS: "",
-        productSizeM: "",
-        productSizeL: "",
-        productSizeXL: "",
-        productSizeXXL: ""
-    });
-
     const reader = new FileReader();
-
+    
     const petTypes = [
         { value: 1, label: "강아지" },
         { value: 2, label: "고양이" }
     ]
-
-    const categoeies = [
+    
+    const productDogCategoeies = [
         { value: 1, label: "홈·리빙" },
         { value: 2, label: "산책" },
         { value: 3, label: "이동" },
         { value: 4, label: "패션" },
         { value: 5, label: "장난감" },
     ]
+    
+    const productCatCategoeies = [
+        { value: 1, label: "홈·리빙" },
+        { value: 2, label: "산책" },
+        { value: 3, label: "이동" },
+        { value: 5, label: "장난감" },
+    ]
 
     const [ product, setProduct ] = useState({
         productName: "",
-        productPrice: "",
         productDetailText: "",
-        productThumbnail: "",
-        productDetailImg: "",
+        productThumbnailUrl: "",
+        productDetailUrl: "",
         // default값을 각 옵션들의 defalut값의 value로 맞춰놈
         petTypeId: 1,
-        productCategoryId: 1,
-        noSize: "",
-        productSizeXS: "",
-        productSizeS: "",
-        productSizeM: "",
-        productSizeL: "",
-        productSizeXL: "",
-        productSizeXXL: "",
-        stock: 0
+        productCategoryId: 1
     })
 
     useEffect(() => {
-        setText({
-            noSize: "",
-            productSizeXS: "",
-            productSizeS: "",
-            productSizeM: "",
-            productSizeL: "",
-            productSizeXL: "",
-            productSizeXXL: ""
-        })
+        
     }, [])
 
     const handleProductDetailImgUploadClick = () => {
@@ -86,11 +65,11 @@ function ProductRegist(props) {
     const handleProductThumnailImgChange = (e) => {
         const file = e.target.files[0];
         console.log(file)
-        setProductThumbnailImgSrc(file);
+        setProductThumbnailUrlSrc(file);
 
         if(file === "") {
             setUploadFiles([]);
-            setProductThumbnailImgSrc("");
+            setProductThumbnailUrlSrc("");
             return;
         } 
 
@@ -98,7 +77,7 @@ function ProductRegist(props) {
 
         reader.onload = (e) => {
             const productThumnailImageUrl = e.target.result;
-            setProductThumbnailImgSrc(productThumnailImageUrl);
+            setProductThumbnailUrlSrc(productThumnailImageUrl);
 
             if(!!uploadFiles) {
                 const storageRef = ref(storage, `files/product/${file.name}`);
@@ -109,7 +88,7 @@ function ProductRegist(props) {
                         .then((downloadUrl) => {
                             setProduct({
                                 ...product,
-                                productThumbnail: downloadUrl,
+                                productThumbnailUrl: downloadUrl,
                             });
                         });
                 });
@@ -124,13 +103,13 @@ function ProductRegist(props) {
 
         if(file === "") {
             setUploadFiles([]);
-            setProductThumbnailImgSrc("");
+            setProductDetailUrlSrc("");
             return;
         } 
 
         reader.onload = (e) => {
             const productDetaimgUrl = e.target.result;
-            setProductDetailImgSrc(productDetaimgUrl);
+            setProductDetailUrlSrc(productDetaimgUrl);
 
             if(!!uploadFiles) {
                 const storageRef = ref(storage, `files/product/${file.name}`);
@@ -141,7 +120,7 @@ function ProductRegist(props) {
                         .then((downloadUrl) => {
                             setProduct({
                                 ...product,
-                                productDetailImg: downloadUrl,
+                                productDetailUrl: downloadUrl,
                             });
                         });
                 });
@@ -151,6 +130,7 @@ function ProductRegist(props) {
     }
 
     const handleProductSubmitClick = async () => {
+        console.log("post요청 직전" + product)
         try {
             const option = {
                 headers: {
@@ -169,119 +149,77 @@ function ProductRegist(props) {
             ...product,
             [e.target.name]: e.target.value
         })
+    }
 
-        setText({
-            [e.target.name]: e.target.value
+    const handlePetTypeOptionChange = (e) => {
+        setProduct({
+            ...product,
+            petTypeId: parseInt(e.target.value)
         })
     }
 
     const handleCategoryTypeOptionChange = (e) => {
         setProduct({
             ...product,
-            productCategoryId: parseInt(e.target.value),
-            noSize: "",
-            productSizeXS: "",
-            productSizeS: "",
-            productSizeM: "",
-            productSizeL: "",
-            productSizeXL: "",
-            productSizeXXL: ""
+            productCategoryId: parseInt(e.target.value)
         })
-        console.log("카테고리 바꾸고 나서");
-        console.log(product)
-
-        setText({
-            noSize: "",
-            productSizeXS: "",
-            productSizeS: "",
-            productSizeM: "",
-            productSizeL: "",
-            productSizeXL: "",
-            productSizeXXL: ""
-        })
-  
+        
     }
 
-    const handlePetTypeOptionChange = (e) => {
-        setProduct({
-            ...product,
-            petTypeId: parseInt(e.target.value),
-            noSize: "",
-            productSizeXS: "",
-            productSizeS: "",
-            productSizeM: "",
-            productSizeL: "",
-            productSizeXL: "",
-            productSizeXXL: ""
-        })
 
-        setText({
-            noSize: "",
-            productSizeXS: "",
-            productSizeS: "",
-            productSizeM: "",
-            productSizeL: "",
-            productSizeXL: "",
-            productSizeXXL: ""
-        })
-    }
+
+    console.log(product)
 
     return (
         <div css={S.SLayout}>
             <div css={S.SContainer}>
                 <div>
                     <div css={S.SImgBox} onClick={handleProductDetailImgUploadClick}>
-                        <img src={productThumbnailImgSrc} alt='썸네일 이미지'/>
+                        <img src={productThumbnailUrlSrc} alt='썸네일 이미지'/>
                     </div>
                     <input css={S.Sfile} type="file" onChange={handleProductThumnailImgChange} ref={productThumnailImgRef}/>
                     <div css={S.SImgBox} onClick={handleProductThumnailImgUploadClick}>
-                        <img src={productDetailImgSrc} alt='상품 디테일 이미지'/>
+                        <img src={productDetailUrlSrc} alt='상품 디테일 이미지'/>
                     </div>
                     <input css={S.Sfile} type="file" onChange={handleProductDetailImgChange} ref={productDetailImgRef}/>
                 </div>
                 <div css={S.SInputBox}>
                     <div>상품명 : <input type="text" name='productName' onChange={handleInputChange}/></div>
-                    <div>가격 : <input type="text" name='productPrice' onChange={handleInputChange}/></div>
                     <div>상품설명 : <input type="text" name='productDetailText' onChange={handleInputChange}/></div>
                     <div>
-                        카테고리 :
-                        <select
-                            options={categoeies}
-                            onChange={handleCategoryTypeOptionChange}
-                            >
-                            {categoeies.map(category => {
-                                return <option key={category.value} value={category.value} label={category.label}>{category.label}</option>
+                        동물타입: 
+                        <select 
+                            options={petTypes}
+                            onChange={handlePetTypeOptionChange}>
+                            
+                            {petTypes.map(type => {
+                                return <option key={type.value} value={type.value} label={type.label}>{type.label}</option>
                             })}
-                        </select> 
+                        </select>
                     </div>
-                    <div>사이즈 : </div>
-                    <select 
-                        options={petTypes}
-                        onChange={handlePetTypeOptionChange}>
-                        
-                        {petTypes.map(type => {
-                            return <option key={type.value} value={type.value} label={type.label}>{type.label}</option>
-                        })}
-                    </select>
-                    {product.petTypeId === 1 && product.productCategoryId === 4 ? 
+                    {product.petTypeId === 1 ? 
                         <div>
-                            <input type="text" name='noSize' placeholder='noSize' onChange={handleInputChange} disabled value={text.noSize}/>
-                            <input type="text" name='productSizeXS' placeholder='XS Size' onChange={handleInputChange} value={text.productSizeXS}/>
-                            <input type="text" name='productSizeS' placeholder='S Size' onChange={handleInputChange} value={text.productSizeS}/>
-                            <input type="text" name='productSizeM' placeholder='M Size' onChange={handleInputChange} value={text.productSizeM}/>
-                            <input type="text" name='productSizeL' placeholder='L Size' onChange={handleInputChange} value={text.productSizeL}/>
-                            <input type="text" name='productSizeXL' placeholder='XL Size' onChange={handleInputChange} value={text.productSizeXL} />
-                            <input type="text" name='productSizeXXL' placeholder='XXL Size' onChange={handleInputChange} value={text.productSizeXXL}/>
+                            카테고리 
+                            <select
+                                options={productDogCategoeies}
+                                onChange={handleCategoryTypeOptionChange}
+                                >
+                                {productDogCategoeies.map(category => {
+                                    return <option key={category.value} value={category.value} label={category.label}>{category.label}</option>
+                                })}
+                            </select> 
                         </div>
-                        : 
+                        :
                         <div>
-                            <input type="text" name='noSize' placeholder='noSize' onChange={handleInputChange}  value={text.noSize}/>
-                            <input type="text" name='productSizeXS' placeholder='XS Size' onChange={handleInputChange} disabled value={text.productSizeXS}/>
-                            <input type="text" name='productSizeS' placeholder='S Size' onChange={handleInputChange} disabled value={text.productSizeS}/>
-                            <input type="text" name='productSizeM' placeholder='M Size' onChange={handleInputChange} disabled value={text.productSizeM}/>
-                            <input type="text" name='productSizeL' placeholder='L Size' onChange={handleInputChange} disabled value={text.productSizeL}/>
-                            <input type="text" name='productSizeXL' placeholder='XL Size' onChange={handleInputChange} disabled value={text.productSizeXL} />
-                            <input type="text" name='productSizeXXL' placeholder='XXL Size' onChange={handleInputChange} disabled value={text.productSizeXXL}/>
+                            카테고리 
+                            <select
+                                options={productCatCategoeies}
+                                onChange={handleCategoryTypeOptionChange}
+                                >
+                                {productCatCategoeies.map(category => {
+                                    return <option key={category.value} value={category.value} label={category.label}>{category.label}</option>
+                                })}
+                            </select> 
                         </div>
                     }
                 </div>

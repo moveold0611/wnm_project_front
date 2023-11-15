@@ -16,6 +16,7 @@ import CartProducts from "./pages/CartProducts/CartProducts";
 import EditProduct from "./pages/EditProduct/EditProduct";
 import Products from "./pages/Products/Products"
 import EditProductDetailPage from "./pages/EditProduct/EditProductDetailPage/EditProductDetailPage";
+import Products from "./pages/Products/Products";
 
 
 function App() {
