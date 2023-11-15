@@ -38,6 +38,7 @@ function ProductRegist(props) {
 
     const [ product, setProduct ] = useState({
         productName: "",
+        price: 0,
         productDetailText: "",
         productThumbnailUrl: "",
         productDetailUrl: "",
@@ -147,7 +148,7 @@ function ProductRegist(props) {
     const handleInputChange = (e) => {
         setProduct({
             ...product,
-            [e.target.name]: e.target.value
+                [e.target.name]: e.target.value
         })
     }
 
@@ -165,9 +166,6 @@ function ProductRegist(props) {
         })
         
     }
-
-
-
     console.log(product)
 
     return (
@@ -222,6 +220,7 @@ function ProductRegist(props) {
                             </select> 
                         </div>
                     }
+                    <div><input type="text" name='price' placeholder='가격' onChange={handleInputChange} /></div>
                 </div>
                 <div>
                     <button onClick={handleProductSubmitClick}>등록하기</button>

@@ -1,12 +1,12 @@
 import { Route, Routes } from "react-router-dom";
+import { useQuery } from "react-query";
+
+import RootLayout from "./components/RootLayout/RootLayout";
 import Home from "./pages/Home/Home";
 import Signin from "./pages/Signin/Signin";
 import Signup from "./pages/Signup/Signup";
 import EditUserInformation from "./pages/Mypage/EditUserInformation";
-import { useQuery } from "react-query";
 import OAuth2Signin from "./pages/Signin/OAuth2Signin";
-
-import RootLayout from "./components/RootLayout/RootLayout";
 import BuyProduct from "./pages/BuyProduct/BuyProduct";
 import { getPrincipalApi } from "./apis/api/account";
 import MypageMain from "./pages/Mypage/MypageMain/MypageMain";
@@ -16,7 +16,6 @@ import CartProducts from "./pages/CartProducts/CartProducts";
 import EditProduct from "./pages/EditProduct/EditProduct";
 import Products from "./pages/Products/Products"
 import EditProductDetailPage from "./pages/EditProduct/EditProductDetailPage/EditProductDetailPage";
-import Products from "./pages/Products/Products";
 
 
 function App() {
