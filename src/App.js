@@ -55,6 +55,8 @@ function App() {
         <Route path="/auth/signin" element={ <Signin /> } />
         <Route path="/auth/oauth2/signin" element={ <OAuth2Signin /> } />
         <Route path="/useredit/:userId" element={ <EditUserInformation /> } />
+        {/* :petType/:productCategory/:pageIndex */}
+        <Route path="/products/" element={ <Products /> } />
         <Route path="/product/:productId" element={ <BuyProduct/> } />
         <Route path="/order/" element={ <BuyInfo/> } />
         <Route path="/product/cart/:userId" element={ <CartProducts/> } />

@@ -17,6 +17,8 @@ function BuyProduct(props) {
 
     const [ product, setProduct ] = useState({});
     const [ selectedProducts, setSelectedProducts ] = useState([]);
+    const queryClient = useQueryClient();
+    const principal = queryClient.getQueryState("getPrincipal");
 
     const getProduct = useQuery(["getProduct"], async () => {
         try {
