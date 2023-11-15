@@ -2,17 +2,18 @@ import React, { useState } from 'react';
 /** @jsxImportSource @emotion/react */
 import * as S from "./Style";
 import { css } from '@emotion/react';
-import { QueryClient, useQuery, useQueryClient } from 'react-query';
-import { instance } from '../../apis/config/instance';
+import { useQuery, useQueryClient } from 'react-query';
 import Select from 'react-select';
 import { useNavigate, useParams } from 'react-router-dom';
-import { addCartApi, getProductApi } from '../../apis/api/product';
-import { clear } from '@testing-library/user-event/dist/clear';
+import { getProductApi } from '../../apis/api/product';
+import { addToCartApi } from '../../apis/api/cart';
 
 function BuyProduct(props) {
     const navigate = useNavigate();
 
     const { productId } = useParams();
+    const queryClient = useQueryClient();
+    const principal = queryClient.getQueryState("getPrincipal");
 
     const [ product, setProduct ] = useState({});
     const [ selectedProducts, setSelectedProducts ] = useState([]);
@@ -79,32 +80,34 @@ function BuyProduct(props) {
 
     const buyNowOnClick = () => {
         localStorage.setItem("orderData", JSON.stringify(selectedProducts));
+        localStorage.setItem("isCart", false);
         navigate("/order")
     }
 
-    const handleAddCartClick = async () => {
-            try {
-                const option = {
-                    headers: {
-                        Authorization: localStorage.getItem("accessToken")
-                    }
+    const handleAddToCartOnClick = async () => {
+        try {
+            const option = {
+                headers: {
+                    Authorization: localStorage.getItem("accessToken")
                 }
-
-                let userId = principal?.data?.data?.userId;
-                // const response = await addCartApi(userId, selectedProducts, option);
-                // if(response === "200") {
-                //     alert("장바구니에 등록 되었습니다.")
-                // }
-            } catch (error) {
-                
             }
+            if(window.confirm("해당 상품을 장바구니에 담겠습니까?")) {
+                addToCartApi(principal.data.data.userId, [...selectedProducts], option);
+                alert("장바구니에 상품이 정상적으로 담겼습니다.")
+            } else {
+                alert("취소되었습니다.")
+            }
+
+        } catch(error) {
+            console.log(error)
+        }
     }
 
     return (
         <div>
             <div css={S.STopContainer} >
                 <div css={S.SThumbnailBox}>
-                    <img css={S.SThumbnailImg} src={product.productThumbnail} alt="" />
+                    <img css={S.SThumbnailImg} src={product.productThumbnail} />
                 </div>
                 <div css={S.SOrderInfoBox}>
                     <h2>{product.productName}</h2>
@@ -135,7 +138,7 @@ function BuyProduct(props) {
                         return total += selectedProduct.totalPrice}, 0).toLocaleString("ko-KR")}원</h3>
                     <div>
                         <button onClick={buyNowOnClick}>BUY BOW</button>
-                        <button onClick={handleAddCartClick}>ADD TO CART</button>
+                        <button onClick={handleAddToCartOnClick}>ADD TO CART</button>
                     </div>
                 </div>
             </div>
