@@ -91,10 +91,10 @@ function BuyProduct(props) {
                 }
 
                 let userId = principal?.data?.data?.userId;
-                const response = await addCartApi(userId, selectedProducts, option);
-                if(response === "200") {
-                    alert("장바구니에 등록 되었습니다.")
-                }
+                // const response = await addCartApi(userId, selectedProducts, option);
+                // if(response === "200") {
+                //     alert("장바구니에 등록 되었습니다.")
+                // }
             } catch (error) {
                 
             }

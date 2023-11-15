@@ -5,9 +5,9 @@ export const getProductApi = async (productId) => {
     return response;
 }
 
-export const getProductsApi = async (petType, productCategory, searchOption, value, sort, page) => {
+export const getSearchedProductsApi = async (searchData) => {
     // const response = await instance.get(`/api/products/${petType}/${productCategory}/?option=${searchOption}&value=${value}&sort=${sort}&page=${page}`);
-    const response = await instance.get(`/api/products/${petType}/all?option=제목&value=&sort=낮은가격&page=1`);
+    const response = await instance.get(`/api/products/${searchData.petType}/${searchData.productCategoryName}?option=제목&value=&sort=${searchData.sort}&page=1`);
     return response;
 }
 

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 /** @jsxImportSource @emotion/react */
 import * as S from '../Products/Style';
-import { getProductsApi } from '../../apis/api/product';
+import { getProductsApi, getSearchedProductsApi } from '../../apis/api/product';
 import { useParams } from 'react-router-dom';
 
 
@@ -10,17 +10,42 @@ function Products(props) {
 
     // const { petType, productCategory, pageIndex } = useParams();
     
+    // const queryClient = useQueryClient();
+    // const productList = queryClient.getQueryState("getProducts");
+
     const [ isClicked, setIsClicked ] = useState(false);
     const [ products, setProducts ] = useState();
     const [ sortOption, setSortOption ] = useState("");
     const [ searchValue, setSearchValue ] = useState("");
-    const [ petType , setPetType ] = useState({
-        category: "전체",
-    })
+    // const [ petType , setPetType ] = useState({
+    //     category: "전체",
+    // })
+    const [ searchData, setSearchData ] = useState({
+        petType: "all",
+        productCategoryName: "all",
+        option: "제목",
+        value: "",
+        sort: "상품명",
+        pageIndex: 1
+    });
+
+    const petType = [
+        { value: "all", label: "전부"},
+        { value: "강아지", label: "강아지"},
+        { value: "고양이", label: "고양이"}
+    ]
+    const category = [
+        { value: "all", label: "전부" },
+        { value: "홈·리빙", label: "홈·리빙" },
+        { value: "산책", label: "산책" },
+        { value: "이동", label: "이동" },
+        { value: "패션", label: "패션" },
+        { value: "장난감", label: "장난감" }
+    ]
 
     let productType = "all";
 
-    const options = [
+    const sortOptions = [
         {value: "상품명", label: "상품명"},
         {value: "낮은가격", label: "낮은가격순"},
         {value: "높은가격", label: "높은가격순"}
@@ -28,15 +53,17 @@ function Products(props) {
    
     const getProducts = useQuery(["getProducts"], async () => {
         try {
+            console.log(petType)
             // petType, productCategory, searchOption, value, sort, page
-            const response = getProductsApi(petType.category, productType, "제목", sortOption, 1);
-            console.log((await response).data)
+            const response = getSearchedProductsApi(searchData);
+            console.log(await response.data)
             return await response
             
         } catch(error) {
             console.log(error)
         }
     }, {
+        retry: 0,
         refetchOnWindowFocus: false,
         onSuccess: response => {
             setProducts(response.data)
@@ -44,7 +71,11 @@ function Products(props) {
     })
 
     const handleSortOptionChange = (e) => {
-        setSortOption(e.target.value);
+        setSearchData({
+            ...searchData,
+            sort: e.tartget.value
+        })
+
     }
 
     const handleSearchValueChange = (e) => {
@@ -52,27 +83,36 @@ function Products(props) {
     }
     
     const handleDogCategoryClick = (e) => {
-        setPetType({
-            category: e.target.id
-        })
+        searchData.petType = e.target.id
         setIsClicked(true);
         if(isClicked) {
             setIsClicked(!isClicked);
         }
     }
-    const handleCatCategoryClick = (e) => {
-        setPetType({
-            category: e.target.id
-        })
+    console.log(searchData)
+
+
+    const handleCatCategoryClick = async (e) => {
+        searchData.petType = e.target.id
+        console.log(petType)
         setIsClicked(true);
         if(isClicked) {
             setIsClicked(!isClicked);
+        }
+        
+        try {
+            console.log(searchData);
+            const response = await getSearchedProductsApi(searchData);
+            return response;
+        } catch (error) {
+            
         }
     }
 
     const handleProductCategoryClick = (e) => {
         productType = e.target.id;
         console.log(productType)
+        
     }
 
     return (
@@ -81,7 +121,7 @@ function Products(props) {
                 <div>
                     <ul css={S.SCategoryBox}>
                         <li id='강아지' onClick={handleDogCategoryClick}>dog</li>
-                        <li id="고양이" onClick={handleCatCategoryClick}>cat</li>
+                        <li id='고양이' onClick={handleCatCategoryClick}>cat</li>
                     </ul>
                 </div>
                 {isClicked ? 
@@ -92,17 +132,17 @@ function Products(props) {
                             <li id='산책' onClick={handleProductCategoryClick}>outdoor</li>
                             <li id='이동' onClick={handleProductCategoryClick}>carrier</li>
                             <li id='장난감' onClick={handleProductCategoryClick}>toy</li>
-                            {petType === "고양이" ? <></> : <li id='패션' onClick={handleProductCategoryClick}>fashion</li> }
+                            {petType.category === "고양이" ? <></> : <li id='패션' onClick={handleProductCategoryClick}>fashion</li> }
                         </ul>
                     </div> : <></>}
                 
             </div>
             <div>
                 <select 
-                    options={options}
+                    options={sortOptions}
                     onChange={handleSortOptionChange}>
-                        {options.map(option => {
-                            return <option>{option.value}</option>
+                        {sortOptions.map(option => {
+                            return <option key={option.value} value={option.value}>{option.value}</option>
                         })}
                 </select>
                 <input type="text" name='serchValue' onChange={handleSearchValueChange} value={searchValue}/>
@@ -111,13 +151,12 @@ function Products(props) {
                 {!getProducts.isLoading && getProducts?.data?.data.map(product => {
                     return  <div css={S.SProductBox} >
                                 <ul>
-                                    <li>
+                                    <li id={product.productName}>
                                         <img src={product.productThumbnail} alt="" />
                                         <p>{product.productName}</p>
                                         <p>{product.productPrice}</p>
                                     </li>
                                 </ul>
-                                
                             </div>
                 })}
             </div>
