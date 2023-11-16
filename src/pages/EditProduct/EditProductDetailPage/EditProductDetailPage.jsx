@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useQuery } from 'react-query';
-import { getProductApi, updateProduct } from '../../../apis/api/product';
+import { getProductApi, updateProductApi } from '../../../apis/api/product';
 import { useParams } from 'react-router-dom';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { storage } from '../../../apis/firebase/firebase';
@@ -137,7 +137,7 @@ function EditProductDetailPage(props) {
                 productData.productDetailImg = downLoadURL
             }
 
-            await updateProduct(productId, productData);
+            await updateProductApi(productId, productData);
             alert("수정이 완료되었습니다.")
         }catch(error) {
             console.log(error.response.data)
