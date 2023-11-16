@@ -63,7 +63,7 @@ function App() {
         <Route path="/product/cart/:userId" element={ <CartProducts/> } />
         <Route path="/admin/product" element={ <ProductRegist/> } />
         <Route path="/admin/product/edit/*" element={ <EditProduct/> }/>
-        <Route path="/admin/edit/product/:productId" element={ <EditProductDetailPage/> }/>        
+        <Route path="/admin/edit/product/:productMstId" element={ <EditProductDetailPage/> }/>        
       </Routes>
     </RootLayout>
   );

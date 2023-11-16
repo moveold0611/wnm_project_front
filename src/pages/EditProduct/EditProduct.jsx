@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getProductsApi, removeProduct } from '../../apis/api/product';
+import { getProductsApi, removeProduct, removeProductApi } from '../../apis/api/product';
 import { useQuery } from 'react-query';
 import { Navigate, Route, useNavigate, useSearchParams } from 'react-router-dom';
 import EditProductDetailPage from './EditProductDetailPage/EditProductDetailPage';
@@ -8,7 +8,6 @@ import EditProductDetailPage from './EditProductDetailPage/EditProductDetailPage
 function EditProduct(props) {
     const navigate = useNavigate();
     const [ productList, setProductList ] = useState([]);
-
     const [ searchInput, setSearchInput ] = useState('');
     const [ searchData, setSearchData ] = useState({
         petTypeName: "all",
@@ -53,6 +52,7 @@ function EditProduct(props) {
     const getProducts = useQuery(["getProducts", searchData.pageIndex], async () => {
         console.log(searchData)
         const response = await getProductsApi(searchData);
+        console.log(response?.data)
         return response;
     },
     { 
@@ -107,11 +107,18 @@ function EditProduct(props) {
     }
     
 
-
-    const handleEditProductClick = () => {
+    const handleEditProductClick = (productMstId) => {
+        console.log(productMstId)
+        navigate(`/admin/edit/product/${productMstId}`)
     }
 
-    const handleRemoveProductClick = () => {
+    const handleRemoveProductClick = async (productMstId) => {
+        try {
+            await removeProductApi(productMstId)
+            getProducts.refetch();
+        } catch (error) {
+            
+        }
     }
 
     return (
@@ -145,11 +152,12 @@ function EditProduct(props) {
                 return <ul key={product.productMstId}>
                     <div>
                         <img src={product.productThumbnailUrl} width='60px' alt=''/>
+                        상품번호: {product.productMstId} / 
                         상품명: {product.productName} / 
                         동물종류: {product.petTypeName} / 
                         카테고리: {product.productCategoryName} /
-                        <button onClick={handleEditProductClick}>수정</button>
-                        <button onClick={handleRemoveProductClick}>삭제</button>
+                        <button onClick={()=>handleEditProductClick(product.productMstId)}>수정</button>
+                        <button onClick={()=>handleRemoveProductClick(product.productMstId)}>삭제</button>
                     </div>
                 </ul>
             })}

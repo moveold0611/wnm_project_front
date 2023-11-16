@@ -1,9 +1,15 @@
 import instance from "../config/instance"
 
-export const getProductApi = async (productId) => {
-    const response = await instance.get(`/api/product/${productId}`);
+export const getProductApi = async (productDtlId) => {
+    const response = await instance.get(`/api/product/detail/${productDtlId}`);
     return response;
 }
+
+export const getProductMstApi = async(productMstId) => {
+    const response = await instance.get(`/api/product/master/${productMstId}`)
+    return response;
+}
+
 
 export const getSearchedProductsApi = async (searchData) => {
     // const response = await instance.get(`/api/products/${petType}/${productCategory}/?option=${searchOption}&value=${value}&sort=${sort}&page=${page}`);
