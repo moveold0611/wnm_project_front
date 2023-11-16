@@ -45,6 +45,8 @@ export const SProductContainer = css`
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
+    width: 1000px;
+    height: 1000px;
 `
 
 export const SProductBox = css`
@@ -57,7 +59,8 @@ export const SProductBox = css`
     
     & > ul {
         list-style: none;
-        
+        width: 100%;
+        height: 100%;
     }
 
     & > ul > li {
@@ -72,4 +75,12 @@ export const SProductBox = css`
         height: 240px;
         overflow: hidden;
     }
+`
+
+export const SButtonBox = css`
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+    padding-bottom: 20px;
+    width: 400px;
 `
