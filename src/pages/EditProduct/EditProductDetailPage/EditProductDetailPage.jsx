@@ -108,7 +108,8 @@ function EditProductDetailPage(props) {
     }
 
     const handlePriceChange = (e) => {
-
+        console.log(e.target.name)
+        
         // {
         //     productName: "",
         //     productThumbnailUrl: "",
@@ -145,7 +146,7 @@ function EditProductDetailPage(props) {
                     사이즈, 가격 : 
                         <ul>
                         {productData.productDtlList.map(dtl => {
-                            return <li key={dtl.productDtlId}>{dtl.size.sizeName} / <input value={dtl.price} name={dtl.size.sizeName} onChange={handlePriceChange}/></li>
+                            return <li key={productData.productDtlList.indexOf(dtl)}>{dtl.size.sizeName} / <input value={dtl.price} name={productData.productDtlList.indexOf(dtl)} onChange={handlePriceChange}/></li>
                         })}
                         </ul>
                     </div>
