@@ -13,16 +13,35 @@ function EditProductDetailPage(props) {
     const [ productDetailImgFile, setProductDetailImgFile ] = useState();
     const [ productThumbnailSrc, setProductThumbnailSrc ] = useState("");
     const [ productDetailImgSrc, setProductDetailImgSrc ] = useState("");
-    const [ priceList, setPriceList ] = useState({});
+    const [ InputStatus, setInputStatus ] = useState({});
+    const [ priceList, setPriceList ] = useState([]);
 
-    const [ productData, setProductData ] = useState({
+    const [ productMstData, setProductMstData ] = useState({
         productName: "",
-        productThumbnailUrl: "",
         productDetailText: "",
+        productThumbnailUrl: "",
         productDetailUrl: "",
-        productDtlList: []
+        createDate: ""
     });
+    const [ productDtlData, setProductDtlData ] = useState([]);
 
+    console.log(productMstData)
+    console.log(productDtlData)
+    
+
+
+    useEffect(() => {
+        setInputStatus(
+            productDtlData.map(pdd => {
+                const data = {[pdd.size.sizeName]: pdd.price}
+                return data
+            })
+        )
+    }, [productDtlData])
+
+
+
+    console.log(InputStatus)
     
     const getProduct = useQuery(["getProduct"], async () => {
         const response = await getProductMstApi(parseInt(productMstId));
@@ -34,9 +53,15 @@ function EditProductDetailPage(props) {
         onSuccess: response => {
             setProductThumbnailSrc(response?.data?.productThumbnailUrl)
             setProductDetailImgSrc(response?.data?.productDetailUrl);
-            setProductData(response.data)
+            setProductMstData({
+                productName: response.data.productName,
+                productDetailText: response.data.productDetailText,
+                productThumbnailUrl: response.data.productThumbnailUrl,
+                productDetailUrl: response.data.productDetailUrl,
+                createDate: response.data.createDate
+            })
+            setProductDtlData(response.data.productDtlList)
     }
-            
     })
     if(getProduct.isLoading) {
         return <></>
@@ -44,8 +69,8 @@ function EditProductDetailPage(props) {
 
 
     const handleProductDataOnChange = (e) => {
-        setProductData({
-            ...productData,
+        setProductMstData({
+            ...productMstData,
             [ e.target.name ]: e.target.value
         })
     }
@@ -86,14 +111,14 @@ function EditProductDetailPage(props) {
                 const thumbnailStorageRef = ref(storage, `files/product/${productThumbnailFile?.name}`);
                 await uploadBytesResumable(thumbnailStorageRef, productThumbnailFile);
                 const downLoadURL = await getDownloadURL(thumbnailStorageRef);
-                productData.productThumbnailUrl = downLoadURL;
+                productMstData.productThumbnailUrl = downLoadURL;
             }
 
             if(!!productDetailImgFile) {
                 const detailImgStorageRef = ref(storage, `files/product/${productDetailImgFile?.name}`);
                 await uploadBytesResumable(detailImgStorageRef, productDetailImgFile);
                 const downLoadURL = await getDownloadURL(detailImgStorageRef);
-                productData.productDetailUrl = downLoadURL
+                productMstData.productDetailUrl = downLoadURL
             }
 
             // await updateProductApi(productMstId, productData);
@@ -104,20 +129,31 @@ function EditProductDetailPage(props) {
     }
 
     const testClick = () => {
-        console.log(priceList)
+        console.log(InputStatus)
     }
 
-    const handlePriceChange = (e) => {
-        console.log(e.target.name)
-        
-        // {
-        //     productName: "",
-        //     productThumbnailUrl: "",
-        //     productDetailText: "",
-        //     productDetailUrl: "",
-        //     productDtlList: [{}{}{}{}]
-        // }
+    const handlePriceChange = (pl) => {
+        console.log(pl.price)
+        const index = productDtlData.indexOf(pl);
+        const testList = productDtlData;
+
+        console.log("인덱스")
+        console.log(index) // 문제없음
+
+        console.log("====================")
+        console.log(testList[index])
+        testList[index] = pl;
+        console.log(pl)
+        console.log(testList[index])
+        console.log("====================")
+        // const change = priceList.filter((pl) => {
+        //     return priceList[index] === pl;
+        // })
+        console.log(testList)
+        setPriceList(testList)
     }
+
+
 
     return (
         <div>
@@ -139,14 +175,17 @@ function EditProductDetailPage(props) {
 
                     <div>상품설명 : <input type="text" name='productDetailText' defaultValue={getProduct?.data?.data?.productDetailText} onChange={handleProductDataOnChange}/></div>
                     <div>
-                        
-                    </div>
             
+                    </div>
+
+
                     <div>
                     사이즈, 가격 : 
                         <ul>
-                        {productData.productDtlList.map(dtl => {
-                            return <li key={productData.productDtlList.indexOf(dtl)}>{dtl.size.sizeName} / <input value={dtl.price} name={productData.productDtlList.indexOf(dtl)} onChange={handlePriceChange}/></li>
+                        {productDtlData.map(pl => {
+                            return <li key={pl}>
+                                {pl.size.sizeName} / <input value='' name={productDtlData.indexOf(pl)} onChange={() => handlePriceChange(pl)}/>
+                            </li>
                         })}
                         </ul>
                     </div>
