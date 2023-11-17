@@ -1,96 +1,82 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useQuery } from 'react-query';
-import { getProductApi, updateProduct } from '../../../apis/api/product';
+import { getProductApi, getProductMstApi, updateProductApi } from '../../../apis/api/product';
 import { useParams } from 'react-router-dom';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { storage } from '../../../apis/firebase/firebase';
 
 function EditProductDetailPage(props) {
 
-    const params = useParams("productId")
-    const productId = params.productId
+    const params = useParams("productDtlId")
+    const productMstId = params.productMstId
     const [ productThumbnailFile, setProductThumbnailFile ] = useState();
     const [ productDetailImgFile, setProductDetailImgFile ] = useState();
     const [ productThumbnailSrc, setProductThumbnailSrc ] = useState("");
     const [ productDetailImgSrc, setProductDetailImgSrc ] = useState("");
+    const [ InputStatus, setInputStatus ] = useState({});
+    const [ priceList, setPriceList ] = useState([]);
+
+    const [ productMstData, setProductMstData ] = useState({
+        productName: "",
+        productDetailText: "",
+        productThumbnailUrl: "",
+        productDetailUrl: "",
+        createDate: ""
+    });
+    const [ productDtlData, setProductDtlData ] = useState([]);
+
+    console.log(productMstData)
+    console.log(productDtlData)
     
-    const petType = [
-        { value: "1", label: "강아지"},
-        { value: "2", label: "고양이"}
-    ]
-    const category = [
-        { value: "1", label: "홈·리빙" },
-        { value: "2", label: "산책" },
-        { value: "3", label: "이동" },
-        { value: "4", label: "패션" },
-        { value: "5", label: "장난감" }
-    ]
 
-    const [ productData, setProductData ] = useState({});
 
+    useEffect(() => {
+        setInputStatus(
+            productDtlData.map(pdd => {
+                const data = {[pdd.size.sizeName]: pdd.price}
+                return data
+            })
+        )
+    }, [productDtlData])
+
+
+
+    console.log(InputStatus)
+    
     const getProduct = useQuery(["getProduct"], async () => {
-        const response = await getProductApi(productId);
+        const response = await getProductMstApi(parseInt(productMstId));
         return response;
     },
     {
         refetchOnWindowFocus: false,
         retry: 0,
         onSuccess: response => {
-            setProductThumbnailSrc(response?.data?.productThumbnail)
-            setProductDetailImgSrc(response?.data?.productDetailImg);
-            setProductData({
-            productName: response?.data?.productName,
-            productPrice: response?.data?.productPrice,
-            productDetailText: response?.data?.productDetailText,
-            productThumbnail: response?.data?.productThumbnail,
-            productDetailImg: response?.data?.productDetailImg,
-            petTypeId: response?.data?.petTypeId,
-            productCategoryId: response?.data?.productCategoryId,
-            noSize: response?.data?.noSize,
-            productSizeXS: response?.data?.productSizeXS,
-            productSizeS: response?.data?.productSizeS,
-            productSizeM: response?.data?.productSizeM,
-            productSizeL: response?.data?.productSizeL,
-            productSizeXL: response?.data?.productSizeXL,
-            productSizeXXL:response?.data?.productSizeXXL
-        })}
+            setProductThumbnailSrc(response?.data?.productThumbnailUrl)
+            setProductDetailImgSrc(response?.data?.productDetailUrl);
+            setProductMstData({
+                productName: response.data.productName,
+                productDetailText: response.data.productDetailText,
+                productThumbnailUrl: response.data.productThumbnailUrl,
+                productDetailUrl: response.data.productDetailUrl,
+                createDate: response.data.createDate
+            })
+            setProductDtlData(response.data.productDtlList)
+    }
     })
     if(getProduct.isLoading) {
         return <></>
     }
 
 
-
     const handleProductDataOnChange = (e) => {
-        setProductData({
-            ...productData,
+        setProductMstData({
+            ...productMstData,
             [ e.target.name ]: e.target.value
         })
     }
 
 
 
-    const handleCategoryChange = (e) => {
-        setProductData({
-            ...productData,
-            noSize: 0,
-            productSizeXS: 0,
-            productSizeS: 0,
-            productSizeM: 0,
-            productSizeL: 0,
-            productSizeXL: 0,
-            productSizeXXL:0,
-            [e.target.name]: parseInt(e.target.value)
-        })
-    }
-
-
-    const handleParseIntProductDataChange = (e) => {
-        setProductData({
-            ...productData,
-            [e.target.name]: parseInt(e.target.value)
-        })
-    }
 
 
     const handleThumbnailChange = (e) => {
@@ -119,35 +105,59 @@ function EditProductDetailPage(props) {
 
 
 
-
-
     const handleUpdateSubmit = async () => {
         try {
             if(!!productThumbnailFile) {
                 const thumbnailStorageRef = ref(storage, `files/product/${productThumbnailFile?.name}`);
                 await uploadBytesResumable(thumbnailStorageRef, productThumbnailFile);
                 const downLoadURL = await getDownloadURL(thumbnailStorageRef);
-                productData.productThumbnail = downLoadURL;
+                productMstData.productThumbnailUrl = downLoadURL;
             }
 
             if(!!productDetailImgFile) {
                 const detailImgStorageRef = ref(storage, `files/product/${productDetailImgFile?.name}`);
                 await uploadBytesResumable(detailImgStorageRef, productDetailImgFile);
                 const downLoadURL = await getDownloadURL(detailImgStorageRef);
-                productData.productDetailImg = downLoadURL
+                productMstData.productDetailUrl = downLoadURL
             }
 
-            await updateProduct(productId, productData);
+            // await updateProductApi(productMstId, productData);
             alert("수정이 완료되었습니다.")
         }catch(error) {
             console.log(error.response.data)
         }
     }
 
+    const testClick = () => {
+        console.log(InputStatus)
+    }
+
+    const handlePriceChange = (pl) => {
+        console.log(pl.price)
+        const index = productDtlData.indexOf(pl);
+        const testList = productDtlData;
+
+        console.log("인덱스")
+        console.log(index) // 문제없음
+
+        console.log("====================")
+        console.log(testList[index])
+        testList[index] = pl;
+        console.log(pl)
+        console.log(testList[index])
+        console.log("====================")
+        // const change = priceList.filter((pl) => {
+        //     return priceList[index] === pl;
+        // })
+        console.log(testList)
+        setPriceList(testList)
+    }
+
 
 
     return (
         <div>
+            <button onClick={testClick}>test</button>
             <div>
                 <div>
                     <img src={productThumbnailSrc} alt='썸네일 이미지' onChange={handleProductDataOnChange}/>
@@ -162,45 +172,23 @@ function EditProductDetailPage(props) {
                     <div>상품명 : <input type="text" name='productName' defaultValue={getProduct?.data?.data?.productName} onChange={handleProductDataOnChange}/>
                     </div>
 
-                    <div>가격 : <input type="text" name='productPrice' defaultValue={getProduct?.data?.data?.productPrice} onChange={handleParseIntProductDataChange}/>원</div>
 
                     <div>상품설명 : <input type="text" name='productDetailText' defaultValue={getProduct?.data?.data?.productDetailText} onChange={handleProductDataOnChange}/></div>
                     <div>
-                        카테고리 :
-                        <select
-                            options={category}
-                            name='productCategoryId'
-                            onChange={handleCategoryChange}
-                            defaultValue={productData.productCategoryId}>
-                            {category.map(ct=> {
-                                return <option key={ct.value} value={ct.value} label={ct.label}>{ct.label}</option>
-                            })}
-                        </select> 
+            
                     </div>
-                    종류 : 
-                    <select option={petType}
-                            name="petTypeId"
-                            onChange={handleCategoryChange}
-                            defaultValue={productData.petTypeId}>
-                        {petType.map(type => {
-                            return <option key={type.value} defaultValue={productData.petTypeId} value={type.value} label={type.label}>{type.label}</option>
+
+
+                    <div>
+                    사이즈, 가격 : 
+                        <ul>
+                        {productDtlData.map(pl => {
+                            return <li key={pl}>
+                                {pl.size.sizeName} / <input value='' name={productDtlData.indexOf(pl)} onChange={() => handlePriceChange(pl)}/>
+                            </li>
                         })}
-                    </select>
-                    <div>수량 : </div>
-                    {productData.petTypeId === 1 && productData.productCategoryId === 4 ? 
-                        <div>
-                            XS :<input type="text" name='productSizeXS' placeholder='XS Size' onChange={handleParseIntProductDataChange} value={productData.productSizeXS}/>
-                            S :<input type="text" name='productSizeS' placeholder='S Size' onChange={handleParseIntProductDataChange} value={productData.productSizeS}/>
-                            M :<input type="text" name='productSizeM' placeholder='M Size' onChange={handleParseIntProductDataChange} value={productData.productSizeM}/>
-                            L :<input type="text" name='productSizeL' placeholder='L Size' onChange={handleParseIntProductDataChange} value={productData.productSizeL}/>
-                            XL :<input type="text" name='productSizeXL' placeholder='XL Size' onChange={handleParseIntProductDataChange} value={productData.productSizeXL}/>
-                            XXL :<input type="text" name='productSizeXXL' placeholder='XXL Size' onChange={handleParseIntProductDataChange} value={productData.productSizeXXL}/>
-                        </div>
-                        : 
-                        <div>
-                            no :<input type="text" name='noSize' placeholder='noSize' onChange={handleParseIntProductDataChange} value={productData.noSize}/>
-                        </div>
-                    }
+                        </ul>
+                    </div>
                 </div>
                 <div>
                     <button onClick={handleUpdateSubmit}>등록하기</button>

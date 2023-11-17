@@ -28,9 +28,9 @@ function Products(props) {
     const [ searchData, setSearchData ] = useState({
         petTypeName: "all",
         productCategoryName: "all",
-        searchOption: "제목",
+        searchOption: "all",
         searchValue: "",
-        sortOption: "상품명",
+        sortOption: "name",
         pageIndex: 1
     });
 
