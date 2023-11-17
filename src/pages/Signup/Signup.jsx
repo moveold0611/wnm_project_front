@@ -84,11 +84,9 @@ function Signup(props) {
         try {
             await signupApi(signupUser);
             alert("회원가입 완료");
-            window.location.replace("/auth/oauth2/signin");
+            window.location.replace("/auth/signin");
         }catch(error) {
-            console.error(error);
-            //if(Object.keys(error.response.data).includes("nickname")) {
-            //   alert("이미 사용중인 닉네임입니다. 다시 입력하세요.");
+                console.error(error);
                 }
             }
             return (

@@ -47,10 +47,6 @@ function ProductRegist(props) {
         productCategoryId: 1
     })
 
-    useEffect(() => {
-        
-    }, [])
-
     const handleProductDetailImgUploadClick = () => {
         if(window.confirm("상품 사진을 등록하시겠습니까?")) {
             productThumnailImgRef.current.click();
@@ -65,7 +61,6 @@ function ProductRegist(props) {
 
     const handleProductThumnailImgChange = (e) => {
         const file = e.target.files[0];
-        console.log(file)
         setProductThumbnailUrlSrc(file);
 
         if(file === "") {

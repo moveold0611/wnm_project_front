@@ -76,8 +76,6 @@ function Products(props) {
         getProducts.refetch();
         
         setIsClicked(true);
-    
-        
     }
     
     const handleCatCategoryClick = async (e) => {
@@ -89,7 +87,6 @@ function Products(props) {
         getProducts.refetch();
         
         setIsClicked(true);
- 
     }
 
     const handleProductCategoryClick = async (e) => {
@@ -100,7 +97,10 @@ function Products(props) {
         await getSearchedProductsApi(searchData);
         getProducts.refetch();
     }
-    console.log(searchData.productCategoryName)
+
+    const handleProductOnclick = (e) => {
+        console.log(e.target.id)
+    }
 
     const handleMinusPageClick = () => {
         if(searchData.pageIndex === 1) {
@@ -120,6 +120,8 @@ function Products(props) {
         })
     }
 
+    console.log(getProducts)
+
     return (
         <div>
             <div>
@@ -132,7 +134,6 @@ function Products(props) {
                 {isClicked ? 
                     <div>
                         <ul css={S.SProductCategoryBox}>
-                            {/* <li id='all' onClick={handleProductCategoryClick}>all</li> */}
                             <li id='홈·리빙' name="홈·리빙" onClick={handleProductCategoryClick}>homeliving</li>
                             <li id='산책' name="산책" onClick={handleProductCategoryClick}>outdoor</li>
                             <li id='이동' name="이동" onClick={handleProductCategoryClick}>carrier</li>
@@ -151,8 +152,8 @@ function Products(props) {
                 {!getProducts.isLoading && getProducts?.data?.data.map((product, index) => {
                     return  <div css={S.SProductBox} >
                                 <ul >
-                                    <li key={index}>
-                                        <img src={product.productThumbnailUrl} alt="" />
+                                    <li onClick={handleProductOnclick}>
+                                        <img id={product.productMstId} src={product.productThumbnailUrl} alt="" />
                                         <p>{product.productName}</p>
                                     </li>
                                 </ul>

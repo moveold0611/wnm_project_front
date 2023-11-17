@@ -39,6 +39,7 @@ function App() {
     }
   }, {
     retry: 0,
+    enabled: !!localStorage.getItem("accessToken"),
     refetchInterval: 1000 * 60 * 10,
     refetchOnWindowFocus: false
   });

@@ -6,6 +6,7 @@ export const SLayout = css`
     justify-content: center;
     height: 960px;
 `
+
 export const SContainer = css`
     width: 700px;
     height: 850px;
@@ -68,6 +69,7 @@ export const SProductBox = css`
         padding-bottom: 10px;
         width: 240px;
         height: 100%;
+        cursor: pointer;
     }
 
     & > ul > li > img {
