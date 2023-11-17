@@ -12,8 +12,7 @@ export const getProductMstApi = async(productMstId) => {
 
 
 export const getSearchedProductsApi = async (searchData) => {
-    // const response = await instance.get(`/api/products/${petType}/${productCategory}/?option=${searchOption}&value=${value}&sort=${sort}&page=${page}`);
-    const response = await instance.get(`/api/products/${searchData.petType}/${searchData.productCategoryName}?option=제목&value=&sort=${searchData.sort}&page=1`);
+    const response = await instance.get(`/api/products`, {params: searchData});
     return response;
 }
 
@@ -23,8 +22,10 @@ export const addProductApi = async (product, option) => {
 } 
 
 export const getProductsApi = async (searchData) => {
+
     console.log(searchData)
     const response = await instance.get(`/api/admin/products`, {params: searchData});
+
     return response;
 }
 
