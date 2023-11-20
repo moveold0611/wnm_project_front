@@ -17,6 +17,10 @@ import EditProduct from "./pages/Admin/EditProduct/EditProduct";
 import EditUser from "./pages/EditUser/EditUser";
 import Mypage from "./pages/Mypage/Mypage";
 import ProductRoute from "./routes/ProductRoute/ProductRoute";
+import Incoming from "./pages/Admin/Incoming/Incoming";
+import Outgoing from "./pages/Admin/Outgoing/Outgoing";
+import AddIncoming from "./pages/Admin/Incoming/AddIncoming/AddIncoming";
+import AddOutgoing from "./pages/Admin/Outgoing/AddOutgoing/AddOutgoing";
 
 
 function App() {
@@ -65,7 +69,11 @@ function App() {
         <Route path="/product/cart/:userId" element={ <CartProducts/> } />
         <Route path="/admin/product" element={ <ProductRegist/> } />
         <Route path="/admin/product/edit/*" element={ <EditProduct/> }/>
-        <Route path="/admin/edit/product/:productMstId" element={ <EditProductDetailPage/> }/>        
+        <Route path="/admin/edit/product/:productMstId" element={ <EditProductDetailPage/> }/> 
+        <Route path="/admin/incoming" element={ <Incoming/> }/>       
+        <Route path="/admin/incoming/add" element={ <AddIncoming/> }/>  
+        <Route path="/admin/outgoing" element={ <Outgoing/> }/>       
+        <Route path="/admin/outgoing/add" element={ <AddOutgoing/> }/>       
       </Routes>
     </RootLayout>
   );

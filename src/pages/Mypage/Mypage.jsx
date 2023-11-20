@@ -29,7 +29,10 @@ function Mypage(props) {
                             <h4><Link to="/admin/product/edit">상품관리</Link></h4>
                         </li>
                         <li>
-                            <h4><Link to="/admin/transactions">입출고관리</Link></h4>
+                            <h4><Link to="/admin/incoming">입고관리</Link></h4>
+                        </li>
+                        <li>
+                            <h4><Link to="/admin/outgoing">출고관리</Link></h4>
                         </li>
                         <li>
                             <h4><Link to="/admin/notices">공지사항</Link></h4>
