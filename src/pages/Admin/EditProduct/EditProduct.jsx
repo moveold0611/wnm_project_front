@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { getProductsApi, removeProduct, removeProductApi } from '../../apis/api/product';
+/** @jsxImportSource @emotion/react */
+import * as S from './Style';
+import { getProductsApi, removeProductApi } from '../../../apis/api/product';
 import { useQuery } from 'react-query';
-import { Navigate, Route, useNavigate, useSearchParams } from 'react-router-dom';
-import EditProductDetailPage from './EditProductDetailPage/EditProductDetailPage';
+import { useNavigate } from 'react-router-dom';
+import RootContainer from '../../../components/RootContainer/RootContainer'
 
 
 function EditProduct(props) {
@@ -16,11 +18,13 @@ function EditProduct(props) {
         searchValue: '',
         sortOption: 'number',
         pageIndex: 1});
+
     const petType = [
         { value: "all", label: "전부"},
         { value: "강아지", label: "강아지"},
         { value: "고양이", label: "고양이"}
     ]
+    
     const category = [
         { value: "all", label: "전부" },
         { value: "홈·리빙", label: "홈·리빙" },
@@ -122,48 +126,50 @@ function EditProduct(props) {
     }
 
     return (
-        <>
-            <div>
-                <select option={petType} onChange={handleSearchSelectChange} name='petTypeName'>
+        <RootContainer>
+            <div css={S.SLayout}>
+            <div css={S.STopContainer}>
+                <select option={petType} onChange={handleSearchSelectChange} name='petTypeName' css={S.SSelect}>
                     {petType.map(pt => {
-                        return <option key={pt.value} label={pt.label} value={pt.value}/>
+                        return <option key={pt.value} label={pt.label} value={pt.value} />
                     })}
                 </select>
-                <select option={category} onChange={handleSearchSelectChange} name='productCategoryName'>
+                <select option={category} onChange={handleSearchSelectChange} name='productCategoryName' css={S.SSelect}>
                     {category.map(ct => {
                         return <option key={ct.value} label={ct.label} value={ct.value}/>
                     })}
                 </select>
-                <select option={sortOption} onChange={handleSearchSelectChange} name='sort'>
+                <select option={sortOption} onChange={handleSearchSelectChange} name='sort' css={S.SSelect}>
                     {sortOption.map(so => {
                         return <option key={so.value}  label={so.label} value={so.value}/>
                     })}
                 </select>
-                <select option={searchOption} onChange={handleSearchSelectChange} name='option'>
+                <select option={searchOption} onChange={handleSearchSelectChange} name='option' css={S.SSelect}>
                     {searchOption.map(op => {
                         return <option key={op.value} label={op.label} value={op.value}/>
                     })}
                 </select>
 
-                <input type='text' value={searchInput} onChange={handleSearchInputChange}/>
-                <button onClick={handleSearchClick}>검색</button>
+                <input type='text' value={searchInput} onChange={handleSearchInputChange} css={S.SInput}/>
+                <button onClick={handleSearchClick} css={S.SButton}>검색</button>
             </div>
             {productList.map(product => {
                 return <ul key={product.productMstId}>
-                    <div>
-                        <img src={product.productThumbnailUrl} width='60px' alt=''/>
-                        상품번호: {product.productMstId} / 
-                        상품명: {product.productName} / 
-                        동물종류: {product.petTypeName} / 
-                        카테고리: {product.productCategoryName} /
-                        <button onClick={()=>handleEditProductClick(product.productMstId)}>수정</button>
-                        <button onClick={()=>handleRemoveProductClick(product.productMstId)}>삭제</button>
+                    <div css={S.SContainer}>
+                        <img src={product.productThumbnailUrl} width='150px' alt=''/>
+                        <div>상품번호: {product.productMstId}</div>
+                        <div>상품명: {product.productName}</div> 
+                        <div>동물종류: {product.petTypeName}</div>
+                        <div>카테고리: {product.productCategoryName}</div> 
+                        <button onClick={()=>handleEditProductClick(product.productMstId)} css={S.SButton2}>수정</button>
+                        <button onClick={()=>handleRemoveProductClick(product.productMstId)} css={S.SButton2}>삭제</button>
                     </div>
                 </ul>
             })}
             <button onClick={handleMinusPageClick}>page - 1</button>
             <button onClick={handlePlusPageClick}>page + 1</button>
-        </>
+            </div>
+        </RootContainer>
     );
 }
 

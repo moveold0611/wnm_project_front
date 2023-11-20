@@ -3,11 +3,12 @@ import { useQuery } from 'react-query';
 /** @jsxImportSource @emotion/react */
 import * as S from '../Products/Style';
 import {  getSearchedProductsApi } from '../../apis/api/product';
+import RootContainer from '../../components/RootContainer/RootContainer';
+import { useNavigate, useParams } from 'react-router-dom';
 
 function Products(props) {
-
-    const [ isClicked, setIsClicked ] = useState(false);
-    const [ products, setProducts ] = useState();
+    const navigate = useNavigate();
+    const { type, category } = useParams();
 
     // const sortOptions = [
     //     {value: "상품명", label: "상품명"},
@@ -26,15 +27,17 @@ function Products(props) {
     // })} 
     
     const [ searchData, setSearchData ] = useState({
-        petTypeName: "all",
-        productCategoryName: "all",
+        petTypeName: type,
+        productCategoryName: !!category ? category : 'all',
         searchOption: "all",
         searchValue: "",
         sortOption: "name",
         pageIndex: 1
     });
 
-    const getProducts = useQuery(["getProducts"], async () => {
+    const [ searchValue, setSearchValue ] = useState("");
+
+    const getProducts = useQuery(["getProducts", searchData], async () => {
         try {
             const response = getSearchedProductsApi(searchData);
             console.log(response)
@@ -44,61 +47,33 @@ function Products(props) {
         }
     }, {
         retry: 0,
-        refetchOnWindowFocus: false,
-        onSuccess: response => {
-            setProducts(response.data)
-        }
+        refetchOnWindowFocus: false
     })
 
     useEffect(() => {
-        getSearchedProductsApi(searchData);
-        getProducts.refetch();
-    }, [searchData.pageIndex, searchData.sort])
-
-    const handleSearchValueChange = (e) => {
+        setSearchValue("");
         setSearchData({
             ...searchData,
-            [e.target.name]: e.target.value
+            petTypeName: type,
+            productCategoryName: !!category ? category : 'all',
+            searchValue: ""
         })
+    }, [type, category])
+
+    const handleSearchValueChange = (e) => {
+        setSearchValue(e.target.value);
     }
 
     const handleSearchButtonClick = () => {
-        getSearchedProductsApi(searchData);
-        getProducts.refetch();
-    }
-    
-    const handleDogCategoryClick = async (e) => {
         setSearchData({
             ...searchData,
-            petTypeName: e.target.id
+            searchValue
         })
-        await getSearchedProductsApi(searchData);
-        getProducts.refetch();
-        
-        setIsClicked(true);
-    }
-    
-    const handleCatCategoryClick = async (e) => {
-        setSearchData({
-            ...searchData,
-            petTypeName: e.target.id
-        })
-        await getSearchedProductsApi(searchData);
-        getProducts.refetch();
-        
-        setIsClicked(true);
-    }
-
-    const handleProductCategoryClick = async (e) => {
-        setSearchData({
-            ...searchData,
-            productCategoryName: e.target.id
-        })
-        await getSearchedProductsApi(searchData);
         getProducts.refetch();
     }
 
     const handleProductOnclick = (e) => {
+        navigate(`/product/${e.target.id}`)
         console.log(e.target.id)
     }
 
@@ -120,51 +95,31 @@ function Products(props) {
         })
     }
 
-    console.log(getProducts)
-
     return (
-        <div>
-            <div>
+        <RootContainer>
+            <div css={S.SLayout}>
                 <div>
-                    <ul css={S.SCategoryBox}>
-                        <li id='강아지' onClick={handleDogCategoryClick}>dog</li>
-                        <li id='고양이' onClick={handleCatCategoryClick}>cat</li>
-                    </ul>
+                    <input type="text" name='value' onChange={handleSearchValueChange} value={searchValue}/>
+                    <button onClick={handleSearchButtonClick}>검색</button>
                 </div>
-                {isClicked ? 
-                    <div>
-                        <ul css={S.SProductCategoryBox}>
-                            <li id='홈·리빙' name="홈·리빙" onClick={handleProductCategoryClick}>homeliving</li>
-                            <li id='산책' name="산책" onClick={handleProductCategoryClick}>outdoor</li>
-                            <li id='이동' name="이동" onClick={handleProductCategoryClick}>carrier</li>
-                            <li id='장난감' name="장난감" onClick={handleProductCategoryClick}>toy</li>
-                            {products.petTypeName === "고양이" ? <></> : <li id='패션' name="패션" onClick={handleProductCategoryClick}>fashion</li> }
-                        </ul>
-                    </div> 
-                    : 
-                    <></>}
-            </div>
-            <div>
-                <input type="text" name='value' onChange={handleSearchValueChange}/>
-                <button onClick={handleSearchButtonClick}>검색</button>
-            </div>
-            <div css={S.SProductContainer}>
-                {!getProducts.isLoading && getProducts?.data?.data.map((product, index) => {
-                    return  <div css={S.SProductBox} >
-                                <ul >
-                                    <li onClick={handleProductOnclick}>
-                                        <img id={product.productMstId} src={product.productThumbnailUrl} alt="" />
-                                        <p>{product.productName}</p>
-                                    </li>
-                                </ul>
-                            </div>
-                })}
+                <div css={S.SProductContainer}>
+                    {!getProducts.isLoading && getProducts?.data?.data.map((product, index) => {
+                        return  <div css={S.SProductBox} key={product.productMstId} >
+                                    <ul>
+                                        <li onClick={handleProductOnclick}>
+                                            <img id={product.productMstId} src={product.productThumbnailUrl} alt="" />
+                                            <p>{product.productName}</p>
+                                        </li>
+                                    </ul>
+                                </div>
+                    })}
+                </div>
                 <div css={S.SButtonBox}>
                     <button onClick={handleMinusPageClick}>{"<"}</button>
                     <button onClick={handlePlusPageClick}>{">"}</button>
                 </div>
             </div>
-        </div>
+        </RootContainer>
     );
 }
 

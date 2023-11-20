@@ -5,7 +5,7 @@ import { css } from '@emotion/react';
 import { useQuery, useQueryClient } from 'react-query';
 import Select from 'react-select';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getProductApi } from '../../apis/api/product';
+import { getProductMstApi } from '../../apis/api/product';
 import { addToCartApi } from '../../apis/api/cart';
 
 function BuyProduct(props) {
@@ -19,7 +19,7 @@ function BuyProduct(props) {
 
     const getProduct = useQuery(["getProduct"], async () => {
         try {
-            const response = getProductApi(productId);
+            const response = getProductMstApi(productId);
             return await response
             
         } catch(error) {
@@ -29,11 +29,12 @@ function BuyProduct(props) {
         refetchOnWindowFocus: false,
         onSuccess: response => {
             setProduct(response.data)
+            console.log(response)
         }
     })
-
+    
     localStorage.removeItem("orderData")
-
+    
     if(getProduct.isLoading) {
         return<></>
     }
@@ -57,7 +58,6 @@ function BuyProduct(props) {
         setSelectedProducts([...selectedProducts, newSelectedProduct]);
     }
 
-
     const countOnChange = (value, index) => {
         const updateSelectedPorudcts = [...selectedProducts];
         updateSelectedPorudcts[index].count = parseInt(value);
@@ -67,11 +67,8 @@ function BuyProduct(props) {
     }
 
     const handleDeleteProductOnClick = (index) => {
-        
         const DeleteProduct = [...selectedProducts]
-
         DeleteProduct.splice(index, 1);
-
         setSelectedProducts(DeleteProduct);
     }
 
@@ -94,7 +91,6 @@ function BuyProduct(props) {
             } else {
                 alert("취소되었습니다.")
             }
-
         } catch(error) {
             console.log(error)
         }
@@ -104,7 +100,7 @@ function BuyProduct(props) {
         <div>
             <div css={S.STopContainer} >
                 <div css={S.SThumbnailBox}>
-                    <img css={S.SThumbnailImg} src={product.productThumbnail} />
+                    <img css={S.SThumbnailImg} src={product.productThumbnailUrl} />
                 </div>
                 <div css={S.SOrderInfoBox}>
                     <h2>{product.productName}</h2>
@@ -131,16 +127,19 @@ function BuyProduct(props) {
                             </li>
                         )}
                     </ul>
-                    <h3>{selectedProducts.reduce((total, selectedProduct) => {
-                        return total += selectedProduct.totalPrice}, 0).toLocaleString("ko-KR")}원</h3>
-                    <div>
-                        <button onClick={buyNowOnClick}>BUY BOW</button>
+                    <div css={S.SPriceInfo}>
+                        <p>Total</p>
+                        <h3>{selectedProducts.reduce((total, selectedProduct) => {
+                            return total += selectedProduct.totalPrice}, 0).toLocaleString("ko-KR")}원</h3>
+                    </div>
+                    <div css={S.SButtonBox}>
+                        <button onClick={buyNowOnClick}>BUY NOW</button>
                         <button onClick={handleAddToCartOnClick}>ADD TO CART</button>
                     </div>
                 </div>
             </div>
             <div css={S.SDetailContainer}>
-                <img css={S.SDDetailImg} src={product.productDetailImg} alt="" />
+                <img css={S.SDDetailImg} src={product.productDetailUrl} alt="" />
             </div>
         </div>
     );
