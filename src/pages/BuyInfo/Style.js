@@ -236,7 +236,6 @@ export const SPayMentBox = css`
     border: none;
     border-radius: 15px;
     background-color: #fafafa;
-    margin-bottom: 25px;
 
     & > h2 {
         padding-left: 20px;
@@ -269,4 +268,42 @@ export const STossPay = css`
     font-size: 18px;
     color: white;
     background-color: #0064ff;
+`;
+
+export const SCancelBox = css`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-top: 10px;
+    border: none;
+    border-radius: 15px;
+    background-color: #fafafa;
+    margin-bottom: 25px;
+
+    & > h2 {
+        padding-left: 20px;
+    }
+    
+`;
+
+export const SCancel = css`
+    display: flex;
+    align-items: center;
+
+    padding: 1px 0px;
+    width: 100%;
+
+& > button {
+    margin: 5px 15px 5px 20px;
+    border: none;
+    border-radius: 10px;
+    height: 35px;
+    
+    font-size: 18px;
+    color: white;
+    background-color: black;
+    width: 100%;
+}
+
 `;

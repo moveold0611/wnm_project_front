@@ -216,7 +216,7 @@ function BuyInfo(props) {
                         <h3 css={S.SData}>{principal.data.data.phoneNumber}</h3>
                     </div>
                 </div>
-
+x
                 <div css={S.SShippingInfoBox}>
                     <h2>배송지</h2>
                     <div css={S.SShippingInfoInputBox}>
@@ -303,6 +303,12 @@ function BuyInfo(props) {
                             <h3 css={S.STitle}>결제 수단 선택</h3>
                             <button css={S.SKakaoPay} onClick={() => handlePaymentSubmit("kakao")}>카카오 결제하기</button>
                             <button css={S.STossPay}onClick={() => handlePaymentSubmit("toss")}>토스 결제하기</button>
+                        </div>
+                </div>
+
+                <div css={S.SCancelBox}>
+                        <div css={S.SCancel}>
+                            <button>주문 취소</button>
                         </div>
                 </div>
                 

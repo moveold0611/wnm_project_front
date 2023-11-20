@@ -11,12 +11,12 @@ import { getPrincipalApi } from "./apis/api/account";
 import ProductRegist from "./pages/Admin/ProductRegist/ProductRegist";
 import BuyInfo from "./pages/BuyInfo/BuyInfo";
 import CartProducts from "./pages/CartProducts/CartProducts";
-import Products from "./pages/Products/Products"
 import EditProductDetailPage from "./pages/Admin/EditProductDetailPage/EditProductDetailPage";
 import EditProduct from "./pages/Admin/EditProduct/EditProduct";
 import EditUser from "./pages/EditUser/EditUser";
 import Mypage from "./pages/Mypage/Mypage";
 import ProductRoute from "./routes/ProductRoute/ProductRoute";
+import OrderUser from "./pages/OrderUser/OrderUser";
 
 
 function App() {
@@ -52,8 +52,8 @@ function App() {
   return (
     <RootLayout>
       <Routes>
-        <Route path="/mypage" element={ <Mypage /> }/>
         <Route path="/" element={ <Main /> } />
+        <Route path="/mypage" element={ <Mypage /> }/>
         <Route path="/auth/signup" element={ <Signup /> } />
         <Route path="/auth/signin" element={ <Signin /> } />
         <Route path="/auth/oauth2/signin" element={ <OAuth2Signin /> } />
@@ -62,10 +62,11 @@ function App() {
         <Route path="/products/:type/*" element={ <ProductRoute /> } />
         <Route path="/product/:productId" element={ <BuyProduct/> } />
         <Route path="/order/" element={ <BuyInfo/> } />
+        <Route path="/orders/:userId" element={ <OrderUser /> }/>
         <Route path="/product/cart/:userId" element={ <CartProducts/> } />
         <Route path="/admin/product" element={ <ProductRegist/> } />
         <Route path="/admin/product/edit/*" element={ <EditProduct/> }/>
-        <Route path="/admin/edit/product/:productMstId" element={ <EditProductDetailPage/> }/>        
+        <Route path="/admin/edit/product/:productMstId" element={ <EditProductDetailPage/> }/>
       </Routes>
     </RootLayout>
   );

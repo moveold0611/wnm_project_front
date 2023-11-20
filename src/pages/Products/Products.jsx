@@ -40,7 +40,6 @@ function Products(props) {
     const getProducts = useQuery(["getProducts", searchData], async () => {
         try {
             const response = getSearchedProductsApi(searchData);
-            console.log(response)
             return await response
         } catch(error) {
             console.log(error)
@@ -48,7 +47,10 @@ function Products(props) {
     }, {
         retry: 0,
         refetchOnWindowFocus: false
+        
     })
+
+    console.log(getProducts)
 
     useEffect(() => {
         setSearchValue("");
