@@ -27,6 +27,11 @@ function EditProductDetailPage(props) {
     const [ productData, setProductData ] = useState({});
     console.log(productData)
 
+
+    let productMinimumData = [];
+
+
+
     const getProduct = useQuery(["getProduct"], async () => {
         const response = await getProductsApi(searchData);
         return response;
@@ -48,9 +53,44 @@ function EditProductDetailPage(props) {
                 M: response?.data[0].M,
                 L: response?.data[0].L,
                 XL: response?.data[0].XL,
-                XXL: response?.data[0].XXL
+                XXL: response?.data[0].XXL,
             })
             console.log(response?.data[0])
+
+            for(let j = 0; j < response?.data.length; j++) {
+                const numbers = [parseInt(response?.data[j].no), parseInt(response?.data[j].XS), parseInt(response?.data[j].S), parseInt(response?.data[j].M), parseInt(response?.data[j].L), parseInt(response?.data[j].XL), parseInt(response?.data[j].XXL)]
+                const nums = [];
+        
+                for(let i = 0; i < numbers.length; i++) {
+                    if(isNaN(numbers[i])) {
+                        numbers[i] = 0;
+                    }
+                    if(numbers[i] !== 0) {
+                        nums.push(parseInt(numbers[i]))
+                    }
+                }
+                let lastNum = nums[0]
+                for(let i = 0; i < nums.length; i++) {
+                    if(lastNum > nums[i]) {
+                        lastNum = nums[i]
+                    }
+                }
+                productMinimumData.push({
+                    productName: response?.data[j].productName,
+                    productDetailText: response?.data[j].productDetailText,
+                    productThumbnailUrl: response?.data[j].productThumbnailUrl,
+                    productDetailUrl: response?.data[j].productDetailUrl,
+                    no: response?.data[j].no,
+                    XS: response?.data[j].XS,
+                    S: response?.data[j].S,
+                    M: response?.data[j].M,
+                    L: response?.data[j].L,
+                    XL: response?.data[j].XL,
+                    XXL: response?.data[j].XXL,
+                })
+
+                console.log(productMinimumData)
+            }
     }
     })
     if(getProduct.isLoading) {
@@ -64,6 +104,36 @@ function EditProductDetailPage(props) {
             [ e.target.name ]: e.target.value
         })
     }
+
+
+
+
+    const handleTester = () => {
+        const numbers = [parseInt(productData.no), parseInt(productData.XS), parseInt(productData.S), parseInt(productData.M), parseInt(productData.L), parseInt(productData.XL), parseInt(productData.XXL)]
+        const nums = [];
+
+        for(let i = 0; i < numbers.length; i++) {
+            if(isNaN(numbers[i])) {
+                numbers[i] = 0;
+            }
+            if(numbers[i] !== 0) {
+                nums.push(parseInt(numbers[i]))
+            }
+        }
+        let lastNum = nums[0]
+        for(let i = 0; i < nums.length; i++) {
+            if(lastNum > nums[i]) {
+                lastNum = nums[i]
+            }
+        }
+        const newData = {
+            ...productData,
+            minimum: lastNum
+        }    
+        console.log(newData)
+    }
+
+
 
 
 
@@ -119,6 +189,7 @@ function EditProductDetailPage(props) {
     return (
         <RootContainer>
             <div css={S.SLayout}>
+
                 <div css={S.SImg}>
                     <div><h1 css={S.SH1}>상품 메인 이미지 수정</h1></div>
                     <div>
@@ -162,6 +233,7 @@ function EditProductDetailPage(props) {
                             <>
                                 no : <input value={productData.no} type='text' name='no' onChange={handleProductDataOnChange}/>
                             </>}
+                            <button onClick={handleTester}>test</button>
                         </ul>
                     </div>
                 </div>
