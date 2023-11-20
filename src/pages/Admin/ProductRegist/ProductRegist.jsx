@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 /** @jsxImportSource @emotion/react */
 import * as S from "./Style";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
-import { storage } from '../../apis/firebase/firebase';
-import { addProductApi } from '../../apis/api/product';
+import { storage } from '../../../apis/firebase/firebase';
+import { addProductApi } from '../../../apis/api/product';
 
 function ProductRegist(props) {
     
@@ -12,7 +12,7 @@ function ProductRegist(props) {
     const [uploadFiles, setUploadFiles] = useState([]);
     const [uploadDetailImgFile, setUploadDetailImgFile] = useState([]);
     const [productThumbnailUrlSrc , setProductThumbnailUrlSrc ] = useState(); 
-    const [productDetailUrlSrc, setProductDetailUrlSrc] = useState(); 
+    const [productDetailUrlSrc, setProductDetailUrlSrc] = useState();
     
     const reader = new FileReader();
     
@@ -166,24 +166,36 @@ function ProductRegist(props) {
     return (
         <div css={S.SLayout}>
             <div css={S.SContainer}>
+                <h2 css={S.SH2}>상품 등록</h2>
                 <div>
                     <div css={S.SImgBox} onClick={handleProductDetailImgUploadClick}>
                         <img src={productThumbnailUrlSrc} alt='썸네일 이미지'/>
                     </div>
-                    <input css={S.Sfile} type="file" onChange={handleProductThumnailImgChange} ref={productThumnailImgRef}/>
+                    <div>
+                        <input css={S.Sfile} type="file" onChange={handleProductThumnailImgChange} ref={productThumnailImgRef}/>
+                    </div>
                     <div css={S.SImgBox} onClick={handleProductThumnailImgUploadClick}>
                         <img src={productDetailUrlSrc} alt='상품 디테일 이미지'/>
                     </div>
-                    <input css={S.Sfile} type="file" onChange={handleProductDetailImgChange} ref={productDetailImgRef}/>
+                    <div>
+                        <input css={S.Sfile} type="file" onChange={handleProductDetailImgChange} ref={productDetailImgRef}/>
+                    </div>
                 </div>
                 <div css={S.SInputBox}>
-                    <div>상품명 : <input type="text" name='productName' onChange={handleInputChange}/></div>
-                    <div>상품설명 : <input type="text" name='productDetailText' onChange={handleInputChange}/></div>
-                    <div>
-                        동물타입: 
+                    <div css={S.SInfoInput}>
+                        <h2>상품명</h2> 
+                        <input type="text" name='productName' onChange={handleInputChange}/>
+                    </div>
+                    <div css={S.SInfoInput}>
+                        <h2>상품설명</h2>
+                        <input type="text" name='productDetailText' onChange={handleInputChange}/>
+                    </div>
+                    <div css={S.SInfoInput}>
+                        <h2>동물타입</h2> 
                         <select 
                             options={petTypes}
-                            onChange={handlePetTypeOptionChange}>
+                            onChange={handlePetTypeOptionChange}
+                            css={S.SSelect}>
                             
                             {petTypes.map(type => {
                                 return <option key={type.value} value={type.value} label={type.label}>{type.label}</option>
@@ -191,11 +203,12 @@ function ProductRegist(props) {
                         </select>
                     </div>
                     {product.petTypeId === 1 ? 
-                        <div>
-                            카테고리 
+                        <div css={S.SInfoInput}>
+                            <h2>카테고리 </h2>
                             <select
                                 options={productDogCategoeies}
                                 onChange={handleCategoryTypeOptionChange}
+                                css={S.SSelect}
                                 >
                                 {productDogCategoeies.map(category => {
                                     return <option key={category.value} value={category.value} label={category.label}>{category.label}</option>
@@ -203,8 +216,8 @@ function ProductRegist(props) {
                             </select> 
                         </div>
                         :
-                        <div>
-                            카테고리 
+                        <div css={S.SInfoInput}>
+                            <h2>카테고리 </h2>
                             <select
                                 options={productCatCategoeies}
                                 onChange={handleCategoryTypeOptionChange}
@@ -215,10 +228,12 @@ function ProductRegist(props) {
                             </select> 
                         </div>
                     }
-                    <div><input type="text" name='price' placeholder='가격' onChange={handleInputChange} /></div>
+                    <div css={S.SInfoInput}>
+                        <input type="text" name='price' placeholder='가격' onChange={handleInputChange} />
+                    </div>
                 </div>
                 <div>
-                    <button onClick={handleProductSubmitClick}>등록하기</button>
+                    <button onClick={handleProductSubmitClick} css={S.SButton}>등록하기</button>
                 </div>
             </div>
         </div>

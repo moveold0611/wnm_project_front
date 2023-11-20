@@ -8,7 +8,7 @@ import { useParams, useSearchParams } from 'react-router-dom';
 import { deleteUserApi, getUserApi, updateUserApi } from '../../apis/api/user';
 /** @jsxImportSource @emotion/react */
 
-function EditUserInformation(props) {
+function EditUser(props) {
 
      // daum주소코드
         const sample6_execDaumPostcode = () => {
@@ -236,4 +236,4 @@ return (
     
 
 
-export default EditUserInformation;
+export default EditUser;

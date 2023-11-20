@@ -4,6 +4,9 @@ import { getProductApi, getProductMstApi, updateProductApi } from '../../../apis
 import { useParams } from 'react-router-dom';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { storage } from '../../../apis/firebase/firebase';
+import RootContainer from '../../../components/RootContainer/RootContainer';
+/** @jsxImportSource @emotion/react */
+import * as S from './Style';
 
 function EditProductDetailPage(props) {
 
@@ -28,8 +31,6 @@ function EditProductDetailPage(props) {
     console.log(productMstData)
     console.log(productDtlData)
     
-
-
     useEffect(() => {
         setInputStatus(
             productDtlData.map(pdd => {
@@ -38,8 +39,6 @@ function EditProductDetailPage(props) {
             })
         )
     }, [productDtlData])
-
-
 
     console.log(InputStatus)
     
@@ -75,10 +74,6 @@ function EditProductDetailPage(props) {
         })
     }
 
-
-
-
-
     const handleThumbnailChange = (e) => {
         const reader = new FileReader();
         const file = e.target.files[0];
@@ -89,8 +84,6 @@ function EditProductDetailPage(props) {
         }
         reader.readAsDataURL(file)
     }
-
-
 
     const handleDetailImgChange = (e) => {
         const reader = new FileReader();
@@ -128,10 +121,6 @@ function EditProductDetailPage(props) {
         }
     }
 
-    const testClick = () => {
-        console.log(InputStatus)
-    }
-
     const handlePriceChange = (pl) => {
         console.log(pl.price)
         const index = productDtlData.indexOf(pl);
@@ -156,44 +145,53 @@ function EditProductDetailPage(props) {
 
 
     return (
-        <div>
-            <button onClick={testClick}>test</button>
-            <div>
-                <div>
-                    <img src={productThumbnailSrc} alt='썸네일 이미지' onChange={handleProductDataOnChange}/>
-                </div>
-                <input  type="file" onChange={handleThumbnailChange}/>
-                <div>
-                    <img src={productDetailImgSrc} alt='상품 디테일 이미지' onChange={handleProductDataOnChange}/>
-                </div>
-                <input type="file" onChange={handleDetailImgChange}/>
-            </div>
-                <div >
-                    <div>상품명 : <input type="text" name='productName' defaultValue={getProduct?.data?.data?.productName} onChange={handleProductDataOnChange}/>
-                    </div>
-
-
-                    <div>상품설명 : <input type="text" name='productDetailText' defaultValue={getProduct?.data?.data?.productDetailText} onChange={handleProductDataOnChange}/></div>
+        <RootContainer>
+            <div css={S.SLayout}>
+                <div css={S.SImg}>
+                    <div><h1 css={S.SH1}>상품 메인 이미지 수정</h1></div>
                     <div>
-            
+                        <img src={productThumbnailSrc} alt='썸네일 이미지' width={'700px'} onChange={handleProductDataOnChange}/>
                     </div>
-
-
                     <div>
-                    사이즈, 가격 : 
+                        <input type="file" id="fileInput" onChange={handleThumbnailChange} css={S.SFileSelect} />
+                        <label htmlFor="fileInput" css={S.SLabelUpload}>메인 이미지 수정 파일 업로드</label>
+                    </div>
+                    <div><h1 css={S.SH1}>상품 상세 이미지 수정</h1></div>
+                    <div>
+                        <img src={productDetailImgSrc} alt='상품 디테일 이미지' onChange={handleProductDataOnChange}/>
+                    </div>
+                    <div>
+                        <input type="file" id="fileInput" onChange={handleDetailImgChange} css={S.SFileSelect} />
+                        <label htmlFor="fileInput" css={S.SLabelUpload}>상세이미지 수정 파일 업로드</label>
+                    </div>
+                    <div><h1 css={S.SH1}>상품 정보 수정</h1></div>
+                </div>
+                <div css={S.SInformation}>
+                    <div css={S.SInfoInput}>
+                        <h2>상품명</h2>
+                        <input type="text" name='productName' defaultValue={getProduct?.data?.data?.productName} onChange={handleProductDataOnChange}/>
+                    </div>
+                    <div css={S.SInfoInput}>
+                        <h2>상품설명</h2>
+                        <input type="text" name='productDetailText' defaultValue={getProduct?.data?.data?.productDetailText} onChange={handleProductDataOnChange}/>
+                    </div>
+                    <div css={S.SInfoInput}>
+                        <h2>사이즈, 가격 </h2> 
                         <ul>
                         {productDtlData.map(pl => {
                             return <li key={pl}>
-                                {pl.size.sizeName} / <input value='' name={productDtlData.indexOf(pl)} onChange={() => handlePriceChange(pl)}/>
+                                <h2>{pl.size.sizeName} Size</h2> 
+                                <input value='' name={productDtlData.indexOf(pl)} onChange={() => handlePriceChange(pl)}/>
                             </li>
                         })}
                         </ul>
                     </div>
                 </div>
-                <div>
-                    <button onClick={handleUpdateSubmit}>등록하기</button>
+                <div css={S.SSubmit}>
+                    <button onClick={handleUpdateSubmit} css={S.SLabelUpload}>등록하기</button>
                 </div>
-        </div>
+            </div>
+        </RootContainer>
     );
 }
 

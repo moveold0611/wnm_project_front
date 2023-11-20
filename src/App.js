@@ -2,20 +2,21 @@ import { Route, Routes } from "react-router-dom";
 import { useQuery } from "react-query";
 
 import RootLayout from "./components/RootLayout/RootLayout";
-import Home from "./pages/Home/Home";
+import Main from "./pages/Main/Main";
 import Signin from "./pages/Signin/Signin";
 import Signup from "./pages/Signup/Signup";
-import EditUserInformation from "./pages/Mypage/EditUserInformation";
 import OAuth2Signin from "./pages/Signin/OAuth2Signin";
 import BuyProduct from "./pages/BuyProduct/BuyProduct";
 import { getPrincipalApi } from "./apis/api/account";
-import MypageMain from "./pages/Mypage/MypageMain/MypageMain";
-import ProductRegist from "./pages/ProductRegist/ProductRegist";
+import ProductRegist from "./pages/Admin/ProductRegist/ProductRegist";
 import BuyInfo from "./pages/BuyInfo/BuyInfo";
 import CartProducts from "./pages/CartProducts/CartProducts";
-import EditProduct from "./pages/EditProduct/EditProduct";
 import Products from "./pages/Products/Products"
-import EditProductDetailPage from "./pages/EditProduct/EditProductDetailPage/EditProductDetailPage";
+import EditProductDetailPage from "./pages/Admin/EditProductDetailPage/EditProductDetailPage";
+import EditProduct from "./pages/Admin/EditProduct/EditProduct";
+import EditUser from "./pages/EditUser/EditUser";
+import Mypage from "./pages/Mypage/Mypage";
+import ProductRoute from "./routes/ProductRoute/ProductRoute";
 
 
 function App() {
@@ -51,14 +52,14 @@ function App() {
   return (
     <RootLayout>
       <Routes>
-        <Route path="/mypage" element={ <MypageMain /> }/>
-        <Route path="/" element={ <Home /> } />
+        <Route path="/mypage" element={ <Mypage /> }/>
+        <Route path="/" element={ <Main /> } />
         <Route path="/auth/signup" element={ <Signup /> } />
         <Route path="/auth/signin" element={ <Signin /> } />
         <Route path="/auth/oauth2/signin" element={ <OAuth2Signin /> } />
-        <Route path="/useredit/:userId" element={ <EditUserInformation /> } />
+        <Route path="/useredit/:userId" element={ <EditUser /> } />
         {/* :petType/:productCategory/:pageIndex */}
-        <Route path="/products/" element={ <Products /> } />
+        <Route path="/products/:type/*" element={ <ProductRoute /> } />
         <Route path="/product/:productId" element={ <BuyProduct/> } />
         <Route path="/order/" element={ <BuyInfo/> } />
         <Route path="/product/cart/:userId" element={ <CartProducts/> } />
