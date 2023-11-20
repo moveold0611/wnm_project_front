@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useQuery } from 'react-query';
-import { getProductApi, getProductMstApi, updateProductApi } from '../../../apis/api/product';
+import { getProductApi, getProductMstApi, getProductsApi, updateProductApi } from '../../../apis/api/product';
 import { useParams } from 'react-router-dom';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { storage } from '../../../apis/firebase/firebase';
@@ -13,54 +13,39 @@ function EditProductDetailPage(props) {
     const [ productDetailImgFile, setProductDetailImgFile ] = useState();
     const [ productThumbnailSrc, setProductThumbnailSrc ] = useState("");
     const [ productDetailImgSrc, setProductDetailImgSrc ] = useState("");
-    const [ InputStatus, setInputStatus ] = useState({});
-    const [ priceList, setPriceList ] = useState([]);
-
-    const [ productMstData, setProductMstData ] = useState({
-        productName: "",
-        productDetailText: "",
-        productThumbnailUrl: "",
-        productDetailUrl: "",
-        createDate: ""
-    });
-    const [ productDtlData, setProductDtlData ] = useState([]);
-
-    console.log(productMstData)
-    console.log(productDtlData)
-    
+    const searchData = {
+        petTypeName: "all",
+        productCategoryName: "all",
+        searchOption: 'number',
+        searchValue: productMstId,
+        sortOption: 'number',
+        pageIndex: 1}
+    const [ productData, setProductData ] = useState({});
 
 
-    useEffect(() => {
-        setInputStatus(
-            productDtlData.map(pdd => {
-                const data = {[pdd.size.sizeName]: pdd.price}
-                return data
-            })
-        )
-    }, [productDtlData])
-
-
-
-    console.log(InputStatus)
-    
     const getProduct = useQuery(["getProduct"], async () => {
-        const response = await getProductMstApi(parseInt(productMstId));
+        const response = await getProductsApi(searchData);
         return response;
     },
     {
         refetchOnWindowFocus: false,
         retry: 0,
         onSuccess: response => {
-            setProductThumbnailSrc(response?.data?.productThumbnailUrl)
-            setProductDetailImgSrc(response?.data?.productDetailUrl);
-            setProductMstData({
-                productName: response.data.productName,
-                productDetailText: response.data.productDetailText,
-                productThumbnailUrl: response.data.productThumbnailUrl,
-                productDetailUrl: response.data.productDetailUrl,
-                createDate: response.data.createDate
+            setProductThumbnailSrc(response?.data[0]?.productThumbnailUrl)
+            setProductDetailImgSrc(response?.data[0]?.productDetailUrl);
+            setProductData({
+                productName: response?.data[0].productName,
+                productDetailText: response?.data[0].productDetailText,
+                productThumbnailUrl: response?.data[0].productThumbnailUrl,
+                productDetailUrl: response?.data[0].productDetailUrl,
+                no: response?.data[0].no,
+                XS: response?.data[0].XS,
+                S: response?.data[0].S,
+                M: response?.data[0].M,
+                L: response?.data[0].L,
+                XL: response?.data[0].XL,
+                XXL: response?.data[0].XXL
             })
-            setProductDtlData(response.data.productDtlList)
     }
     })
     if(getProduct.isLoading) {
@@ -69,13 +54,11 @@ function EditProductDetailPage(props) {
 
 
     const handleProductDataOnChange = (e) => {
-        setProductMstData({
-            ...productMstData,
+        setProductData({
+            ...productData,
             [ e.target.name ]: e.target.value
         })
     }
-
-
 
 
 
@@ -89,8 +72,6 @@ function EditProductDetailPage(props) {
         }
         reader.readAsDataURL(file)
     }
-
-
 
     const handleDetailImgChange = (e) => {
         const reader = new FileReader();
@@ -111,53 +92,26 @@ function EditProductDetailPage(props) {
                 const thumbnailStorageRef = ref(storage, `files/product/${productThumbnailFile?.name}`);
                 await uploadBytesResumable(thumbnailStorageRef, productThumbnailFile);
                 const downLoadURL = await getDownloadURL(thumbnailStorageRef);
-                productMstData.productThumbnailUrl = downLoadURL;
+                productData.productThumbnailUrl = downLoadURL;
             }
 
             if(!!productDetailImgFile) {
                 const detailImgStorageRef = ref(storage, `files/product/${productDetailImgFile?.name}`);
                 await uploadBytesResumable(detailImgStorageRef, productDetailImgFile);
                 const downLoadURL = await getDownloadURL(detailImgStorageRef);
-                productMstData.productDetailUrl = downLoadURL
+                productData.productDetailUrl = downLoadURL
             }
 
-            // await updateProductApi(productMstId, productData);
+            await updateProductApi(productMstId, productData);
             alert("수정이 완료되었습니다.")
         }catch(error) {
             console.log(error.response.data)
         }
     }
 
-    const testClick = () => {
-        console.log(InputStatus)
-    }
-
-    const handlePriceChange = (pl) => {
-        console.log(pl.price)
-        const index = productDtlData.indexOf(pl);
-        const testList = productDtlData;
-
-        console.log("인덱스")
-        console.log(index) // 문제없음
-
-        console.log("====================")
-        console.log(testList[index])
-        testList[index] = pl;
-        console.log(pl)
-        console.log(testList[index])
-        console.log("====================")
-        // const change = priceList.filter((pl) => {
-        //     return priceList[index] === pl;
-        // })
-        console.log(testList)
-        setPriceList(testList)
-    }
-
-
 
     return (
         <div>
-            <button onClick={testClick}>test</button>
             <div>
                 <div>
                     <img src={productThumbnailSrc} alt='썸네일 이미지' onChange={handleProductDataOnChange}/>
@@ -169,24 +123,28 @@ function EditProductDetailPage(props) {
                 <input type="file" onChange={handleDetailImgChange}/>
             </div>
                 <div >
-                    <div>상품명 : <input type="text" name='productName' defaultValue={getProduct?.data?.data?.productName} onChange={handleProductDataOnChange}/>
+                    <div>상품명 : <input type="text" name='productName' value={productData.productName} onChange={handleProductDataOnChange}/>
                     </div>
 
-
-                    <div>상품설명 : <input type="text" name='productDetailText' defaultValue={getProduct?.data?.data?.productDetailText} onChange={handleProductDataOnChange}/></div>
+                    <div>상품설명 : <input type="text" name='productDetailText' value={productData.productDetailText} onChange={handleProductDataOnChange}/></div>
                     <div>
-            
-                    </div>
-
+                </div>
 
                     <div>
                     사이즈, 가격 : 
                         <ul>
-                        {productDtlData.map(pl => {
-                            return <li key={pl}>
-                                {pl.size.sizeName} / <input value='' name={productDtlData.indexOf(pl)} onChange={() => handlePriceChange(pl)}/>
-                            </li>
-                        })}
+                            {productData.no === "" ?
+                            <>
+                                XS : <input value={productData.XS} type='text' name='XS' onChange={handleProductDataOnChange}/>
+                                XS : <input value={productData.S} type='text' name='S' onChange={handleProductDataOnChange}/>
+                                XS : <input value={productData.M} type='text' name='M' onChange={handleProductDataOnChange}/>
+                                XS : <input value={productData.L} type='text' name='L' onChange={handleProductDataOnChange}/>
+                                XS : <input value={productData.XL} type='text' name='XL' onChange={handleProductDataOnChange}/>
+                                XS : <input value={productData.XXL} type='text' name='XXL' onChange={handleProductDataOnChange}/>
+                            </> :
+                            <>
+                                no : <input value={productData.no} type='text' name='no' onChange={handleProductDataOnChange}/>
+                            </>}
                         </ul>
                     </div>
                 </div>

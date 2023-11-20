@@ -22,15 +22,13 @@ export const addProductApi = async (product, option) => {
 } 
 
 export const getProductsApi = async (searchData) => {
-
-    console.log(searchData)
-    const response = await instance.get(`/api/admin/products`, {params: searchData});
+    const response = await instance.get(`api/product/master`, {params: searchData});
 
     return response;
 }
 
-export const updateProductApi = async (productId, productData) => {
-    const response = await instance.put(`/api/admin/product/${productId}`, productData);
+export const updateProductApi = async (productMstId, reqData) => {
+    const response = await instance.put(`/api/admin/product/${productMstId}`, reqData);
     return response;
 }
 

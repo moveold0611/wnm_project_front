@@ -18,16 +18,16 @@ function EditProduct(props) {
         pageIndex: 1});
     const petType = [
         { value: "all", label: "전부"},
-        { value: "강아지", label: "강아지"},
-        { value: "고양이", label: "고양이"}
+        { value: "dog", label: "강아지"},
+        { value: "cat", label: "고양이"}
     ]
     const category = [
         { value: "all", label: "전부" },
-        { value: "홈·리빙", label: "홈·리빙" },
-        { value: "산책", label: "산책" },
-        { value: "이동", label: "이동" },
-        { value: "패션", label: "패션" },
-        { value: "장난감", label: "장난감" }
+        { value: "home-living", label: "홈·리빙" },
+        { value: "walk", label: "산책" },
+        { value: "movement", label: "이동" },
+        { value: "fashion", label: "패션" },
+        { value: "toy", label: "장난감" }
     ]
 
     const searchOption = [
@@ -50,15 +50,15 @@ function EditProduct(props) {
 
 
     const getProducts = useQuery(["getProducts", searchData.pageIndex], async () => {
-        console.log(searchData)
         const response = await getProductsApi(searchData);
-        console.log(response?.data)
         return response;
     },
     { 
         refetchOnWindowFocus: false,
         retry: 0,
-        onSuccess: response => setProductList(response?.data)
+        onSuccess: response => {
+            console.log(response?.data)
+            setProductList(response?.data)}
     });
 
     if(getProducts.isLoading) {
@@ -134,12 +134,12 @@ function EditProduct(props) {
                         return <option key={ct.value} label={ct.label} value={ct.value}/>
                     })}
                 </select>
-                <select option={sortOption} onChange={handleSearchSelectChange} name='sort'>
+                <select option={sortOption} onChange={handleSearchSelectChange} name='sortOption'>
                     {sortOption.map(so => {
                         return <option key={so.value}  label={so.label} value={so.value}/>
                     })}
                 </select>
-                <select option={searchOption} onChange={handleSearchSelectChange} name='option'>
+                <select option={searchOption} onChange={handleSearchSelectChange} name='searchOption'>
                     {searchOption.map(op => {
                         return <option key={op.value} label={op.label} value={op.value}/>
                     })}
@@ -156,6 +156,18 @@ function EditProduct(props) {
                         상품명: {product.productName} / 
                         동물종류: {product.petTypeName} / 
                         카테고리: {product.productCategoryName} /
+                        {product.no === "" ?
+                        <>
+                        XS :{product.XS} / 
+                        S :{product.S} / 
+                        M :{product.M} / 
+                        L :{product.L} / 
+                        XL :{product.XL} / 
+                        XXL :{product.XXL}
+                        </> :
+                        <>
+                        no : {product.no}
+                        </>}
                         <button onClick={()=>handleEditProductClick(product.productMstId)}>수정</button>
                         <button onClick={()=>handleRemoveProductClick(product.productMstId)}>삭제</button>
                     </div>
