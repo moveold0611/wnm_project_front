@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 /** @jsxImportSource @emotion/react */
 import * as S from '../Products/Style';
-import {  getSearchedProductsApi } from '../../apis/api/product';
+import {  getProductsApi } from '../../apis/api/product';
 
 function Products(props) {
 
@@ -36,7 +36,7 @@ function Products(props) {
 
     const getProducts = useQuery(["getProducts"], async () => {
         try {
-            const response = getSearchedProductsApi(searchData);
+            const response = getProductsApi(searchData);
             console.log(response)
             return await response
         } catch(error) {
@@ -51,7 +51,7 @@ function Products(props) {
     })
 
     useEffect(() => {
-        getSearchedProductsApi(searchData);
+        getProductsApi(searchData);
         getProducts.refetch();
     }, [searchData.pageIndex, searchData.sort])
 
@@ -63,7 +63,7 @@ function Products(props) {
     }
 
     const handleSearchButtonClick = () => {
-        getSearchedProductsApi(searchData);
+        getProductsApi(searchData);
         getProducts.refetch();
     }
     
@@ -72,7 +72,7 @@ function Products(props) {
             ...searchData,
             petTypeName: e.target.id
         })
-        await getSearchedProductsApi(searchData);
+        await getProductsApi(searchData);
         getProducts.refetch();
         
         setIsClicked(true);
@@ -83,7 +83,7 @@ function Products(props) {
             ...searchData,
             petTypeName: e.target.id
         })
-        await getSearchedProductsApi(searchData);
+        await getProductsApi(searchData);
         getProducts.refetch();
         
         setIsClicked(true);
@@ -94,7 +94,7 @@ function Products(props) {
             ...searchData,
             productCategoryName: e.target.id
         })
-        await getSearchedProductsApi(searchData);
+        await getProductsApi(searchData);
         getProducts.refetch();
     }
 
