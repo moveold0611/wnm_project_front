@@ -1,15 +1,15 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as S from "./Style";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { storage } from '../../apis/firebase/firebase';
 import { useQueryClient } from 'react-query';
 import { deleteUserApi, updateUserApi } from '../../apis/api/user';
 import Mypage from '../Mypage/Mypage';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 /** @jsxImportSource @emotion/react */
 
 function EditUser(props) {
-
+    const navigate = useNavigate()
     const queryClient = useQueryClient();
     const principal = queryClient.getQueryState("getPrincipal");
 
@@ -26,6 +26,13 @@ function EditUser(props) {
     });
 
     const addressDetailNameRef = useRef();
+
+    useEffect(() => {
+        if(!principal.data) {
+            navigate("/auth/signin")
+            return
+        }
+    }, [])
 
     const handleFindAddressClick = () => {
         const script = document.createElement('script');
@@ -181,19 +188,19 @@ return (
                 <div css={S.SUserInfoBox}> 
                     <h3 css={S.STitle}>이름</h3> 
                     <input type="text" 
-                        value={principal.data.data.name}
+                        value={principal?.data?.data?.name}
                         disabled={true}/>
                 </div>
                 <div css={S.SUserInfoBox}> 
                     <h3 css={S.STitle}>이메일</h3> 
                     <input type="text" 
-                        value={principal.data.data.email}
+                        value={principal?.data?.data?.email}
                         disabled={true}/>
                 </div>
                 <div css={S.SUserInfoBox}> 
                     <h3 css={S.STitle}>휴대전화</h3> 
                     <input type="text" 
-                        value={principal.data.data.phoneNumber}
+                        value={principal?.data?.data?.phoneNumber}
                         disabled={true}/>
                 </div>
                 <div css={S.SUserInfoBox}>

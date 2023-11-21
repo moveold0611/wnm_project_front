@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as S from "./Style";
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { instance } from '../../apis/config/instance';
 import { signupApi } from '../../apis/api/sign';
 /**@jsxImportSource @emotion/react */
 
 function Signup(props) {
+    const navigate = useNavigate();
     // daum주소코드
     const sample6_execDaumPostcode = () => {
         const script = document.createElement('script');
@@ -35,7 +36,6 @@ function Signup(props) {
                     if(extraAddr !== ''){
                         extraAddr = ' (' + extraAddr + ')';
                     }
-                
                 }
                 console.log(data.zonecode)
                 document.getElementById('sample6_postcode').value = data.zonecode;
@@ -69,7 +69,13 @@ function Signup(props) {
         defaultAddressDetailName:""
     }
 
-    
+    useEffect(() => {
+        if(!searchParams.get("provider")){
+            alert("정상적인 접근이 아닙니다.")
+            navigate("/")
+        }
+    })
+
     const [ signupUser, setSignupUser ] = useState(user);
     
     console.log(signupUser)

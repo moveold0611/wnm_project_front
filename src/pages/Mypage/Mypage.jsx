@@ -1,13 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useQueryClient } from 'react-query';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 /** @jsxImportSource @emotion/react */
 import * as S from './Style';
 import RootContainer from '../../components/RootContainer/RootContainer';
 
 function Mypage({ children }) {
+    const navigate = useNavigate()
     const queryClient = useQueryClient();
     const principal = queryClient.getQueryState("getPrincipal");
+
+    useEffect(() => {
+        if(!principal.data) {
+            alert("로그인 후 사용해주세요.")
+            navigate("/auth/signin")
+            return
+        }
+    }, [])
 
     if (principal?.data?.data?.roleName === 'ROLE_ADMIN') {
         return (

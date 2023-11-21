@@ -32,8 +32,6 @@ function BuyProduct(props) {
         }
     })
 
-    console.log(product)
-
     localStorage.removeItem("orderData")
     localStorage.removeItem("isCart")
 
@@ -72,20 +70,19 @@ function BuyProduct(props) {
             },
         }
         setSelectedProducts([...selectedProducts, newSelectedProduct]);
-        console.log(selectedProducts)
     }
-    
 
-
-
-    console.log(selectedProducts)
-
-
-    const countOnChange = (value, index) => {
+    const countOnChange = (target, index) => {
         const pdt = product.productDtlList.filter(pdt => pdt.productDtlId === selectedProducts[index].productDtlId)[0]; 
         const updateSelectedPorudcts = [...selectedProducts];
-        updateSelectedPorudcts[index].count = parseInt(value);
-        updateSelectedPorudcts[index].price = pdt.price * parseInt(value);
+        updateSelectedPorudcts[index].count = parseInt(target.value);
+        updateSelectedPorudcts[index].price = pdt.price * parseInt(target.value);
+
+        if(updateSelectedPorudcts[index].count > pdt.tempStock) {
+            alert("현재 재고 보다 많이 선택되었습니다.")
+            target.value = pdt.tempStock;
+            return
+        }
 
         setSelectedProducts([...updateSelectedPorudcts]);
     }
@@ -97,9 +94,18 @@ function BuyProduct(props) {
     }
 
     const buyNowOnClick = () => {
-        localStorage.setItem("orderData", JSON.stringify(selectedProducts));
-        localStorage.setItem("isCart", false);
-        navigate("/order")
+        if(!principal.data) {
+            alert("로그인 후 사용해주세요.")
+            navigate("/auth/signin")
+        } else {
+            if(selectedProducts.length === 0) {
+                alert("상품을 선택해주세요.")
+            } else {
+                localStorage.setItem("orderData", JSON.stringify(selectedProducts));
+                localStorage.setItem("isCart", false);
+                navigate("/order")
+            }
+        }
     }
 
     const handleAddToCartOnClick = async () => {
@@ -109,11 +115,21 @@ function BuyProduct(props) {
                     Authorization: localStorage.getItem("accessToken")
                 }
             }
-            if(window.confirm("해당 상품을 장바구니에 담겠습니까?")) {
-                addToCartApi(principal.data.data.userId, [...selectedProducts], option);
-                alert("장바구니에 상품이 정상적으로 담겼습니다.")
+            if(!principal.data) {
+                alert("로그인 후 사용해주세요.")
+                navigate("/auth/signin")
             } else {
-                alert("취소되었습니다.")
+                if(selectedProducts.length === 0) {
+                    alert("상품을 선택해주세요.")
+                } else {
+                    if(window.confirm("해당 상품을 장바구니에 담겠습니까?")) {
+                        addToCartApi(principal.data.data.userId, [...selectedProducts], option);
+                        alert("장바구니에 상품이 정상적으로 담겼습니다.")
+                        navigate(`/product/cart/${principal?.data?.data?.userId}`)
+                    } else {
+                        alert("취소되었습니다.")
+                    }
+                }
             }
         } catch(error) {
             console.log(error)
@@ -130,8 +146,10 @@ function BuyProduct(props) {
                     <h2>{product.productName}</h2>
                     <p dangerouslySetInnerHTML={{__html: product.productDetailText}}></p>
                     <div css={S.SSelectBox}>
-                        <Select css={S.SSelect} onChange={selectOnChange} options={product.productDtlList.map(pdt => {
-                            return { value: pdt.productDtlId, label: `${pdt.size.sizeName}${pdt.tempStock > 0 ? "(수량: " + pdt.tempStock + ")" : "(품절)"}` }
+                        <Select css={S.SSelect} onChange={selectOnChange} options={product.productDtlList?.map(pdt => {
+                            return {
+                                value: pdt.productDtlId,
+                                label: `${pdt.size.sizeName === "no" ? product.productName : pdt.size.sizeName}${pdt.tempStock > 0 ? "(수량: " + pdt.tempStock + ")" : "(품절)"}`};
                         })
                         }/>
                     </div>
@@ -139,8 +157,8 @@ function BuyProduct(props) {
                         {selectedProducts.map((selectedProduct, index) => 
                             <li key={index}>
                                 {product.productName}-{selectedProduct.sizeName}
-                                <input type="number" defaultValue={1} min={1} max={99} onChange={(e) => countOnChange(e.target.value, index)}/>
-                                {selectedProduct.price}
+                                <input type="number" defaultValue={1} min={1} max={99} onChange={(e) => countOnChange(e.target, index)}/>
+                                {selectedProduct.price.toLocaleString("ko-KR")}원
                                 <button onClick={() => handleDeleteProductOnClick(index)}>X</button>
                             </li>
                         )}

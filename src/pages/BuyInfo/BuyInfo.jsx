@@ -42,7 +42,15 @@ function BuyInfo(props) {
     }, [])
 
     useEffect(() => {
-        const buyPricetotal = buyProductList.reduce((total, buyProducts) => total += (buyProducts.productDtl.price * parseInt(buyProducts.count)), 0)
+        if(!principal.data) {
+            alert("로그인 후 사용해주세요.")
+            navigate("/auth/signin")
+            return
+        }
+    }, [])
+
+    useEffect(() => {
+        const buyPricetotal = buyProductList?.reduce((total, buyProducts) => total += (buyProducts.productDtl.price * parseInt(buyProducts.count)), 0)
         const shippingCost = buyPricetotal >= 50000 ? 0 : 5000;
         const finalPrice = (shippingCost + buyPricetotal);
 
@@ -178,15 +186,15 @@ function BuyInfo(props) {
                         <h2>주문 정보</h2>
                     <div css={S.InfoInputBox}>
                         <h3 css={S.STitle}>주문자</h3>
-                        <h3 css={S.SData}>{principal.data.data.name}</h3>
+                        <h3 css={S.SData}>{principal?.data?.data?.name}</h3>
                     </div>
                     <div css={S.InfoInputBox}>
                         <h3 css={S.STitle}>이메일</h3>
-                        <h3 css={S.SData}>{principal.data.data.email}</h3>
+                        <h3 css={S.SData}>{principal?.data?.data?.email}</h3>
                     </div>
                     <div css={S.InfoInputBox}>
                         <h3 css={S.STitle}>휴대전화</h3>
-                        <h3 css={S.SData}>{principal.data.data.phoneNumber}</h3>
+                        <h3 css={S.SData}>{principal?.data?.data?.phoneNumber}</h3>
                     </div>
                 </div>
 x
@@ -239,7 +247,7 @@ x
 
                 <div css={S.SProductsInfoBox}>
                         <h2>주문 상품</h2>
-                        {buyProductList.map((product, index) => 
+                        {buyProductList?.map((product, index) => 
                             <li key={index}>
                                 <div css={S.SProduct}>
                                     <img css={S.SProductImg} src={product.productDtl.productMst.productThumbnailUrl}/>

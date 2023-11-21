@@ -54,16 +54,17 @@ function App() {
       <Routes>
         <Route path="/" element={ <Main /> } />
         <Route path="/mypage" element={ <Mypage /> }/>
-        <Route path="/auth/signup" element={ <Signup /> } />
+        <Route path="/auth/signup" element={ <Signup /> } /> 
         <Route path="/auth/signin" element={ <Signin /> } />
         <Route path="/auth/oauth2/signin" element={ <OAuth2Signin /> } />
         <Route path="/useredit/:userId" element={ <EditUser /> } />
-        {/* :petType/:productCategory/:pageIndex */}
         <Route path="/products/:type/*" element={ <ProductRoute /> } />
         <Route path="/product/:productId" element={ <BuyProduct/> } />
-        <Route path="/order/" element={ <BuyInfo/> } />
+        <Route path="/order" element={ <BuyInfo/> } />
         <Route path="/orders/:userId" element={ <OrderUser /> }/>
         <Route path="/product/cart/:userId" element={ <CartProducts/> } />
+        
+        {/* 주소입력시 막기 */}
         <Route path="/admin/product" element={ <ProductRegist/> } />
         <Route path="/admin/product/edit/*" element={ <EditProduct/> }/>
         <Route path="/admin/edit/product/:productMstId" element={ <EditProductDetailPage/> }/>

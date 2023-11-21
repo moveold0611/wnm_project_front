@@ -30,6 +30,7 @@ function Header(props) {
     }
 
     const handleGoToCartOnClick = () => {
+        
         navigate(`/product/cart/${principal?.data?.data?.userId}`)
     }
 
