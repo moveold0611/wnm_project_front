@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 /** @jsxImportSource @emotion/react */
 import * as S from '../Products/Style';
-import {  getSearchedProductsApi } from '../../apis/api/product';
+import {  getProductsApi } from '../../apis/api/product';
 import RootContainer from '../../components/RootContainer/RootContainer';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -39,7 +39,8 @@ function Products(props) {
 
     const getProducts = useQuery(["getProducts", searchData], async () => {
         try {
-            const response = getSearchedProductsApi(searchData);
+
+            const response = getProductsApi(searchData);
             return await response
         } catch(error) {
             console.log(error)
