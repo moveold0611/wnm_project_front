@@ -26,7 +26,7 @@ export const updateProductApi = async (productId, productData) => {
     return response;
 }
 
-export const removeProductApi = async (productId) => {
-    const response = await instance.delete(`/api/admin/product/${productId}`);
+export const removeProductApi = async (productMstId) => {
+    const response = await instance.delete(`/api/admin/product/${productMstId}`);
     return response;
 }

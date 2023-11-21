@@ -21,6 +21,7 @@ import Incoming from "./pages/Admin/Incoming/Incoming";
 import Outgoing from "./pages/Admin/Outgoing/Outgoing";
 import AddIncoming from "./pages/Admin/Incoming/AddIncoming/AddIncoming";
 import AddOutgoing from "./pages/Admin/Outgoing/AddOutgoing/AddOutgoing";
+import RequestSample from "./sample/RequestSample";
 
 
 function App() {
@@ -73,7 +74,8 @@ function App() {
         <Route path="/admin/incoming" element={ <Incoming/> }/>       
         <Route path="/admin/incoming/add" element={ <AddIncoming/> }/>  
         <Route path="/admin/outgoing" element={ <Outgoing/> }/>       
-        <Route path="/admin/outgoing/add" element={ <AddOutgoing/> }/>       
+        <Route path="/admin/outgoing/add" element={ <AddOutgoing/> }/>
+        <Route path="/sample" element={ <RequestSample/> } />    
       </Routes>
     </RootLayout>
   );
