@@ -15,7 +15,6 @@ function BuyInfo(props) {
     const principal = queryClient.getQueryState("getPrincipal");
 
     const [ buyProductList, setBuyProductList ] = useState(JSON.parse(localStorage.getItem("orderData")));
-    // const [ products, setProducts ] = useState([]);
 
     const [ shippingUserInfo, setShippingUserInfo ] = useState({
         name: principal?.data?.data?.name,
@@ -32,28 +31,6 @@ function BuyInfo(props) {
     });
 
     const addressDetailNameRef = useRef();
-    
-    // const getProducts = useQuery(["getProducts"], async () => {
-    //     try {
-    //         const set = new Set(buyProductList.map(buyProduct => buyProduct.productId));
-    //         const buyProductIds = [...set];
-    //         const promises = buyProductIds.map(productId => {
-    //             return new Promise((resolve, reject) => {
-    //                 resolve(getProductApi(productId));
-    //             })
-    //         })
-
-    //         Promise.all(promises)
-    //         .then(response => {
-    //             setProducts(response.map(resp => resp.data));
-    //         })
-    //     } catch(error) {
-    //         console.log(error)
-    //     }
-    // })
-
-    // console.log(buyProductList)
-
 
     useEffect(() => {
         const iamprot = document.createElement("script");
@@ -173,7 +150,7 @@ function BuyInfo(props) {
                     shippingAddressNumber: shippingUserInfo.addressNumber,
                     shippingAddressName: shippingUserInfo.addressName,
                     shippingAddressDetailName: shippingUserInfo.addressDetailName,
-                    orderData: [...buyProductList],
+                    orderProductData: [...buyProductList],
                     isCart: localStorage.getItem("isCart")
                 }
 
@@ -189,10 +166,6 @@ function BuyInfo(props) {
             }
         });
     }
-    
-    // if(getProducts.isLoading) {
-    //     return <></>;
-    // }
 
     return (
         <RootContainer>

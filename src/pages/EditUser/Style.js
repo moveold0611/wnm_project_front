@@ -154,17 +154,19 @@ export const SEditButton = css`
     border-radius: 10px;
     padding: 10px;
     font-size: 15px;
-    color: wheat;
-    background-color: black;
+    color: white;
+    background-color: #0064ff;
+    cursor: pointer;
 `;
 
 export const SCancelbutton = css`
     margin: 10px;
-    border: none;
+    border: 1px solid black;
     border-radius: 10px;
     padding: 10px;
     font-size: 15px;
-    background-color: darkgray;
+    color: black;
+    cursor: pointer;
 `;
 
 export const SDeleteButtonBox = css`
@@ -174,11 +176,12 @@ export const SDeleteButtonBox = css`
 
     & > button {
         margin: 10px;
-        border: none;
+        border: 1px solid red;
         border-radius: 10px;
         padding: 5px;
         width: 100px;
         font-size: 15px;
-        background-color: orangered;
+        color: red;
+        cursor: pointer;
     }
 `;

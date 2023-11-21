@@ -29,39 +29,63 @@ function BuyProduct(props) {
         refetchOnWindowFocus: false,
         onSuccess: response => {
             setProduct(response.data)
-            console.log(response)
         }
     })
-    
+
+    console.log(product)
+
     localStorage.removeItem("orderData")
-    
+    localStorage.removeItem("isCart")
+
     if(getProduct.isLoading) {
         return<></>
     }
-
+    
     const selectOnChange = (option) => {
-        if(product[option.value] === 0){
+        const productDtl = product.productDtlList.filter(pdt => pdt.productDtlId === option.value)[0];
+
+        if(productDtl.tempStock === 0) {
             alert("해당 상품은 품절입니다.");
             return;
         }
-        if(selectedProducts.filter(selectedProduct => selectedProduct.value === option.value).length > 0){
+
+        if(selectedProducts.filter(selectedProduct => selectedProduct.productDtlId === productDtl.productDtlId).length > 0){
             alert("해당 상품은 이미 선택된 상품 입니다.");
             return;
         }
 
         const newSelectedProduct = {
-            size: option.value.replace("productSize", ""),
+            productDtlId: productDtl.productDtlId,
+            sizeName: productDtl.size.sizeName,
+            price: productDtl.price,
             count: 1,
-            totalPrice: product.productPrice,
-            productId: product.productId
+            productDtl: {
+                price: productDtl.price,
+                size: {
+                    sizeId: productDtl.size.sizeId,
+                    sizeName: productDtl.size.sizeName
+                },
+                productMst: {
+                    productName: product.productName,
+                    productThumbnailUrl: product.productThumbnailUrl
+                }
+            },
         }
         setSelectedProducts([...selectedProducts, newSelectedProduct]);
+        console.log(selectedProducts)
     }
+    
+
+
+
+    console.log(selectedProducts)
+
 
     const countOnChange = (value, index) => {
+        const pdt = product.productDtlList.filter(pdt => pdt.productDtlId === selectedProducts[index].productDtlId)[0]; 
         const updateSelectedPorudcts = [...selectedProducts];
         updateSelectedPorudcts[index].count = parseInt(value);
-        updateSelectedPorudcts[index].totalPrice = product.productPrice * parseInt(value);
+        updateSelectedPorudcts[index].price = pdt.price * parseInt(value);
 
         setSelectedProducts([...updateSelectedPorudcts]);
     }
@@ -106,23 +130,17 @@ function BuyProduct(props) {
                     <h2>{product.productName}</h2>
                     <p dangerouslySetInnerHTML={{__html: product.productDetailText}}></p>
                     <div css={S.SSelectBox}>
-                        {product.petTypeId === 1 && product.productCategoryId === 4 ? <Select css={S.SSelect} onChange={selectOnChange} options={
-                            [
-                                { value: 'productSizeXS', label: `XS${product.productSizeXS === 0 ? "(품절)" : ""}`},
-                                { value: 'productSizeS', label: `S${product.productSizeS === 0 ? "(품절)" : ""}`},
-                                { value: 'productSizeM', label: `M${product.productSizeM === 0 ? "(품절)" : ""}`},
-                                { value: 'productSizeL', label: `L${product.productSizeL === 0 ? "(품절)" : ""}`},
-                                { value: 'productSizeXL', label: `XL${product.productSizeXL === 0 ? "(품절)" : ""}`},
-                                { value: 'productSizeXXL', label: `XXL${product.productSizeXXL === 0 ? "(품절)" : ""}`}
-                            ]
-                        }/> : <div>NoSize</div>}
+                        <Select css={S.SSelect} onChange={selectOnChange} options={product.productDtlList.map(pdt => {
+                            return { value: pdt.productDtlId, label: `${pdt.size.sizeName}${pdt.tempStock > 0 ? "(수량: " + pdt.tempStock + ")" : "(품절)"}` }
+                        })
+                        }/>
                     </div>
                     <ul css={S.SOrderListBox}>
                         {selectedProducts.map((selectedProduct, index) => 
                             <li key={index}>
-                                {product.productName}-{selectedProduct.size}
-                                <input type="number" defaultValue={1} min={1} max={3} onChange={(e) => countOnChange(e.target.value, index)}/>
-                                {selectedProduct.totalPrice.toLocaleString("ko-KR") + "원"}
+                                {product.productName}-{selectedProduct.sizeName}
+                                <input type="number" defaultValue={1} min={1} max={99} onChange={(e) => countOnChange(e.target.value, index)}/>
+                                {selectedProduct.price}
                                 <button onClick={() => handleDeleteProductOnClick(index)}>X</button>
                             </li>
                         )}
@@ -130,7 +148,7 @@ function BuyProduct(props) {
                     <div css={S.SPriceInfo}>
                         <p>Total</p>
                         <h3>{selectedProducts.reduce((total, selectedProduct) => {
-                            return total += selectedProduct.totalPrice}, 0).toLocaleString("ko-KR")}원</h3>
+                            return total += selectedProduct.price}, 0).toLocaleString("ko-KR")}원</h3>
                     </div>
                     <div css={S.SButtonBox}>
                         <button onClick={buyNowOnClick}>BUY NOW</button>

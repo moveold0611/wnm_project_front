@@ -40,16 +40,16 @@ export const SUserRelatedBox =css`
         font-size: 13px;
         text-decoration: none;
         color: black;
-        transition: color 0.5s ease;
 
-        &:hover {
+        :hover {
+            transition: color 0.5s ease;
             color: darkgray;
         }
+    }
 
-        & > h3 {
-            margin: 0px;
+    & > a > h3 {
+        margin: 0px;
             padding: 0px 8px;
-        }
     }
 `;
 
@@ -61,6 +61,12 @@ export const SCartIcon = css`
     padding: 0px 8px;
     font-size: large;
     cursor: pointer;
+
+    :hover {
+            transition: color 0.5s ease;
+            color: darkgray;
+        }
+        
 `;
 
 export const SBottomContainer = css`
@@ -89,19 +95,19 @@ export const SMenuBox = css`
     width: 550px;
 
     cursor: pointer;
-
+    
     & > li {
         position: relative;
 
         font-size: 16px;
         line-height: 30px;
-        transition: color 0.5s ease;
         list-style-type: none;
-
-            &:hover {
-                color: darkgray;
-            }
+        
+        :hover {
+            transition: color 0.5s ease;
+            color: darkgray;
         }
+    }
 `;
 
 export const SSubMenuBox = (isSubMenu) => css`
@@ -125,7 +131,7 @@ export const SSubMenuBox = (isSubMenu) => css`
         transition: color 0.5s ease;
         list-style-type: none;
         
-        &:hover {
+        :hover {
             color: darkgray;
         }
 

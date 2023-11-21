@@ -50,8 +50,6 @@ function Products(props) {
         
     })
 
-    console.log(getProducts)
-
     useEffect(() => {
         setSearchValue("");
         setSearchData({
@@ -76,7 +74,6 @@ function Products(props) {
 
     const handleProductOnclick = (e) => {
         navigate(`/product/${e.target.id}`)
-        console.log(e.target.id)
     }
 
     const handleMinusPageClick = () => {

@@ -4,6 +4,7 @@ import * as S from './Style';
 import RootContainer from '../../components/RootContainer/RootContainer';
 import { useQuery, useQueryClient } from 'react-query';
 import Mypage from '../Mypage/Mypage';
+import logo from '../../images/Logo/Logo.png'
 
 function OrderUser(props) {
     const queryClient = useQueryClient();
@@ -39,18 +40,16 @@ function OrderUser(props) {
                     </thead>
                     <tbody>
                             <tr css={S.SCartTdBox}>
+                                <td>2023.11.20[1]</td>
                                 <td>
-
+                                    <img css={S.SProductImg} src={logo}/>
                                 </td>
+                                <td>상품명</td>
+                                <td>M</td>
+                                <td>300,000원</td>
+                                <td>배송중</td>
                                 <td>
-                                    <img css={S.SProductImg} />
-                                </td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td>
-                                    <button></button>
+                                    <button>리뷰쓰기</button>
                                 </td>
                             </tr>
                     </tbody>

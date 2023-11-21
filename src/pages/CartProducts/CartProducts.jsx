@@ -39,10 +39,8 @@ function CartProducts(props) {
         }
     })
 
-    console.log(cartProducts)
-
     useEffect(() => {
-        const cartPricetotal = cartProducts.reduce((total, cartProduct) => total += cartProduct.productPrice * parseInt(cartProduct.count), 0)
+        const cartPricetotal = cartProducts.reduce((total, cartProduct) => total += cartProduct.productDtl.price * parseInt(cartProduct.count), 0)
         const shippingCost = cartPricetotal >= 50000 ? 0 : 5000;
         const finalPrice = (shippingCost + cartPricetotal);
 
@@ -156,6 +154,17 @@ function CartProducts(props) {
                             <td> + {priceInfo.shippingCost.toLocaleString("ko-KR")}원</td>
                             <td>{priceInfo.finalPrice.toLocaleString("ko-KR")}원</td>
                         </tr>
+                        {/* useEffect(() => {
+        const cartPricetotal = cartProducts.reduce((total, cartProduct) => total += cartProduct.productPrice * parseInt(cartProduct.count), 0)
+        const shippingCost = cartPricetotal >= 50000 ? 0 : 5000;
+        const finalPrice = (shippingCost + cartPricetotal);
+
+        setPriceInfo({
+            "cartPricetotal": cartPricetotal,
+            "shippingCost": shippingCost,
+            "finalPrice": finalPrice
+        });
+    }, [cartProducts]) */}
                     </tbody>
                 </table>
                 <div css={S.SButtonBox}>

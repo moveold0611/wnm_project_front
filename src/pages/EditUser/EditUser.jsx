@@ -84,7 +84,6 @@ function EditUser(props) {
         window.location.replace("/");
     }
 
-
     const HandleDeleteUser = async () => {
         if(window.confirm("정말로 탈퇴하시겠습니까?")) {
         try {

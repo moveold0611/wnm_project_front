@@ -50,13 +50,10 @@ function Mypage({ children }) {
                             <div css={S.SSubConatainer}>
                                 <ul>
                                     <li>
-                                        <h4><Link to="/orders/:userId">주문내역조회</Link></h4>
+                                        <h4><Link to={`/orders/${principal?.data?.data.userId}`}>주문내역조회</Link></h4>
                                     </li>
                                     <li>
                                         <h4><Link to={`/useredit/${principal?.data?.data.userId}`}>회원정보</Link></h4>
-                                    </li>
-                                    <li>
-                                        <h4><Link to="/orderTracking">배송조회</Link></h4>
                                     </li>
                                     <li>
                                         <h4><Link to="/review">리뷰</Link></h4>
