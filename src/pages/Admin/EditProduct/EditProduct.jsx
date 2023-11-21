@@ -125,6 +125,12 @@ function EditProduct(props) {
         }
     }
 
+    const handleNavigateJoinProductDetailPageClick = (productMstId) => {
+        navigate(`/admin/product/join/${productMstId}`)
+    }
+
+    
+
     return (
         <RootContainer>
             <div css={S.SLayout}>
@@ -160,7 +166,8 @@ function EditProduct(props) {
                         <div>상품번호: {product.productMstId}</div>
                         <div>상품명: {product.productName}</div> 
                         <div>동물종류: {product.petTypeName}</div>
-                        <div>카테고리: {product.productCategoryName}</div> 
+                        <div>카테고리: {product.productCategoryName}</div>
+                        <button onClick={()=>handleNavigateJoinProductDetailPageClick(product.productMstId)} css={S.SButton2}>정보조회</button> 
                         <button onClick={()=>handleEditProductClick(product.productMstId)} css={S.SButton2}>수정</button>
                         <button onClick={()=>handleRemoveProductClick(product.productMstId)} css={S.SButton2}>삭제</button>
                     </div>
