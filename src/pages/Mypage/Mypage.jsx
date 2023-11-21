@@ -20,7 +20,7 @@ function Mypage(props) {
                             <h4><Link to="/admin/users">회원관리</Link></h4>
                         </li>
                         <li>
-                            <h4><Link to="/admin/orders">회원주문관리</Link></h4>
+                            <h4><Link to="/admin/order">회원주문관리</Link></h4>
                         </li>
                         <li>
                             <h4><Link to="/admin/product">상품등록</Link></h4>
