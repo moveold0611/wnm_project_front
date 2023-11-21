@@ -1,39 +1,52 @@
 import { css } from '@emotion/react';
 
-export const STitle = css`
-    position: absolute;
-    right: 240px;
-    font-size: 20px;
-    color: #333;
-`;
+export const SContainer = css`
+    justify-content: center;
+    align-items: center;
+    width: 1400px;
 
-export const SList = css`
-    position: absolute;
-    top: 300px;
-    left: 100px;
-
-    & > ul > li {
-            list-style: none;
-            cursor: pointer;
-            padding: 8px 0;
-            transition: color 0.5s ease;
-
-        & > h4 > a {
-            text-decoration: none;
-            color: #333;
-            font-size: 19px;
-            &:hover {
-            color: #dfdfdf;
-        }
-        }
+    & > h2 {
+        text-align: end;
     }
 `;
 
-export const SContent = css`
-    width: 1100px;
-    height: 500px;
-    position: absolute;
-    top: 320px;
-    right: 220px;
-    border: 1px solid #dbdbdb;
+export const SSubConatainer = css`
+    display: flex;
+
+    & > ul {
+        margin-top: 0px;
+        padding: 0px 15px;
+    }
+    
+    & > ul > li {
+        margin: 5px 0px;
+        padding: 5px 0px;
+        border: none;
+        border-radius: 15px;
+        width: 125px;
+        list-style-type: none;
+        text-align: center;
+        background-color: #a9a9a9;
+    }
+
+    & > ul > li > h4 {
+        margin: 10px 0px;
+    }
+
+    & > ul > li > h4 > a {
+        font-size: 20px;
+        font-weight: 500;
+        text-decoration: none;
+        color: black;
+    }
+    
+`;
+
+export const SChangeContainer = css`
+    display: flex;
+    justify-content: center;
+    margin: 0px 2px;
+    border-radius: 20px;
+    width: 100%;
+    background-color: #f5f5f5;
 `;

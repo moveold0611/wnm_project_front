@@ -1,154 +1,130 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as S from "./Style";
-import { instance } from '../../apis/config/instance';
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { storage } from '../../apis/firebase/firebase';
-import { useQuery } from 'react-query';
-import { useParams, useSearchParams } from 'react-router-dom';
-import { deleteUserApi, getUserApi, updateUserApi } from '../../apis/api/user';
+import { useQueryClient } from 'react-query';
+import { deleteUserApi, updateUserApi } from '../../apis/api/user';
+import Mypage from '../Mypage/Mypage';
+import { useNavigate, useParams } from 'react-router-dom';
 /** @jsxImportSource @emotion/react */
 
 function EditUser(props) {
+    const navigate = useNavigate()
+    const queryClient = useQueryClient();
+    const principal = queryClient.getQueryState("getPrincipal");
 
-     // daum주소코드
-        const sample6_execDaumPostcode = () => {
+    const profileFileRef = useRef();
+    const [ uploadFile, setUploadFile ] = useState();
+    const { userId } = useParams();
+    
+    const [ userEditData, setUserEditData ] = useState({
+        nickname: principal?.data?.data?.nickname,
+        defaultAddressNumber: principal?.data?.data?.defaultAddressNumber,
+        defaultAddressName: principal?.data?.data?.defaultAddressName,
+        defaultAddressDetailName: principal?.data?.data?.defaultAddressDetailName,
+        profileUrl: principal?.data?.data?.profileUrl
+    });
+
+    const addressDetailNameRef = useRef();
+
+    useEffect(() => {
+        if(!principal.data) {
+            navigate("/auth/signin")
+            return
+        }
+    }, [])
+
+    const handleFindAddressClick = () => {
         const script = document.createElement('script');
         script.src = '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
         script.async = true;
         document.body.appendChild(script);
-    
+        
         script.onload = () => {
             new window.daum.Postcode({
-            oncomplete: function(data) {
-                console.log(data)
-                var addr = '';
-                var extraAddr = '';
-    
-                if (data.userSelectedType === 'R') {
-                    addr = data.roadAddress;
-                } else {
-                    addr = data.jibunAddress;
+                oncomplete: function(data) {
+                    var addr = '';
+                    var extraAddr = '';
+                    
+                    if (data.userSelectedType === 'R') {
+                        addr = data.roadAddress;
+                    } else {
+                        addr = data.jibunAddress;
+                    }
+                    if(data.userSelectedType === 'R'){
+                        if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                            extraAddr += data.bname;
+                        }
+                        if(data.buildingName !== '' && data.apartment === 'Y'){
+                            extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                        }
+                        if(extraAddr !== ''){
+                            extraAddr = ' (' + extraAddr + ')';
+                        }
+                    }
+
+                    setUserEditData({
+                        ...userEditData,
+                        defaultAddressNumber: data.zonecode,
+                        defaultAddressName: addr,
+                        defaultAddressDetailName: ""
+                    })
+
+                    addressDetailNameRef.current.focus();
                 }
-                if(data.userSelectedType === 'R'){
-                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
-                        extraAddr += data.bname;
-                    }
-                    if(data.buildingName !== '' && data.apartment === 'Y'){
-                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
-                    }
-                    if(extraAddr !== ''){
-                        extraAddr = ' (' + extraAddr + ')';
-                    }
-                
-                }
-                console.log(data.zonecode)
-                document.getElementById('sample6_postcode').value = data.zonecode;
-                document.getElementById("sample6_address").value = addr;
-                setUserData({
-                    ...userData,
-                    defaultAddressNumber: data.zonecode,
-                    defaultAddressName: addr
-                });
-                document.getElementById("sample6_detailAddress").value = "";
-                document.getElementById("sample6_detailAddress").focus();
-            }
             }).open();
         };
-    
+        
         return () => {
             document.body.removeChild(script);
         };
     } // daum 주소코드 끝
 
-    const profileFileRef = useRef();
-    const [profileImgSrc, setProfileImgSrc] = useState(); 
-    const [ uploadFile, setUploadFile ] = useState();
-    const { userId } = useParams();
-
-    const [ userData, setUserData ] = useState({
-        nickname: '',
-        phoneNumber: '',
-        defaultAddressNumber: '',
-        defaultAddressName: '',
-        defaultAddressDetailName: '',
-        profileUrl: ''
-    });
-
-    const [ user, setUser ] = useState({});
-
-    const getUser = useQuery(["getUser"], async () => {
-        try {
-            return await getUserApi(userId);
-        }catch(error) {
-            console.log(error)
-        }
-    }, {
-        refetchOnWindowFocus: false,
-        onSuccess: userresponse => {
-            setUser(userresponse.data)
-            setUserData({
-                nickname: userresponse.data.nickname,
-                phoneNumber: userresponse.data.phoneNumber,
-                defaultAddressNumber: userresponse.data.defaultAddressNumber,
-                defaultAddressName: userresponse.data.defaultAddressName,
-                defaultAddressDetailName: userresponse.data.defaultAddressDetailName,
-                profileUrl: userresponse.data.profileUrl
-            })
-            setProfileImgSrc(userresponse.data.profileUrl)
-        }
-    })
-
-
-    const HandleUserEditChange = (e) => {
-        setUserData({
-            ...userData,
+    const HandleUserEditDataOnChange = (e) => {
+        setUserEditData({
+            ...userEditData,
             [e.target.name]: e.target.value
         });
     }
     
-        const HandleCancle = () => {
-            window.location.replace("/");
-        }
-    
+    const HandleCancle = () => {
+        window.location.replace("/");
+    }
 
-        const HandleDeleteUser = async () => {
-            if(window.confirm("정말로 탈퇴하시겠습니까?")) {
-            try {
-                const response = await deleteUserApi(userId);
-                if (response.status === 200) {
-                    alert("회원 탈퇴 처리가 완료되었습니다.");
-                    window.location.replace("/");
-                } else {
-                    throw new Error("사용자 삭제 실패");
-                }
-            } catch (error) {
-                console.error(error);
+    const HandleDeleteUser = async () => {
+        if(window.confirm("정말로 탈퇴하시겠습니까?")) {
+        try {
+            const response = await deleteUserApi(userId);
+            if (response.status === 200) {
+                alert("회원 탈퇴 처리가 완료되었습니다.");
+                window.location.replace("/");
+            } else {
+                throw new Error("사용자 삭제 실패");
             }
-            }else {
-                return;
-            }
+        } catch (error) {
+            console.error(error);
         }
-
-
-        const HandleProfileUploadClick = () => {
-            if(window.confirm("프로필 사진을 변경하시겠습니까?")) {
-                profileFileRef.current.click();
-            }
+        }else {
+            return;
         }
+    }
 
-        const HandleProfileChange = async (e) => {
-            const file = e.target.files[0];
-            const reader = new FileReader();
-            setUploadFile(file);
+    const HandleProfileUploadClick = () => {
+        if(window.confirm("프로필 사진을 변경하시겠습니까?")) {
+            profileFileRef.current.click();
+        }
+    }
 
-            reader.onload = (e) => {
-                const profileImageUrl = e.target.result;
-                setProfileImgSrc(profileImageUrl);
+    const HandleProfileChange = async (e) => {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        setUploadFile(file);
+
+        reader.onload = (e) => {
+            setUserEditData({...userEditData, profileUrl: e.target.result});
         };
         reader.readAsDataURL(file);
     };
-
-
 
     const HandleEditUser = async () => {
         try {
@@ -158,8 +134,8 @@ function EditUser(props) {
                         .then((uploadTaskSnapshot) => {
                             getDownloadURL(storageRef)
                                 .then((downloadUrl) => {
-                                    userData.profileUrl = downloadUrl;
-                                    updateUserApi(userId, userData).then((response) => {
+                                    userEditData.profileUrl = downloadUrl;
+                                    updateUserApi(userId, userEditData).then((response) => {
                                         if (response.status === 200) {
                                             alert("회원정보 수정이 완료되었습니다.");
                                             window.location.reload();
@@ -171,8 +147,7 @@ function EditUser(props) {
                         });
                         
                 }else {
-                    console.log(userData)
-                    const response = await updateUserApi(userId, userData)
+                    const response = await updateUserApi(userId, userEditData)
                         if (response.status === 200) {
                             alert("회원정보 수정이 완료되었습니다.");
                             window.location.reload();
@@ -182,7 +157,6 @@ function EditUser(props) {
                 }
         } catch (error) {
             console.log(error)
-            console.log(userData)
             if (Object.keys(error.response).includes("nickname")) {
                 console.log(error.response)
                 alert("이미 사용중인 닉네임입니다. 다시 입력하세요.");
@@ -191,49 +165,80 @@ function EditUser(props) {
             }
         }
     }
-    
-
-
-    const testButtonOnClick = () => {
-        console.log(user)
-        console.log(userData)
-        console.log(uploadFile);
-        if(!uploadFile) {
-            console.log(1)
-        }else {
-            console.log(uploadFile.name);
-        }
-        console.log(profileImgSrc)
-    }
 
 return (
-    <div>
-        <div css={S.SinfoHeader}>
-            <div>
+    <Mypage>
+        <div css={S.SContainer}>
+            <h2>회원 정보 수정</h2>
+            <div css={S.SProfilContainer}>
                 <div css={S.SimgBox} onClick={HandleProfileUploadClick}>
-                    <img src={profileImgSrc} alt="프로필 이미지" />
+                    <img src={userEditData.profileUrl} alt="프로필 이미지" />
                 </div>
+                <p>프로필 변경 시 클릭하여 변경해주세요.</p>
                 <input css={S.Sfile} type="file" onChange={HandleProfileChange} ref={profileFileRef} />
             </div>
-        </div>
-        <div>
-            <div>닉네임 <input type="text" name='nickname' defaultValue={user.nickname} onChange={HandleUserEditChange} /></div>
-            <div>이름 <input type="text" defaultValue={user.name} disabled /></div>
-            <div>이메일 <input type="text" defaultValue={user.email} disabled /></div>
-            <div>휴대전화 <input type="text" defaultValue={user.phoneNumber} disabled /></div>
-            <div>우편번호 <input type="text" disabled name='defaultAddressNumber' id="sample6_postcode" defaultValue={user.defaultAddressNumber} onChange={HandleUserEditChange}/></div>
-            <div><input type="button" name='findDefaultAddressNumber' onClick={sample6_execDaumPostcode} defaultValue="우편번호 찾기" css={S.Sbutton} /></div>
-            <div>주소 <input type="text" disabled name='defaultAddressName' id="sample6_address" defaultValue={user.defaultAddressName} onChange={HandleUserEditChange}/></div>
-            <div>상세주소 <input type="text" name='defaultAddressDetailName' id="sample6_detailAddress" defaultValue={user.defaultAddressDetailName} onChange={HandleUserEditChange}/></div>
-        </div>
-        <div><button onClick={HandleEditUser}>회원정보수정</button></div>
-        <div><button onClick={HandleCancle}>취소</button></div>
-        <div><button onClick={HandleDeleteUser}>회원탈퇴</button></div>
-        <div><button onClick={testButtonOnClick}>테스트 버튼</button></div>
-    </div>  
+            <div css={S.SUserInfoContiner}>
+                <div css={S.SUserInfoBox}> 
+                    <h3 css={S.STitle}>닉네임</h3> 
+                    <input type="text" 
+                        name='nickname' 
+                        value={userEditData.nickname}
+                        onChange={HandleUserEditDataOnChange} />
+                </div>
+                <div css={S.SUserInfoBox}> 
+                    <h3 css={S.STitle}>이름</h3> 
+                    <input type="text" 
+                        value={principal?.data?.data?.name}
+                        disabled={true}/>
+                </div>
+                <div css={S.SUserInfoBox}> 
+                    <h3 css={S.STitle}>이메일</h3> 
+                    <input type="text" 
+                        value={principal?.data?.data?.email}
+                        disabled={true}/>
+                </div>
+                <div css={S.SUserInfoBox}> 
+                    <h3 css={S.STitle}>휴대전화</h3> 
+                    <input type="text" 
+                        value={principal?.data?.data?.phoneNumber}
+                        disabled={true}/>
+                </div>
+                <div css={S.SUserInfoBox}>
+                <h3 css={S.STitle}>주소</h3>
+                        <div css={S.SAddressBox}>
+                            <div css={S.SAddressNumberBox}>
+                                <input type="text" 
+                                    placeholder='우편번호'
+                                    value={userEditData.defaultAddressNumber}
+                                    disabled={true}/>
+                                <div css={S.SAddressButtonBox}>
+                                    <button name='findDefaultAddressNumber' 
+                                        onClick={handleFindAddressClick}>
+                                    주소검색</button>
+                                </div>
+                            </div>
+                            <input type="text" 
+                                placeholder='주소' 
+                                value={userEditData.defaultAddressName}
+                                disabled={true}/>
+                            <input type="text" 
+                                placeholder='상세주소' 
+                                name="defaultAddressDetailName"
+                                value={userEditData.defaultAddressDetailName}
+                                onChange={HandleUserEditDataOnChange}
+                                ref={addressDetailNameRef}/>
+                        </div>
+                </div>
+            </div>
+                    <div css={S.SEditButtonBox}>
+                        <button css={S.SEditButton} onClick={HandleEditUser}>회원정보수정</button>
+                        <button css={S.SCancelbutton} onClick={HandleCancle}>취소</button>
+                    </div>
+                    <div css={S.SDeleteButtonBox}>
+                        <button onClick={HandleDeleteUser}>회원탈퇴</button>
+                    </div>
+            </div>
+        </Mypage>  
     );
 }
-    
-
-
 export default EditUser;

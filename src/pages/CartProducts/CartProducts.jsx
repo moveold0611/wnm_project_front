@@ -11,15 +11,16 @@ function CartProducts(props) {
     const navigate = useNavigate()
     const queryCient = useQueryClient();
     const principal = queryCient.getQueryState("getPrincipal");
-    
+
     const [ cartProducts, setCartProducts ] = useState([]);
     const [ selectedCartProduct, setSelectedCartProduct ] = useState([]);
     const [ priceInfo, setPriceInfo ] = useState({
         cartPricetotal: 0,
         shippingCost: 0,
-        finalPrice: 0
+        finalPrice: 0,
+        selectPrice: 0
     });
-
+    
     const getCartProducts = useQuery(["getCartProducts"], async () => {
         try {
             const option = {
@@ -35,23 +36,34 @@ function CartProducts(props) {
     }, {
         refetchOnWindowFocus: false,
         onSuccess: response => {
-            setCartProducts(response.data)
+            setCartProducts(!response?.data ? [] : response.data);
         }
     })
 
     console.log(cartProducts)
 
     useEffect(() => {
-        const cartPricetotal = cartProducts.reduce((total, cartProduct) => total += cartProduct.productPrice * parseInt(cartProduct.count), 0)
+        if(!principal.data) {
+            alert("로그인 후 사용해주세요.")
+            navigate("/auth/signin")
+            return
+        }
+    }, [])
+
+    useEffect(() => {
+        const cartPricetotal = cartProducts?.reduce((total, cartProduct) => total += cartProduct.productDtl.price * parseInt(cartProduct.count), 0)
         const shippingCost = cartPricetotal >= 50000 ? 0 : 5000;
+        const selectPrice = selectedCartProduct?.reduce((total, selectProduct) => total += selectProduct.productDtl.price * parseInt(selectProduct.count), 0)
         const finalPrice = (shippingCost + cartPricetotal);
 
         setPriceInfo({
             "cartPricetotal": cartPricetotal,
             "shippingCost": shippingCost,
-            "finalPrice": finalPrice
+            "finalPrice": finalPrice,
+            "selectPrice": selectPrice
         });
-    }, [cartProducts])
+    }, [cartProducts, selectedCartProduct])
+
 
     const handleCheckOnChange = (cartId, checked) => {
         if(checked) {
@@ -96,9 +108,27 @@ function CartProducts(props) {
     }
 
     const handleBuyOnClick = () => {
-        localStorage.setItem("orderData", JSON.stringify(selectedCartProduct))
-        localStorage.setItem("isCart", true);
-        navigate("/order")
+        if(!principal.data) {
+            alert("로그인 후 사용해주세요.")
+            navigate("/auth/signin")
+        } else {
+            console.log(selectedCartProduct)
+            if(selectedCartProduct.length === 0) {
+                alert("상품을 선택해주세요.")
+            } else {
+                const overStockProducts = cartProducts.filter(cp => selectedCartProduct.filter(scp => scp.productDtlId === cp.productDtl.productDtlId)[0].count > cp.productDtl.tempStock);
+                console.log(overStockProducts)
+                if(overStockProducts.length > 0) {
+                    alert(`상품의 재고가 부족합니다.\n${overStockProducts.map(osp => {
+                        return `${osp.productDtl.productMst.productName}[size: ${osp.productDtl.size.sizeName}]\n`
+                    }).join("")}`)
+                    return
+                } 
+                localStorage.setItem("orderData", JSON.stringify(selectedCartProduct))
+                localStorage.setItem("isCart", true);
+                navigate("/order")
+            }
+        }
     }
 
     if(getCartProducts.isLoading) {
@@ -122,7 +152,7 @@ function CartProducts(props) {
                         </tr>
                     </thead>
                     <tbody>
-                        {cartProducts.map((cartProduct, index) => (
+                        {cartProducts?.map((cartProduct, index) => (
                             <tr key={index} css={S.SCartTdBox}>
                                 <td>
                                     <input type="checkBox" onChange={(e) => handleCheckOnChange(cartProduct.cartId, e.target.checked)} />
@@ -147,14 +177,16 @@ function CartProducts(props) {
                         <tr css={S.SPriceThBox}>
                             <th>총 상품 금액</th>
                             <th>총 배송비</th>
-                            <th>결제 예정 금액</th>
+                            <th>선택 상품 <br/> 결제 예정 금액</th>
+                            <th>전체 상품 <br/> 결제 예정 금액</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr css={S.SPriceTdBox}>
-                            <td>{priceInfo.cartPricetotal.toLocaleString("ko-KR")}원</td>
-                            <td> + {priceInfo.shippingCost.toLocaleString("ko-KR")}원</td>
-                            <td>{priceInfo.finalPrice.toLocaleString("ko-KR")}원</td>
+                            <td>{priceInfo.cartPricetotal?.toLocaleString("ko-KR")}원</td>
+                            <td> + {priceInfo.shippingCost?.toLocaleString("ko-KR")}원</td>
+                            <td>{priceInfo.selectPrice?.toLocaleString("ko-KR")}원</td>
+                            <td>{priceInfo.finalPrice?.toLocaleString("ko-KR")}원</td>
                         </tr>
                     </tbody>
                 </table>

@@ -1,12 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useQueryClient } from 'react-query';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 /** @jsxImportSource @emotion/react */
 import * as S from './Style';
+import RootContainer from '../../components/RootContainer/RootContainer';
 
-function Mypage(props) {
+function Mypage({ children }) {
+    const navigate = useNavigate()
     const queryClient = useQueryClient();
     const principal = queryClient.getQueryState("getPrincipal");
+
+    useEffect(() => {
+        if(!principal.data) {
+            alert("로그인 후 사용해주세요.")
+            navigate("/auth/signin")
+            return
+        }
+    }, [])
 
     if (principal?.data?.data?.roleName === 'ROLE_ADMIN') {
         return (
@@ -45,32 +55,27 @@ function Mypage(props) {
         );
     } else {
         return (
-                <div>
-                    <div css={S.STitle}>
+                <RootContainer>
+                    <div css={S.SContainer}>
                         <h2>My Page</h2>
+                            <div css={S.SSubConatainer}>
+                                <ul>
+                                    <li>
+                                        <h4><Link to={`/orders/${principal?.data?.data.userId}`}>주문내역조회</Link></h4>
+                                    </li>
+                                    <li>
+                                        <h4><Link to={`/useredit/${principal?.data?.data.userId}`}>회원정보</Link></h4>
+                                    </li>
+                                    <li>
+                                        <h4><Link to="/review">리뷰</Link></h4>
+                                    </li>
+                                </ul>
+                                <div css={S.SChangeContainer}>
+                                    {children}
+                                </div>
+                            </div>
                     </div>
-                    <div css={S.SList}>
-                        <ul>
-                            <li>
-                                <h4><Link to="/orders">주문내역조회</Link></h4>
-                            </li>
-                            <li>
-                                <h4><Link to={`/useredit/${principal?.data?.data.userId}`}>회원정보</Link></h4>
-                            </li>
-                            <li>
-                                <h4><Link to="/cart">장바구니</Link></h4>
-                            </li>
-                            <li>
-                                <h4><Link to="/orderTracking">배송조회</Link></h4>
-                            </li>
-                            <li>
-                                <h4><Link to="/review">리뷰</Link></h4>
-                            </li>
-                        </ul>
-                    </div>
-                    <div css={S.SContent}>
-                    </div>
-                </div>
+                </RootContainer>
             );
     }
 }

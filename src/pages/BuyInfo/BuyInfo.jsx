@@ -15,7 +15,6 @@ function BuyInfo(props) {
     const principal = queryClient.getQueryState("getPrincipal");
 
     const [ buyProductList, setBuyProductList ] = useState(JSON.parse(localStorage.getItem("orderData")));
-    // const [ products, setProducts ] = useState([]);
 
     const [ shippingUserInfo, setShippingUserInfo ] = useState({
         name: principal?.data?.data?.name,
@@ -32,28 +31,6 @@ function BuyInfo(props) {
     });
 
     const addressDetailNameRef = useRef();
-    
-    // const getProducts = useQuery(["getProducts"], async () => {
-    //     try {
-    //         const set = new Set(buyProductList.map(buyProduct => buyProduct.productId));
-    //         const buyProductIds = [...set];
-    //         const promises = buyProductIds.map(productId => {
-    //             return new Promise((resolve, reject) => {
-    //                 resolve(getProductApi(productId));
-    //             })
-    //         })
-
-    //         Promise.all(promises)
-    //         .then(response => {
-    //             setProducts(response.map(resp => resp.data));
-    //         })
-    //     } catch(error) {
-    //         console.log(error)
-    //     }
-    // })
-
-    // console.log(buyProductList)
-
 
     useEffect(() => {
         const iamprot = document.createElement("script");
@@ -65,7 +42,15 @@ function BuyInfo(props) {
     }, [])
 
     useEffect(() => {
-        const buyPricetotal = buyProductList.reduce((total, buyProducts) => total += (buyProducts.productDtl.price * parseInt(buyProducts.count)), 0)
+        if(!principal.data) {
+            alert("로그인 후 사용해주세요.")
+            navigate("/auth/signin")
+            return
+        }
+    }, [])
+
+    useEffect(() => {
+        const buyPricetotal = buyProductList?.reduce((total, buyProducts) => total += (buyProducts.productDtl.price * parseInt(buyProducts.count)), 0)
         const shippingCost = buyPricetotal >= 50000 ? 0 : 5000;
         const finalPrice = (shippingCost + buyPricetotal);
 
@@ -173,7 +158,7 @@ function BuyInfo(props) {
                     shippingAddressNumber: shippingUserInfo.addressNumber,
                     shippingAddressName: shippingUserInfo.addressName,
                     shippingAddressDetailName: shippingUserInfo.addressDetailName,
-                    orderData: [...buyProductList],
+                    orderProductData: [...buyProductList],
                     isCart: localStorage.getItem("isCart")
                 }
 
@@ -189,10 +174,6 @@ function BuyInfo(props) {
             }
         });
     }
-    
-    // if(getProducts.isLoading) {
-    //     return <></>;
-    // }
 
     return (
         <RootContainer>
@@ -205,18 +186,18 @@ function BuyInfo(props) {
                         <h2>주문 정보</h2>
                     <div css={S.InfoInputBox}>
                         <h3 css={S.STitle}>주문자</h3>
-                        <h3 css={S.SData}>{principal.data.data.name}</h3>
+                        <h3 css={S.SData}>{principal?.data?.data?.name}</h3>
                     </div>
                     <div css={S.InfoInputBox}>
                         <h3 css={S.STitle}>이메일</h3>
-                        <h3 css={S.SData}>{principal.data.data.email}</h3>
+                        <h3 css={S.SData}>{principal?.data?.data?.email}</h3>
                     </div>
                     <div css={S.InfoInputBox}>
                         <h3 css={S.STitle}>휴대전화</h3>
-                        <h3 css={S.SData}>{principal.data.data.phoneNumber}</h3>
+                        <h3 css={S.SData}>{principal?.data?.data?.phoneNumber}</h3>
                     </div>
                 </div>
-
+x
                 <div css={S.SShippingInfoBox}>
                     <h2>배송지</h2>
                     <div css={S.SShippingInfoInputBox}>
@@ -266,7 +247,7 @@ function BuyInfo(props) {
 
                 <div css={S.SProductsInfoBox}>
                         <h2>주문 상품</h2>
-                        {buyProductList.map((product, index) => 
+                        {buyProductList?.map((product, index) => 
                             <li key={index}>
                                 <div css={S.SProduct}>
                                     <img css={S.SProductImg} src={product.productDtl.productMst.productThumbnailUrl}/>
@@ -303,6 +284,12 @@ function BuyInfo(props) {
                             <h3 css={S.STitle}>결제 수단 선택</h3>
                             <button css={S.SKakaoPay} onClick={() => handlePaymentSubmit("kakao")}>카카오 결제하기</button>
                             <button css={S.STossPay}onClick={() => handlePaymentSubmit("toss")}>토스 결제하기</button>
+                        </div>
+                </div>
+
+                <div css={S.SCancelBox}>
+                        <div css={S.SCancel}>
+                            <button>주문 취소</button>
                         </div>
                 </div>
                 

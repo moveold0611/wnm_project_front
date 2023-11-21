@@ -39,8 +39,8 @@ function Products(props) {
 
     const getProducts = useQuery(["getProducts", searchData], async () => {
         try {
+
             const response = getProductsApi(searchData);
-            console.log(response)
             return await response
         } catch(error) {
             console.log(error)
@@ -48,6 +48,7 @@ function Products(props) {
     }, {
         retry: 0,
         refetchOnWindowFocus: false
+        
     })
 
     useEffect(() => {
@@ -74,7 +75,6 @@ function Products(props) {
 
     const handleProductOnclick = (e) => {
         navigate(`/product/${e.target.id}`)
-        console.log(e.target.id)
     }
 
     const handleMinusPageClick = () => {
