@@ -1,4 +1,6 @@
 import React from 'react';
+/** @jsxImportSource @emotion/react */
+import * as S from './Style';
 import { useQuery } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getProductMstApi } from '../../../apis/api/product';
@@ -22,35 +24,80 @@ function JoinProductDetail(props) {
     }
 
     const handleReturnToEditPageClick = () => {
-        navigate("/admin/product/edit");
+        navigate(-1);
     }
 
     return (
         <Mypage>
-            <div>
-                <h3>상품 이름: {getProduct?.data?.data.productName}</h3>
-                <p>상품 추가 일자: {getProduct?.data?.data.createDate}</p>
-                <p>상품 설명: {getProduct?.data?.data.productDetailText}</p>
-                <p>동물 종류 ID: {getProduct?.data?.data.petTypeId}</p>
-                <p>동물 종류 이름: {getProduct?.data?.data.petTypeName}</p>
-                <p>카테고리 ID: {getProduct?.data?.data.productCategoryId}</p>
-                <p>카테고리 이름: {getProduct?.data?.data.productCategoryName}</p>
-                <img src={getProduct?.data?.data.productThumbnailUrl} alt=''/>
-                <p>상품 썸네일 이미지 주소: {getProduct?.data?.data.productThumbnailUrl}</p>
-                <img src={getProduct?.data?.data.productDetailUrl} alt=''/>
-                <p>상품 상세정보 이미지 주소: {getProduct?.data?.data.productDetailUrl}</p> 
-                {getProduct?.data?.data.productDtlList?.map(dtl => {
-                    return <div key={dtl.productDtlId}>
-                        <p>상품 상세 Id: {dtl.productDtlId}</p>
-                        <p>상품 가격: {dtl.price}</p>
-                        <p>사이즈 번호: {dtl.sizeId}</p>
-                        <p>사이즈명: {dtl.size.sizeName}</p>
-                        <p>실제 재고: {dtl.actualStock}</p>
-                        <p>실제 재고 - 주문 재고: {dtl.tempStock}</p>
-                        <p>---------------------------------------------</p>
+            <div css={S.SContainer}>
+            <h2>상품 상세 정보</h2>
+                <div css={S.SubContainer}>
+                    <div css={S.SLayout}>
+                        <table css={S.STableBox}>
+                            <tr>
+                                <th>상품 추가 일자</th>
+                                <td>{getProduct?.data?.data.createDate}</td>
+                            </tr>
+                            <tr>
+                                <th>상품 이름</th>
+                                <td>{getProduct?.data?.data.productName}</td>
+                            </tr>
+                            <tr>
+                                <th>상품 설명</th>
+                                <td>{getProduct?.data?.data.productDetailText}</td>
+                            </tr>
+                            <tr>
+                                <th>동물 종류 이름[ID]</th>
+                                <td>{getProduct?.data?.data.petTypeName}[{getProduct?.data?.data.petTypeId}]</td>
+                            </tr>
+                            <tr>
+                                <th>카테고리 이름[ID]</th>
+                                <td>{getProduct?.data?.data.productCategoryName}[{getProduct?.data?.data.productCategoryId}]</td>
+                            </tr>
+                            <tr>
+                                <th>상품 마스터 ID</th>
+                                <td>{getProduct?.data?.data.productDtlList[0].productMstId}</td>
+                            </tr>
+                        </table>
+                        {getProduct?.data?.data.productDtlList?.map(dtl => {
+                        return <table key={dtl.productDtl} css={S.STableBox}>
+                            <tr>
+                                <th>상품 상세(사이즈별) ID</th>
+                                <td>{dtl.productDtlId}</td>
+                            </tr>
+                            <tr>
+                                <th>가격</th>
+                                <td>{dtl.price}</td>
+                            </tr>
+                            <tr>
+                                <th>사이즈[사이즈ID]</th>
+                                <td>{dtl.size.sizeName}[{dtl.sizeId}]</td>
+                            </tr>
+                            <tr>
+                                <th>실제 재고</th>
+                                <td>{dtl.actualStock}</td>
+                            </tr>
+                            <tr>
+                                <th>임시 재고(실제 재고 - 주문재고)</th>
+                                <td>{dtl.tempStock}</td>
+                            </tr>
+                        </table>
+                        })}
+                        <h2>상품 썸네일 이미지</h2>
+                        <img src={getProduct?.data?.data.productThumbnailUrl} alt='' width={'700px'}/>
+                        <div css={S.SMidBox}>
+                            <h3>상품 썸네일 이미지 URL</h3>
+                            <p>{getProduct?.data?.data.productThumbnailUrl}</p>
+                        </div>
+                        <h2>상품 상세 정보 이미지</h2>
+                        <img src={getProduct?.data?.data.productDetailUrl} alt='' width={'700px'}/>
+                        <div css={S.SMidBox}>
+                            <h3>상품 상세 정보 이미지 URL</h3>
+                            <p>{getProduct?.data?.data.productDetailUrl}</p>
+                        </div>
+                    <button css={S.SButton} onClick={handleReturnToEditPageClick}>전체 상품 리스트</button>
                     </div>
-                })}
-                <button onClick={handleReturnToEditPageClick}>관리페이지</button>
+                </div>
             </div>
         </Mypage>
     );

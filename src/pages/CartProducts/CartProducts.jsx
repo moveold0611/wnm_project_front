@@ -40,8 +40,6 @@ function CartProducts(props) {
         }
     })
 
-    console.log(cartProducts)
-
     useEffect(() => {
         if(!principal.data) {
             alert("로그인 후 사용해주세요.")
@@ -112,14 +110,12 @@ function CartProducts(props) {
             alert("로그인 후 사용해주세요.")
             navigate("/auth/signin")
         } else {
-            console.log(selectedCartProduct)
             if(selectedCartProduct.length === 0) {
                 alert("상품을 선택해주세요.")
             } else {
-                const overStockProducts = cartProducts.filter(cp => selectedCartProduct.filter(scp => scp.productDtlId === cp.productDtl.productDtlId)[0].count > cp.productDtl.tempStock);
-                console.log(overStockProducts)
+                const overStockProducts = cartProducts.filter(cp => selectedCartProduct.filter(scp => scp.productDtlId === cp.productDtl.productDtlId)[0]?.count > cp.productDtl.tempStock);
                 if(overStockProducts.length > 0) {
-                    alert(`상품의 재고가 부족합니다.\n${overStockProducts.map(osp => {
+                    alert(`상품의 재고가 부족합니다.\n${overStockProducts?.map(osp => {
                         return `${osp.productDtl.productMst.productName}[size: ${osp.productDtl.size.sizeName}]\n`
                     }).join("")}`)
                     return

@@ -17,7 +17,7 @@ export const SContainer = css`
     }
 `
 
-export const SCartThBox = css`
+export const SThBox = css`
     & > th {
         
         border: 1px solid black;
@@ -27,7 +27,7 @@ export const SCartThBox = css`
     }
 `;
 
-export const SCartTdBox = css`
+export const STdBox = css`
     & > td {
         border-bottom: 1px solid black;
         padding: 10px 15px;
@@ -35,13 +35,10 @@ export const SCartTdBox = css`
     }
 
     & > td > button {
-        border: none;
+        border: 1px solid black;
         border-radius: 10px;
-        width: 100px;
-        height: 50px;
-
-        color: white;
-        background-color: black;
+        padding: 5.5px;
+        width: 85px;
         cursor: pointer;
 
         :hover {

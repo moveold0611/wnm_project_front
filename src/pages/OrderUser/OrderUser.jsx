@@ -5,13 +5,13 @@ import RootContainer from '../../components/RootContainer/RootContainer';
 import { useQuery, useQueryClient } from 'react-query';
 import Mypage from '../Mypage/Mypage';
 import { getUserOrderApi } from '../../apis/api/order';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 function OrderUser(props) {
+    const navigate = useNavigate();
+
     const queryClient = useQueryClient();
     const principal = queryClient.getQueryState("getPrincipal");
-    const userId = useParams();
-
 
     const [ searchData, setSearchData ] = useState({
         searchOption: "all",
@@ -40,10 +40,13 @@ function OrderUser(props) {
         }
     })
 
+    const handleNavigateProductDetailClick = (orderId) => {
+        navigate(`/orders/${orderId}`)
+    }
+
     if(getOrderUserProduct.isLoading) {
         return <></>;
     }
-
 
     return (
         <Mypage>
@@ -51,7 +54,7 @@ function OrderUser(props) {
                 <h2>주문내역 조회</h2>
                 <table>
                     <thead>
-                        <tr css={S.SCartThBox}>
+                        <tr css={S.SThBox}>
                             <th>
                                 주문일자<br/>
                                 [주문번호]
@@ -59,49 +62,41 @@ function OrderUser(props) {
                             <th>이미지</th>
                             <th>상품명</th>
                             <th>주문 총액</th>
-                            <th>주문처리</th>
-                            <th>주문상세</th>
+                            <th>주문 처리</th>
+                            <th>주문 상세</th>
                             <th>상태</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {userOrder?.map((data, index) => {
-
+                        {userOrder?.map(data => {
                             let totalPrice = 0;
                             data.getUserOrderProductsRespDtos.map(product => {
                                 totalPrice += product.count * product.productDtl.price
                             })
-
-                            return <tr key={data.orderId} css={S.SCartTdBox}>
+                            return <tr key={data.orderId} css={S.STdBox}>
                                 <td>
                                     {data.orderDate}<br/>
                                     [{data.orderId}]
                                 </td>
-
                                 <td>
                                     <img css={S.SProductImg} src={data.getUserOrderProductsRespDtos[0].productDtl.productMst.productThumbnailUrl}/>
                                 </td>
 
                                 <td>
-                                    {data.getUserOrderProductsRespDtos[0].productDtl.productMst.productName}
+                                    {data.getUserOrderProductsRespDtos[0].productDtl.productMst.productName}<br/>
                                     {data.getUserOrderProductsRespDtos.length > 1 && ` 외 ${data.getUserOrderProductsRespDtos.length - 1}개의 상품`}
                                 </td>
-
-
                                 <td>
-                                    {totalPrice}
+                                    {totalPrice?.toLocaleString("ko-KR")}원
                                 </td>
-                                
                                 <td>
                                     {data.orderStatus === 0 && "배송준비"}
                                     {data.orderStatus === 1 && "배송중"}
                                     {data.orderStatus === 2 && "배송완료"}
                                 </td>
-
                                 <td>
-                                    <button>주문상세</button>
+                                    <button onClick={() => handleNavigateProductDetailClick(data.orderId)}>주문 상세</button> 
                                 </td>
-
                                 <td>
                                     <button>리뷰쓰기</button>
                                 </td>

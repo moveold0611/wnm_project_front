@@ -11,8 +11,8 @@ import { getPrincipalApi } from "./apis/api/account";
 import ProductRegist from "./pages/Admin/ProductRegist/ProductRegist";
 import BuyInfo from "./pages/BuyInfo/BuyInfo";
 import CartProducts from "./pages/CartProducts/CartProducts";
-import EditProductDetailPage from "./pages/Admin/EditProductDetailPage/EditProductDetailPage";
 import EditProduct from "./pages/Admin/EditProduct/EditProduct";
+import EditProductDetailPage from "./pages/Admin/EditProduct/EditProductDetailPage/EditProductDetailPage"
 import EditUser from "./pages/EditUser/EditUser";
 import Mypage from "./pages/Mypage/Mypage";
 import ProductRoute from "./routes/ProductRoute/ProductRoute";
@@ -26,6 +26,7 @@ import AddOutgoing from "./pages/Admin/Outgoing/AddOutgoing/AddOutgoing";
 import JoinProductDetail from "./pages/Admin/JoinProductDetail/JoinProductDetail";
 import AdminOrder from "./pages/Admin/AdminOrder/AdminOrder";
 import AdminOrderDetail from "./pages/Admin/AdminOrder/AdminOrderDetail/AdminOrderDetail";
+import OrderUserDetail from "./pages/OrderUser/OrderUserDetail/OrderUserDetail";
 
 
 function App() {
@@ -71,12 +72,12 @@ function App() {
         <Route path="/product/:productId" element={ <BuyProduct/> } />
         <Route path="/order" element={ <BuyInfo/> } />
         <Route path="/orders" element={ <OrderUser /> }/>
+        <Route path="/orders/:orderId" element={ <OrderUserDetail /> }/>
         <Route path="/product/cart/:userId" element={ <CartProducts/> } />
         
         {/* 주소입력시 막기 */}
         <Route path="/admin/product" element={ <ProductRegist/> } />
         <Route path="/admin/product/edit/*" element={ <EditProduct/> }/>
-
         <Route path="/admin/edit/product/:productMstId" element={ <EditProductDetailPage/> }/> 
         <Route path="/admin/incoming" element={ <Incoming/> }/>       
         <Route path="/admin/incoming/add" element={ <AddIncoming/> }/>  

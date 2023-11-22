@@ -1,13 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { useQuery } from 'react-query';
-import { getProductApi, getProductMstApi, getProductsApi, updateProductApi } from '../../../apis/api/product';
+import { getProductsApi, updateProductApi } from '../../../../apis/api/product';
 import { useParams } from 'react-router-dom';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
-import { storage } from '../../../apis/firebase/firebase';
-import RootContainer from '../../../components/RootContainer/RootContainer';
+import { storage } from '../../../../apis/firebase/firebase';
 /** @jsxImportSource @emotion/react */
 import * as S from './Style';
-import Mypage from '../../Mypage/Mypage';
+import Mypage from '../../../Mypage/Mypage';
 
 function EditProductDetailPage(props) {
 
@@ -190,7 +189,7 @@ function EditProductDetailPage(props) {
     return (
         <Mypage>
             <div css={S.SContainer}>
-                <h2>상품 수정</h2>
+                <h2>상품 정보 수정</h2>
                     <div css={S.SubContainer}>
 
                     <div css={S.SImg}>
@@ -204,7 +203,7 @@ function EditProductDetailPage(props) {
                         </div>
                         <div><h1 css={S.SH1}>상품 상세 이미지 수정</h1></div>
                         <div>
-                            <img src={productDetailImgSrc} alt='상품 디테일 이미지' onChange={handleProductDataOnChange}/>
+                            <img src={productDetailImgSrc} alt='상품 디테일 이미지' width={'700px'} onChange={handleProductDataOnChange}/>
                         </div>
                         <div>
                             <input type="file" id="fileInput" onChange={handleDetailImgChange} css={S.SFileSelect} />
@@ -213,30 +212,30 @@ function EditProductDetailPage(props) {
                         <div><h1 css={S.SH1}>상품 정보 수정</h1></div>
                     </div>
                     <div css={S.SInformation}>
-                        <div css={S.SInfoInput}>
+                        <div css={S.SInfoNameInput}>
                             <h2>상품명</h2>
                             <input type="text" name='productName' defaultValue={getProduct?.data?.data?.productName} onChange={handleProductDataOnChange}/>
                         </div>
-                        <div css={S.SInfoInput}>
-                            <h2>상품설명</h2>
-                            <input type="text" name='productDetailText' defaultValue={getProduct?.data?.data?.productDetailText} onChange={handleProductDataOnChange}/>
+                        <div css={S.SInfoTextInput}>
+                            <h2>상품 설명</h2>
+                            <textarea type="text" name='productDetailText' defaultValue={getProduct?.data?.data?.productDetailText} onChange={handleProductDataOnChange}/>
                         </div>
-                        <div css={S.SInfoInput}>
-                            <h2>사이즈, 가격 </h2> 
+                        <div css={S.SInfoSizeInput}>
+                            <h2>사이즈별 가격</h2> 
                             <ul>
                             {productData.no === "" ?
                                 <>
-                                    XS : <input value={productData.XS} type='text' name='XS' onChange={handleProductDataOnChange}/>
-                                    S : <input value={productData.S} type='text' name='S' onChange={handleProductDataOnChange}/>
-                                    M : <input value={productData.M} type='text' name='M' onChange={handleProductDataOnChange}/>
-                                    L : <input value={productData.L} type='text' name='L' onChange={handleProductDataOnChange}/>
-                                    XL : <input value={productData.XL} type='text' name='XL' onChange={handleProductDataOnChange}/>
-                                    XXL : <input value={productData.XXL} type='text' name='XXL' onChange={handleProductDataOnChange}/>
+                                    <li><label>XS</label><input value={productData.XS} type='text' name='XS' onChange={handleProductDataOnChange}/></li>
+                                    <li><label>S</label><input value={productData.S} type='text' name='S' onChange={handleProductDataOnChange}/></li>
+                                    <li><label>M</label><input value={productData.M} type='text' name='M' onChange={handleProductDataOnChange}/></li>
+                                    <li><label>L</label><input value={productData.L} type='text' name='L' onChange={handleProductDataOnChange}/></li>
+                                    <li><label>XL</label><input value={productData.XL} type='text' name='XL' onChange={handleProductDataOnChange}/></li>
+                                    <li><label>XXL</label><input value={productData.XXL} type='text' name='XXL' onChange={handleProductDataOnChange}/></li>
                                 </> :
                                 <>
-                                    no : <input value={productData.no} type='text' name='no' onChange={handleProductDataOnChange}/>
+                                    <li>NO SIZE <input value={productData.no} type='text' name='no' onChange={handleProductDataOnChange}/></li>
                                 </>}
-                                <button onClick={handleTester}>test</button>
+                                {/* <button onClick={handleTester}>test</button> */}
                             </ul>
                         </div>
                     </div>
