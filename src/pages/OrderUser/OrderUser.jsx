@@ -12,6 +12,7 @@ function OrderUser(props) {
     const principal = queryClient.getQueryState("getPrincipal");
     const userId = useParams();
 
+
     const [ searchData, setSearchData ] = useState({
         searchOption: "all",
         searchValue: "",
@@ -43,8 +44,6 @@ function OrderUser(props) {
         return <></>;
     }
 
-    console.log(userOrder)
-
 
     return (
         <Mypage>
@@ -59,26 +58,50 @@ function OrderUser(props) {
                             </th>
                             <th>이미지</th>
                             <th>상품명</th>
-                            <th>사이즈</th>
-                            <th>상품구매금액</th>
+                            <th>주문 총액</th>
                             <th>주문처리</th>
+                            <th>주문상세</th>
                             <th>상태</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {userOrder?.map(data => {
+                        {userOrder?.map((data, index) => {
+
+                            let totalPrice = 0;
+                            data.getUserOrderProductsRespDtos.map(product => {
+                                totalPrice += product.count * product.productDtl.price
+                            })
+
                             return <tr key={data.orderId} css={S.SCartTdBox}>
                                 <td>
                                     {data.orderDate}<br/>
                                     [{data.orderId}]
-                                    </td>
-                                <td>
-                                    <img css={S.SProductImg} src={0}/>
                                 </td>
-                                <td>상품명</td>
-                                <td>M</td>
-                                <td>300,000원</td>
-                                <td>배송중</td>
+
+                                <td>
+                                    <img css={S.SProductImg} src={data.getUserOrderProductsRespDtos[0].productDtl.productMst.productThumbnailUrl}/>
+                                </td>
+
+                                <td>
+                                    {data.getUserOrderProductsRespDtos[0].productDtl.productMst.productName}
+                                    {data.getUserOrderProductsRespDtos.length > 1 && ` 외 ${data.getUserOrderProductsRespDtos.length - 1}개의 상품`}
+                                </td>
+
+
+                                <td>
+                                    {totalPrice}
+                                </td>
+                                
+                                <td>
+                                    {data.orderStatus === 0 && "배송준비"}
+                                    {data.orderStatus === 1 && "배송중"}
+                                    {data.orderStatus === 2 && "배송완료"}
+                                </td>
+
+                                <td>
+                                    <button>주문상세</button>
+                                </td>
+
                                 <td>
                                     <button>리뷰쓰기</button>
                                 </td>
