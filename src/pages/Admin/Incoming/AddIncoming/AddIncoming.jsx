@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { addIncoming } from '../../../../apis/api/incoming';
+import Mypage from '../../../Mypage/Mypage';
 
 function AddIncoming(props) {
     const [ productDtlId, setProductDtlId ] = useState(); 
@@ -23,11 +24,11 @@ function AddIncoming(props) {
     }
 
     return (
-        <div>
+        <Mypage>
             <input name='productDtlId' type='text' placeholder='productDtlId' onChange={handleInputChange} value={productDtlId}/>  
             <input name='count' type='text' placeholder='count' onChange={handleInputChange} value={count}/>
             <button onClick={handleAddIncomingClick}>추가 입고</button>
-        </div>
+        </Mypage>
     );
 }
 

@@ -7,6 +7,7 @@ import { storage } from '../../../apis/firebase/firebase';
 import RootContainer from '../../../components/RootContainer/RootContainer';
 /** @jsxImportSource @emotion/react */
 import * as S from './Style';
+import Mypage from '../../Mypage/Mypage';
 
 function EditProductDetailPage(props) {
 
@@ -187,61 +188,64 @@ function EditProductDetailPage(props) {
 
 
     return (
-        <RootContainer>
-            <div css={S.SLayout}>
+        <Mypage>
+            <div css={S.SContainer}>
+                <h2>상품 수정</h2>
+                    <div css={S.SubContainer}>
 
-                <div css={S.SImg}>
-                    <div><h1 css={S.SH1}>상품 메인 이미지 수정</h1></div>
-                    <div>
-                        <img src={productThumbnailSrc} alt='썸네일 이미지' width={'700px'} onChange={handleProductDataOnChange}/>
+                    <div css={S.SImg}>
+                        <div><h1 css={S.SH1}>상품 메인 이미지 수정</h1></div>
+                        <div>
+                            <img src={productThumbnailSrc} alt='썸네일 이미지' width={'700px'} onChange={handleProductDataOnChange}/>
+                        </div>
+                        <div>
+                            <input type="file" id="fileInput" onChange={handleThumbnailChange} css={S.SFileSelect} />
+                            <label htmlFor="fileInput" css={S.SLabelUpload}>메인 이미지 수정 파일 업로드</label>
+                        </div>
+                        <div><h1 css={S.SH1}>상품 상세 이미지 수정</h1></div>
+                        <div>
+                            <img src={productDetailImgSrc} alt='상품 디테일 이미지' onChange={handleProductDataOnChange}/>
+                        </div>
+                        <div>
+                            <input type="file" id="fileInput" onChange={handleDetailImgChange} css={S.SFileSelect} />
+                            <label htmlFor="fileInput" css={S.SLabelUpload}>상세이미지 수정 파일 업로드</label>
+                        </div>
+                        <div><h1 css={S.SH1}>상품 정보 수정</h1></div>
                     </div>
-                    <div>
-                        <input type="file" id="fileInput" onChange={handleThumbnailChange} css={S.SFileSelect} />
-                        <label htmlFor="fileInput" css={S.SLabelUpload}>메인 이미지 수정 파일 업로드</label>
+                    <div css={S.SInformation}>
+                        <div css={S.SInfoInput}>
+                            <h2>상품명</h2>
+                            <input type="text" name='productName' defaultValue={getProduct?.data?.data?.productName} onChange={handleProductDataOnChange}/>
+                        </div>
+                        <div css={S.SInfoInput}>
+                            <h2>상품설명</h2>
+                            <input type="text" name='productDetailText' defaultValue={getProduct?.data?.data?.productDetailText} onChange={handleProductDataOnChange}/>
+                        </div>
+                        <div css={S.SInfoInput}>
+                            <h2>사이즈, 가격 </h2> 
+                            <ul>
+                            {productData.no === "" ?
+                                <>
+                                    XS : <input value={productData.XS} type='text' name='XS' onChange={handleProductDataOnChange}/>
+                                    S : <input value={productData.S} type='text' name='S' onChange={handleProductDataOnChange}/>
+                                    M : <input value={productData.M} type='text' name='M' onChange={handleProductDataOnChange}/>
+                                    L : <input value={productData.L} type='text' name='L' onChange={handleProductDataOnChange}/>
+                                    XL : <input value={productData.XL} type='text' name='XL' onChange={handleProductDataOnChange}/>
+                                    XXL : <input value={productData.XXL} type='text' name='XXL' onChange={handleProductDataOnChange}/>
+                                </> :
+                                <>
+                                    no : <input value={productData.no} type='text' name='no' onChange={handleProductDataOnChange}/>
+                                </>}
+                                <button onClick={handleTester}>test</button>
+                            </ul>
+                        </div>
                     </div>
-                    <div><h1 css={S.SH1}>상품 상세 이미지 수정</h1></div>
-                    <div>
-                        <img src={productDetailImgSrc} alt='상품 디테일 이미지' onChange={handleProductDataOnChange}/>
+                    <div css={S.SSubmit}>
+                        <button onClick={handleUpdateSubmit} css={S.SLabelUpload}>등록하기</button>
                     </div>
-                    <div>
-                        <input type="file" id="fileInput" onChange={handleDetailImgChange} css={S.SFileSelect} />
-                        <label htmlFor="fileInput" css={S.SLabelUpload}>상세이미지 수정 파일 업로드</label>
-                    </div>
-                    <div><h1 css={S.SH1}>상품 정보 수정</h1></div>
-                </div>
-                <div css={S.SInformation}>
-                    <div css={S.SInfoInput}>
-                        <h2>상품명</h2>
-                        <input type="text" name='productName' defaultValue={getProduct?.data?.data?.productName} onChange={handleProductDataOnChange}/>
-                    </div>
-                    <div css={S.SInfoInput}>
-                        <h2>상품설명</h2>
-                        <input type="text" name='productDetailText' defaultValue={getProduct?.data?.data?.productDetailText} onChange={handleProductDataOnChange}/>
-                    </div>
-                    <div css={S.SInfoInput}>
-                        <h2>사이즈, 가격 </h2> 
-                        <ul>
-                        {productData.no === "" ?
-                            <>
-                                XS : <input value={productData.XS} type='text' name='XS' onChange={handleProductDataOnChange}/>
-                                S : <input value={productData.S} type='text' name='S' onChange={handleProductDataOnChange}/>
-                                M : <input value={productData.M} type='text' name='M' onChange={handleProductDataOnChange}/>
-                                L : <input value={productData.L} type='text' name='L' onChange={handleProductDataOnChange}/>
-                                XL : <input value={productData.XL} type='text' name='XL' onChange={handleProductDataOnChange}/>
-                                XXL : <input value={productData.XXL} type='text' name='XXL' onChange={handleProductDataOnChange}/>
-                            </> :
-                            <>
-                                no : <input value={productData.no} type='text' name='no' onChange={handleProductDataOnChange}/>
-                            </>}
-                            <button onClick={handleTester}>test</button>
-                        </ul>
-                    </div>
-                </div>
-                <div css={S.SSubmit}>
-                    <button onClick={handleUpdateSubmit} css={S.SLabelUpload}>등록하기</button>
                 </div>
             </div>
-        </RootContainer>
+        </Mypage>
     );
 }
 

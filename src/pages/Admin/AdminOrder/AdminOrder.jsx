@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
-import { getOrdersForAdmin, getUserOrder, updateOrderStatus } from '../../../apis/api/order';
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
+import * as S from './Style';
+import { getOrdersForAdmin, updateOrderStatus } from '../../../apis/api/order';
 import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
+import Mypage from '../../Mypage/Mypage';
 
 function AdminOrder(props) {
     const navigate = useNavigate()
@@ -34,6 +38,8 @@ function AdminOrder(props) {
         retry: 0,
         refetchOnWindowFocus: false
     })
+
+    console.log()
 
     if(getOrders.isLoading) {
         return <></>
@@ -73,45 +79,78 @@ function AdminOrder(props) {
     }
 
     return (
-        <div>
-            <select option={searchOption} name='searchOption' onChange={handleSearchDataChange}>
-                {searchOption.map(option => {
-                    return <option key={option.value} value={option.value} label={option.value}></option>
-                })}
-            </select>
-            <select option={sortOption} name='sortOption' onChange={handleSearchDataChange}>
-                {sortOption.map(sort => {
-                    return <option key={sort.value} value={sort.value} label={sort.value}></option>
-                })}
-            </select>
-            <input type="text" name='searchValue' onChange={handleSearchDataChange}/>
-            <button onClick={handleSearchOrderClick}>검색</button>
-            <div>
-                {getOrders?.data?.data.map(data => {
-                    return <div key={data.orderId}>
-                        <p>주문번호: {data.orderId}</p>
-                        <p>받는사람: {data.shippingName}</p>
-                        <p>사용자번호: {data.userId}</p>
-                        <p>전화번호: {data.shippingPhone}</p>
-                        <p>주문일자: {data.orderDate}</p>
-                        <p>배송상태: {data.orderStatus === 0 && "배송준비"}
-                        {data.orderStatus === 1 && "배송중"}
-                        {data.orderStatus === 2 && "배송완료"}
-                        <select option={status} onChange={handleOrderStatusChange}>
-                        {status.map(st => {
-                            return <option key={st.value} value={st.value} label={st.label}></option>
+        <Mypage>
+            <div css={S.SContainer}>
+                <h2>회원 주문 정보 리스트</h2>
+                <div css={S.SSelectBox}>
+                    <select option={searchOption} name='searchOption' onChange={handleSearchDataChange}>
+                        {searchOption.map(option => {
+                            return <option key={option.value} value={option.value} label={option.value}></option>
                         })}
-                        </select>
-                        <button onClick={()=>handleUpdateOrderStatusClick(data)}>배송상태변경</button> </p>
-                        <p>우편번호: {data.shippingAddressNumber}</p>
-                        <p>주소: {data.shippingAddressName}</p>
-                        <p>상세주소: {data.shippingAddressDetailName}</p>
-                        <button onClick={() => handleNavigateProductDetailClick(data.orderId)}>배송상세</button>                   
-                        <p>-------------------------------------------------------------------------</p>
-                    </div>
-                })}
+                    </select>
+                    <select option={sortOption} name='sortOption' onChange={handleSearchDataChange}>
+                        {sortOption.map(sort => {
+                            return <option key={sort.value} value={sort.value} label={sort.value}></option>
+                        })}
+                    </select>
+                    <input type="text" name='searchValue' onChange={handleSearchDataChange}/>
+                    <button onClick={handleSearchOrderClick}>검색</button>
+                </div>
+                <table>
+                    <thead>
+                        <tr css={S.SThBox}>
+                            <th>
+                                주문 일자<br/>
+                                [주문번호]
+                            </th>
+                            <th>주문자 번호</th>
+                            <th>받는 사람</th>
+                            <th>휴대전화</th>
+                            <th>주소</th>
+                            <th>배송 상태</th>
+                            <th>배송 상태 설정</th>
+                            <th>배송 상세 정보</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {getOrders?.data?.data.map(data => {
+                            return <tr key={data.orderId} css={S.STdBox}>
+                                <td>
+                                    {data.orderDate}<br/>
+                                    [{data.orderId}]
+                                </td>
+                                <td>{data.userId}</td>
+                                <td>{data.shippingName}</td>
+                                <td>{data.shippingPhone}</td>
+                                <td>
+                                    우편번호 :[{data.shippingAddressNumber}]<br/>
+                                    {data.shippingAddressName}<br/>
+                                    {data.shippingAddressDetailName}
+                                </td>
+                                <td>
+                                    {data.orderStatus === 0 && "배송준비"}
+                                    {data.orderStatus === 1 && "배송중"}
+                                    {data.orderStatus === 2 && "배송완료"}
+                                </td>
+                                <td>
+                                    <div css={S.SSettingBox}>
+                                        <select option={status} onChange={handleOrderStatusChange}>
+                                            {status.map(st => {
+                                                return <option key={st.value} value={st.value} label={st.label}></option>
+                                            })}
+                                        </select>
+                                        <button onClick={()=>handleUpdateOrderStatusClick(data)}>배송상태변경</button>
+                                    </div>
+                                </td>
+                                <td>
+                                    <button onClick={() => handleNavigateProductDetailClick(data.orderId)}>배송상세</button>  
+                                </td>
+                            </tr>
+                        })}
+                    </tbody>
+                </table>
             </div>
-        </div>
+        </Mypage>
     );
 }
 

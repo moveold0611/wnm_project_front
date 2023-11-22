@@ -4,7 +4,7 @@ import * as S from './Style';
 import { getProductsApi, removeProductApi } from '../../../apis/api/product';
 import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
-import RootContainer from '../../../components/RootContainer/RootContainer'
+import Mypage from '../../Mypage/Mypage';
 
 
 function EditProduct(props) {
@@ -132,51 +132,77 @@ function EditProduct(props) {
     
 
     return (
-        <RootContainer>
-            <div css={S.SLayout}>
-            <div css={S.STopContainer}>
-                <select option={petType} onChange={handleSearchSelectChange} name='petTypeName' css={S.SSelect}>
-                    {petType.map(pt => {
-                        return <option key={pt.value} label={pt.label} value={pt.value} />
-                    })}
-                </select>
-                <select option={category} onChange={handleSearchSelectChange} name='productCategoryName' css={S.SSelect}>
-                    {category.map(ct => {
-                        return <option key={ct.value} label={ct.label} value={ct.value}/>
-                    })}
-                </select>
-                <select option={sortOption} onChange={handleSearchSelectChange} name='sortOption' css={S.SSelect}>
-                    {sortOption.map(so => {
-                        return <option key={so.value}  label={so.label} value={so.value}/>
-                    })}
-                </select>
-                <select option={searchOption} onChange={handleSearchSelectChange} name='searchOption' css={S.SSelect}>
-                    {searchOption.map(op => {
-                        return <option key={op.value} label={op.label} value={op.value}/>
-                    })}
-                </select>
+        <Mypage>
+            <div css={S.SContainer}>
+                <h2>상품 관리</h2>
+                <div css={S.SSelectBox}>
+                    <select option={petType} onChange={handleSearchSelectChange} name='petTypeName'>
+                        {petType.map(pt => {
+                            return <option key={pt.value} label={pt.label} value={pt.value} />
+                        })}
+                    </select>
+                    <select option={category} onChange={handleSearchSelectChange} name='productCategoryName'>
+                        {category.map(ct => {
+                            return <option key={ct.value} label={ct.label} value={ct.value}/>
+                        })}
+                    </select>
+                    <select option={sortOption} onChange={handleSearchSelectChange} name='sortOption'>
+                        {sortOption.map(so => {
+                            return <option key={so.value}  label={so.label} value={so.value}/>
+                        })}
+                    </select>
+                    <select option={searchOption} onChange={handleSearchSelectChange} name='searchOption'>
+                        {searchOption.map(op => {
+                            return <option key={op.value} label={op.label} value={op.value}/>
+                        })}
+                    </select>
 
-                <input type='text' value={searchInput} onChange={handleSearchInputChange} css={S.SInput}/>
-                <button onClick={handleSearchClick} css={S.SButton}>검색</button>
+                    <input type='text' value={searchInput} onChange={handleSearchInputChange}/>
+                    <button onClick={handleSearchClick}>검색</button>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr css={S.SThBox}>
+                            <th>상품 번호</th>
+                            <th>상품 이미지</th>
+                            <th>상품 명</th>
+                            <th>동물 종류</th>
+                            <th>카테고리</th>
+                            <th>상품 조회</th>
+                            <th>수정</th>
+                            <th>삭제</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {productList.map(product => {
+                            return <tr key={product.productMstId} css={S.STdBox}>
+                                <td>{product.productMstId}</td>
+                                <td>
+                                    <img css={S.SImg} src={product.productThumbnailUrl} alt="" />
+                                </td>
+                                <td>{product.productName}</td>
+                                <td>{product.petTypeName}</td>
+                                <td>{product.productCategoryName}</td>
+                                <td>
+                                    <button css={S.SSelectButton} onClick={()=>handleNavigateJoinProductDetailPageClick(product.productMstId)}>상세 조회</button>
+                                </td>
+                                <td>
+                                    <button css={S.SEditButton} onClick={()=>handleEditProductClick(product.productMstId)}>수정</button>
+                                </td>
+                                <td>
+                                    <button css={S.SDeleteButton} onClick={()=>handleRemoveProductClick(product.productMstId)}>삭제</button>  
+                                </td>
+                            </tr>
+                        })}
+                    </tbody>
+                </table>
+                <div css={S.SPageButtonBox}>
+                    <button onClick={handleMinusPageClick}>page - 1</button>
+                    <button onClick={handlePlusPageClick}>page + 1</button>
+                </div>
             </div>
-            {productList.map(product => {
-                return <ul key={product.productMstId}>
-                    <div css={S.SContainer}>
-                        <img src={product.productThumbnailUrl} width='150px' alt=''/>
-                        <div>상품번호: {product.productMstId}</div>
-                        <div>상품명: {product.productName}</div> 
-                        <div>동물종류: {product.petTypeName}</div>
-                        <div>카테고리: {product.productCategoryName}</div>
-                        <button onClick={()=>handleNavigateJoinProductDetailPageClick(product.productMstId)} css={S.SButton2}>정보조회</button> 
-                        <button onClick={()=>handleEditProductClick(product.productMstId)} css={S.SButton2}>수정</button>
-                        <button onClick={()=>handleRemoveProductClick(product.productMstId)} css={S.SButton2}>삭제</button>
-                    </div>
-                </ul>
-            })}
-            <button onClick={handleMinusPageClick}>page - 1</button>
-            <button onClick={handlePlusPageClick}>page + 1</button>
-            </div>
-        </RootContainer>
+        </Mypage>
     );
 }
 

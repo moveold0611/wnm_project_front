@@ -20,48 +20,49 @@ function Mypage({ children }) {
 
     if (principal?.data?.data?.roleName === 'ROLE_ADMIN') {
         return (
-            <div>
-                <div css={S.STitle}>
-                    <h2>My Page</h2>
-                </div>
-                <div css={S.SList}>
-                <ul>
-                        <li>
-                            <h4><Link to="/admin/users">회원관리</Link></h4>
-                        </li>
-                        <li>
-                            <h4><Link to="/admin/order">회원주문관리</Link></h4>
-                        </li>
-                        <li>
-                            <h4><Link to="/admin/product">상품등록</Link></h4>
-                        </li>
-                        <li>
-                            <h4><Link to="/admin/product/edit">상품관리</Link></h4>
-                        </li>
-                        <li>
-                            <h4><Link to="/admin/incoming">입고관리</Link></h4>
-                        </li>
-                        <li>
-                            <h4><Link to="/admin/outgoing">출고관리</Link></h4>
-                        </li>
-                        <li>
-                            <h4><Link to="/admin/notices">공지사항</Link></h4>
-                        </li>
-                    </ul>
-                </div>
-                <div css={S.SContent}>
-                </div>
-            </div>
+            <RootContainer>
+                    <div css={S.SContainer}>
+                        <h2>ADMIN PAGE</h2>
+                            <div css={S.SSubConatainer}>
+                                <ul>
+                                    <li>
+                                        <h4><Link to="/admin/users">회원 관리</Link></h4>
+                                    </li>
+                                    <li>
+                                        <h4><Link to="/admin/order">회원 주문 관리</Link></h4>
+                                    </li>
+                                    <li>
+                                        <h4><Link to="/admin/product">상품 등록</Link></h4>
+                                    </li>
+                                    <li>
+                                        <h4><Link to="/admin/product/edit">상품 관리</Link></h4>
+                                    </li>
+                                    <li>
+                                        <h4><Link to="/admin/incoming">입고 관리</Link></h4>
+                                    </li>
+                                    <li>
+                                        <h4><Link to="/admin/outgoing">출고 관리</Link></h4>
+                                    </li>
+                                    <li>
+                                        <h4><Link to="/admin/notices">공지사항</Link></h4>
+                                    </li>
+                                </ul>
+                                <div css={S.SChangeContainer}>
+                                    {children}
+                                </div>
+                            </div>
+                    </div>
+            </RootContainer>
         );
     } else {
         return (
                 <RootContainer>
                     <div css={S.SContainer}>
-                        <h2>My Page</h2>
+                        <h2>MY PAGE</h2>
                             <div css={S.SSubConatainer}>
                                 <ul>
                                     <li>
-                                        <h4><Link to={`/orders/${principal?.data?.data.userId}`}>주문내역조회</Link></h4>
+                                        <h4><Link to={`/orders`}>주문내역조회</Link></h4>
                                     </li>
                                     <li>
                                         <h4><Link to={`/useredit/${principal?.data?.data.userId}`}>회원정보</Link></h4>

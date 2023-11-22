@@ -2,6 +2,7 @@ import React from 'react';
 import { useQuery } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getProductMstApi } from '../../../apis/api/product';
+import Mypage from '../../Mypage/Mypage';
 
 function JoinProductDetail(props) {
     const param = useParams()
@@ -25,7 +26,7 @@ function JoinProductDetail(props) {
     }
 
     return (
-        <div>
+        <Mypage>
             <div>
                 <h3>상품 이름: {getProduct?.data?.data.productName}</h3>
                 <p>상품 추가 일자: {getProduct?.data?.data.createDate}</p>
@@ -38,7 +39,7 @@ function JoinProductDetail(props) {
                 <p>상품 썸네일 이미지 주소: {getProduct?.data?.data.productThumbnailUrl}</p>
                 <img src={getProduct?.data?.data.productDetailUrl} alt=''/>
                 <p>상품 상세정보 이미지 주소: {getProduct?.data?.data.productDetailUrl}</p> 
-                {getProduct?.data?.data.productDtlList.map(dtl => {
+                {getProduct?.data?.data.productDtlList?.map(dtl => {
                     return <div key={dtl.productDtlId}>
                         <p>상품 상세 Id: {dtl.productDtlId}</p>
                         <p>상품 가격: {dtl.price}</p>
@@ -51,7 +52,7 @@ function JoinProductDetail(props) {
                 })}
                 <button onClick={handleReturnToEditPageClick}>관리페이지</button>
             </div>
-        </div>
+        </Mypage>
     );
 }
 

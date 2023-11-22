@@ -197,7 +197,7 @@ function BuyInfo(props) {
                         <h3 css={S.SData}>{principal?.data?.data?.phoneNumber}</h3>
                     </div>
                 </div>
-x
+
                 <div css={S.SShippingInfoBox}>
                     <h2>배송지</h2>
                     <div css={S.SShippingInfoInputBox}>

@@ -5,8 +5,8 @@ export const addOrderApi = async (orderData, option) => {
     return response; 
 }
 
-export const getUserOrder = async (searchData, option) => {
-    const response = await instance.get(`/api/orders`, {params: searchData}, option);
+export const getUserOrderApi = async (searchData, option) => {
+    const response = await instance.get(`/api/orders`, {...option, params: {...searchData}});
     return response
 }
 

@@ -1,14 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 /** @jsxImportSource @emotion/react */
 import * as S from './Style';
 import RootContainer from '../../components/RootContainer/RootContainer';
 import { useQuery, useQueryClient } from 'react-query';
 import Mypage from '../Mypage/Mypage';
 import logo from '../../images/Logo/Logo.png'
+import { getUserOrderApi } from '../../apis/api/order';
+import { useParams } from 'react-router-dom';
 
 function OrderUser(props) {
     const queryClient = useQueryClient();
     const principal = queryClient.getQueryState("getPrincipal");
+    const userId = useParams();
+
+    const [ searchData, setSearchData ] = useState({
+        searchOption: "all",
+        searchValue: "",
+        sortOption: ""
+    })
+
+    const [ userOrder, setUserOrder ] = useState([])
 
     const getOrderUserProduct = useQuery(["getOrderUserProducts"], async () => {
         try {
@@ -17,10 +28,22 @@ function OrderUser(props) {
                     Authorization: localStorage.getItem("accessToken")
                 }
             }
+            const response = getUserOrderApi(searchData, option);
+            return await response;
         } catch(error){
             console.log(error)
         }
+    }, {
+        refetchOnWindowFocus: false,
+        onSuccess: response => {
+            setUserOrder(response?.data)
+        }
     })
+
+    if(getOrderUserProduct.isLoading) {
+        return <></>;
+    }
+
 
     return (
         <Mypage>

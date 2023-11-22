@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { getOutgoing } from '../../../apis/api/outgoing';
 import { useNavigate } from 'react-router';
+import Mypage from '../../Mypage/Mypage';
 
 function Outgoing(props) {
     const navigate = useNavigate();
@@ -25,7 +26,7 @@ function Outgoing(props) {
     }
 
     return (
-        <>
+        <Mypage>
             상품 사이즈별 번호 : 
             <input value={productDtlIdInput} type='text' onChange={handleInputChange}/>
             <button onClick={handleGetOutgoingClick}>출고 조회</button>
@@ -37,7 +38,7 @@ function Outgoing(props) {
                 })}
             </ul>
             <button onClick={handleNavigateAddIncomingPageClick}>추가 출고</button>
-        </>
+        </Mypage>
     );
 }
 

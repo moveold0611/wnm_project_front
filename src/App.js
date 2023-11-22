@@ -70,7 +70,7 @@ function App() {
         <Route path="/products/:type/*" element={ <ProductRoute /> } />
         <Route path="/product/:productId" element={ <BuyProduct/> } />
         <Route path="/order" element={ <BuyInfo/> } />
-        <Route path="/orders/:userId" element={ <OrderUser /> }/>
+        <Route path="/orders" element={ <OrderUser /> }/>
         <Route path="/product/cart/:userId" element={ <CartProducts/> } />
         
         {/* 주소입력시 막기 */}
