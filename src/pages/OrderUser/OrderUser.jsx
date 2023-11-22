@@ -4,7 +4,6 @@ import * as S from './Style';
 import RootContainer from '../../components/RootContainer/RootContainer';
 import { useQuery, useQueryClient } from 'react-query';
 import Mypage from '../Mypage/Mypage';
-import logo from '../../images/Logo/Logo.png'
 import { getUserOrderApi } from '../../apis/api/order';
 import { useParams } from 'react-router-dom';
 
@@ -44,6 +43,8 @@ function OrderUser(props) {
         return <></>;
     }
 
+    console.log(userOrder)
+
 
     return (
         <Mypage>
@@ -52,7 +53,10 @@ function OrderUser(props) {
                 <table>
                     <thead>
                         <tr css={S.SCartThBox}>
-                            <th>주문일자[주문번호]</th>
+                            <th>
+                                주문일자<br/>
+                                [주문번호]
+                            </th>
                             <th>이미지</th>
                             <th>상품명</th>
                             <th>사이즈</th>
@@ -62,10 +66,14 @@ function OrderUser(props) {
                         </tr>
                     </thead>
                     <tbody>
-                            <tr css={S.SCartTdBox}>
-                                <td>2023.11.20[1]</td>
+                        {userOrder?.map(data => {
+                            return <tr key={data.orderId} css={S.SCartTdBox}>
                                 <td>
-                                    <img css={S.SProductImg} src={logo}/>
+                                    {data.orderDate}<br/>
+                                    [{data.orderId}]
+                                    </td>
+                                <td>
+                                    <img css={S.SProductImg} src={0}/>
                                 </td>
                                 <td>상품명</td>
                                 <td>M</td>
@@ -75,6 +83,7 @@ function OrderUser(props) {
                                     <button>리뷰쓰기</button>
                                 </td>
                             </tr>
+                        })}
                     </tbody>
                 </table>
             </div>
