@@ -8,12 +8,12 @@ function Incoming(props) {
     const [ productDtlIdInput, setProductDtlIdInput ] = useState();
     const [ getData, setGetData ] = useState([]);
     const handleInputChange = (e) => {
-        setProductDtlIdInput(parseInt(e.target.value))
+        setProductDtlIdInput(e.target.value)
     }
 
     const handleGetIncomingClick = async () => {
         try {
-            const response = await getIncoming(productDtlIdInput);
+            const response = await getIncoming(parseInt(productDtlIdInput));
             console.log(response)
             setGetData(response?.data)
         } catch (error) {            
