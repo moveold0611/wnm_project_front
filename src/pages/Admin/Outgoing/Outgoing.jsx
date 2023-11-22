@@ -8,12 +8,12 @@ function Outgoing(props) {
     const [ productDtlIdInput, setProductDtlIdInput ] = useState();
     const [ getData, setGetData ] = useState([]);
     const handleInputChange = (e) => {
-        setProductDtlIdInput(parseInt(e.target.value))
+        setProductDtlIdInput(e.target.value)
     }
 
     const handleGetOutgoingClick = async () => {
         try {
-            const response = await getOutgoing(productDtlIdInput);
+            const response = await getOutgoing(parseInt(productDtlIdInput));
             console.log(response)
             setGetData(response?.data)
         } catch (error) {            
