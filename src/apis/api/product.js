@@ -11,21 +11,23 @@ export const getProductMstApi = async(productMstId) => {
 }
 
 
-export const getSearchedProductsApi = async (searchData) => {
-    const response = await instance.get(`/api/products`, {params: searchData});
-    return response;
-}
-
 export const addProductApi = async (product, option) => {
-    const response = await instance.post(`/api/admin/product/`, product, option);
+    const response = await instance.post(`/api/products`, product, option);
     return response;
 } 
 
 export const getProductsApi = async (searchData) => {
+    const response = await instance.get(`/api/products`, {params: searchData});
+    return response;
+}
 
-    console.log(searchData)
-    const response = await instance.get(`/api/admin/products`, {params: searchData});
+export const getAllProductsApi = async (searchData) => {
+    const response = await instance.get(`/api/allproduct`, {params: searchData});
+    return response;
+}
 
+export const getProductsCountApi = async (searchData) => {
+    const response = await instance.get(`/api/productcount`, {params: searchData});
     return response;
 }
 
