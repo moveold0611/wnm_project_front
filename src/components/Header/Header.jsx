@@ -16,7 +16,7 @@ function Header(props) {
     
     const menus = [
         { name: 'Dog', subMenus: ['HomeLiving', 'Fashion', 'Toy', 'Walk'] },
-        { name: 'Customer Service', subMenus: ['Notice', 'FAQ'] },
+        { name: 'CustomerService', subMenus: ['Notice', 'FAQ'] },
         { name: 'Cat', subMenus: ['HomeLiving', 'Movement', 'Toy', 'Accessories'] }
     ];
     
@@ -73,6 +73,7 @@ function Header(props) {
         };
         
             const path = pathMap[menuName]?.[subMenu];
+            console.log(path)
             navigate(path);
         };
     

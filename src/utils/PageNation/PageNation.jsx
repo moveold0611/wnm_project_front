@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 /** @jsxImportSource @emotion/react */
 import * as S from './Style';
 import { useQuery } from "react-query";
@@ -8,7 +8,7 @@ const PageNation = ({products, searchData, setSearchData}) => {
 
     const itemCount = 12;
     const [ count, setCount ] = useState(0);
-    const [ currentPage, setCurrentPage ] = useState(1);
+    const [ currentPage, setCurrentPage ] = useState(searchData.pageIndex);
 
     const getProductsPagenation = useQuery(["getProductsPageNation"], async () => {
         try {
@@ -26,9 +26,6 @@ const PageNation = ({products, searchData, setSearchData}) => {
         }
     })  
     
-    // const startIndex = (currentPage - 1) * itemCount;
-    // const endIndex = Math.min(startIndex + itemCount, products?.length);
-
     const totalPage = Math.ceil(count / itemCount);
     
     const ttPage = [];
@@ -36,36 +33,19 @@ const PageNation = ({products, searchData, setSearchData}) => {
         ttPage.push(i)
     }
 
+    useEffect(() => {
+        const newSearchData = {...searchData, pageIndex: currentPage}
+        setSearchData(newSearchData)
+    }, [currentPage])
+
     const handlePageClick = (page) => {
         setCurrentPage(page);
-        const newSearchData = {...searchData, pageIndex: page}
-        setSearchData(newSearchData)
     }
-
-    const handlePageChange = (test) => {
-        console.log(test)
-        setCurrentPage(test);
-        const newSearchData = {...searchData, pageIndex: test}
-        setSearchData(newSearchData)
-    };
-
-    // let newSearchData = {};
-    // const handlePagePlus = () => {
-    //     setCurrentPage(currentPage + 1);
-    //     newSearchData = {...searchData, pageIndex: currentPage + 1}
-    //     setSearchData(newSearchData)
-    // };
-
-    // const handlePageMinus = () => {
-    //     setCurrentPage(currentPage - 1);
-    //     newSearchData = {...searchData, pageIndex: currentPage - 1}
-    //     setSearchData(newSearchData)
-    // };
 
     return (
         <div>
             <button
-            onClick={() => handlePageChange(currentPage + 1)}
+            onClick={() => handlePageClick(searchData.pageIndex - 1)}
             disabled={currentPage === 1}
             >
                 {"<"}
@@ -81,7 +61,7 @@ const PageNation = ({products, searchData, setSearchData}) => {
             ))}
             
             <button
-            onClick={() => handlePageChange(currentPage - 1)}
+            onClick={() => handlePageClick(searchData.pageIndex + 1)}
             disabled={currentPage === totalPage}
             >
                 {">"}
