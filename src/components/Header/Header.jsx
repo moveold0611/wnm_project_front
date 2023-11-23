@@ -101,9 +101,6 @@ function Header(props) {
                         <div css={S.SCartIcon} onClick={handleGoToCartOnClick}>
                             <TbShoppingBag />
                         </div>
-                    <Link to="/products">
-                        <h3>Q&A</h3>
-                    </Link>
                 </div>
             <div css={S.SBottomContainer}>
                 <ul css={S.SMenuBox} onMouseEnter={handleSubMenuMouseEnter} onMouseLeave={handleSubMenuMouseLeave}>

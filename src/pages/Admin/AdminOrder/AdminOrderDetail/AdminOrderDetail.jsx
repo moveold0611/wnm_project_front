@@ -14,9 +14,10 @@ function AdminOrderDetail(props) {
     const [ orderStatus, setOrderStatus ] = useState(0)
     let price = 0;
     const status = [
-        { value: 0, label:"배송준비" },
-        { value: 1, label:"배송중" },
-        { value: 2, label:"배송완료" }
+        { value: 0, label:"배송 준비" },
+        { value: 1, label:"배송 중" },
+        { value: 2, label:"배송 완료" },
+        { value: 2, label:"구매 확정" }
     ]
 
 
@@ -106,6 +107,7 @@ function AdminOrderDetail(props) {
                                     {getProduct?.data?.data[0].orderStatus === 0 && "배송 준비"}
                                     {getProduct?.data?.data[0].orderStatus === 1 && "배송 중"}
                                     {getProduct?.data?.data[0].orderStatus === 2 && "배송 완료"}
+                                    {getProduct?.data?.data[0].orderStatus === 2 && "구매 확정"}
                                 </td>
                                 <td>
                                     <div css={S.SSettingBox}>

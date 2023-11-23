@@ -29,7 +29,8 @@ function AdminOrder(props) {
     const status = [
         { value: 0, label:"배송준비" },
         { value: 1, label:"배송중" },
-        { value: 2, label:"배송완료" }
+        { value: 2, label:"배송완료" },
+        { value: 3, label:"구매확정" }
     ]
 
     const getOrders = useQuery(["getOrders"], () => {
@@ -131,6 +132,7 @@ function AdminOrder(props) {
                                     {data.orderStatus === 0 && "배송준비"}
                                     {data.orderStatus === 1 && "배송중"}
                                     {data.orderStatus === 2 && "배송완료"}
+                                    {data.orderStatus === 2 && "구매확정"}
                                 </td>
                                 <td>
                                     <div css={S.SSettingBox}>

@@ -85,6 +85,7 @@ function OrderUserDetail(props) {
                                     {getOrderDtl?.data?.data[0].orderStatus === 0 && "배송 준비"}
                                     {getOrderDtl?.data?.data[0].orderStatus === 1 && "배송 중"}
                                     {getOrderDtl?.data?.data[0].orderStatus === 2 && "배송 완료"}
+                                    {getOrderDtl?.data?.data[0].orderStatus === 3 && "구매 확정"}
                                 </td>
                                 <td>{totalPrice.toLocaleString('ko-KR')}원</td>
                             </tr>

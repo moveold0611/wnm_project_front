@@ -105,38 +105,6 @@ function EditProductDetailPage(props) {
         })
     }
 
-
-
-
-    const handleTester = () => {
-        const numbers = [parseInt(productData.no), parseInt(productData.XS), parseInt(productData.S), parseInt(productData.M), parseInt(productData.L), parseInt(productData.XL), parseInt(productData.XXL)]
-        const nums = [];
-
-        for(let i = 0; i < numbers.length; i++) {
-            if(isNaN(numbers[i])) {
-                numbers[i] = 0;
-            }
-            if(numbers[i] !== 0) {
-                nums.push(parseInt(numbers[i]))
-            }
-        }
-        let lastNum = nums[0]
-        for(let i = 0; i < nums.length; i++) {
-            if(lastNum > nums[i]) {
-                lastNum = nums[i]
-            }
-        }
-        const newData = {
-            ...productData,
-            minimum: lastNum
-        }    
-        console.log(newData)
-    }
-
-
-
-
-
     const handleThumbnailChange = (e) => {
         const reader = new FileReader();
         const file = e.target.files[0];
@@ -235,7 +203,6 @@ function EditProductDetailPage(props) {
                                 <>
                                     <li>NO SIZE <input value={productData.no} type='text' name='no' onChange={handleProductDataOnChange}/></li>
                                 </>}
-                                {/* <button onClick={handleTester}>test</button> */}
                             </ul>
                         </div>
                     </div>
