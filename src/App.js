@@ -27,6 +27,8 @@ import JoinProductDetail from "./pages/Admin/JoinProductDetail/JoinProductDetail
 import AdminOrder from "./pages/Admin/AdminOrder/AdminOrder";
 import AdminOrderDetail from "./pages/Admin/AdminOrder/AdminOrderDetail/AdminOrderDetail";
 import OrderUserDetail from "./pages/OrderUser/OrderUserDetail/OrderUserDetail";
+import WriteAnnouncement from "./pages/Admin/WriteAnnouncement/WriteAnnouncement";
+import Announcement from "./pages/Announcement/Announcement";
 
 
 function App() {
@@ -74,6 +76,7 @@ function App() {
         <Route path="/orders" element={ <OrderUser /> }/>
         <Route path="/orders/:orderId" element={ <OrderUserDetail /> }/>
         <Route path="/product/cart/:userId" element={ <CartProducts/> } />
+        <Route path="/notice" element={<Announcement />} />
         
         {/* 주소입력시 막기 */}
         <Route path="/admin/product" element={ <ProductRegist/> } />
@@ -85,7 +88,8 @@ function App() {
         <Route path="/admin/outgoing/add" element={ <AddOutgoing/> }/>       
         <Route path="/admin/product/join/:productMstId" element={ <JoinProductDetail/> }/>  
         <Route path="/admin/order" element={ <AdminOrder/> }/>      
-        <Route path="/admin/order/:orderId" element={ <AdminOrderDetail/> }/>      
+        <Route path="/admin/order/:orderId" element={ <AdminOrderDetail/> }/>   
+        <Route path="/admin/write/announcement" element={ <WriteAnnouncement />} />
       </Routes>
     </RootLayout>
   );

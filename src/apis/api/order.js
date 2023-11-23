@@ -17,5 +17,11 @@ export const getOrdersForAdmin = async (searchData) => {
 
 export const updateOrderStatus = async (orderId, orderStatus) => {
     const response  = await instance.put(`/api/admin/order/${orderId}/${orderStatus}`);
-    return response
+    return response;
 }
+
+export const updateConfirmationApi = async (orderId, option) => {
+    const response = await instance.put(`/api/order/${orderId}`, option);
+    return response;
+}
+
