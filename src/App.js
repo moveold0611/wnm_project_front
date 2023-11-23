@@ -11,12 +11,22 @@ import { getPrincipalApi } from "./apis/api/account";
 import ProductRegist from "./pages/Admin/ProductRegist/ProductRegist";
 import BuyInfo from "./pages/BuyInfo/BuyInfo";
 import CartProducts from "./pages/CartProducts/CartProducts";
-import Products from "./pages/Products/Products"
-import EditProductDetailPage from "./pages/Admin/EditProductDetailPage/EditProductDetailPage";
 import EditProduct from "./pages/Admin/EditProduct/EditProduct";
+import EditProductDetailPage from "./pages/Admin/EditProduct/EditProductDetailPage/EditProductDetailPage"
 import EditUser from "./pages/EditUser/EditUser";
 import Mypage from "./pages/Mypage/Mypage";
 import ProductRoute from "./routes/ProductRoute/ProductRoute";
+
+import OrderUser from "./pages/OrderUser/OrderUser";
+
+import Incoming from "./pages/Admin/Incoming/Incoming";
+import Outgoing from "./pages/Admin/Outgoing/Outgoing";
+import AddIncoming from "./pages/Admin/Incoming/AddIncoming/AddIncoming";
+import AddOutgoing from "./pages/Admin/Outgoing/AddOutgoing/AddOutgoing";
+import JoinProductDetail from "./pages/Admin/JoinProductDetail/JoinProductDetail";
+import AdminOrder from "./pages/Admin/AdminOrder/AdminOrder";
+import AdminOrderDetail from "./pages/Admin/AdminOrder/AdminOrderDetail/AdminOrderDetail";
+import OrderUserDetail from "./pages/OrderUser/OrderUserDetail/OrderUserDetail";
 
 
 function App() {
@@ -52,20 +62,30 @@ function App() {
   return (
     <RootLayout>
       <Routes>
-        <Route path="/mypage" element={ <Mypage /> }/>
         <Route path="/" element={ <Main /> } />
-        <Route path="/auth/signup" element={ <Signup /> } />
+        <Route path="/mypage" element={ <Mypage /> }/>
+        <Route path="/auth/signup" element={ <Signup /> } /> 
         <Route path="/auth/signin" element={ <Signin /> } />
         <Route path="/auth/oauth2/signin" element={ <OAuth2Signin /> } />
         <Route path="/useredit/:userId" element={ <EditUser /> } />
-        {/* :petType/:productCategory/:pageIndex */}
         <Route path="/products/:type/*" element={ <ProductRoute /> } />
         <Route path="/product/:productId" element={ <BuyProduct/> } />
-        <Route path="/order/" element={ <BuyInfo/> } />
+        <Route path="/order" element={ <BuyInfo/> } />
+        <Route path="/orders" element={ <OrderUser /> }/>
+        <Route path="/orders/:orderId" element={ <OrderUserDetail /> }/>
         <Route path="/product/cart/:userId" element={ <CartProducts/> } />
+        
+        {/* 주소입력시 막기 */}
         <Route path="/admin/product" element={ <ProductRegist/> } />
         <Route path="/admin/product/edit/*" element={ <EditProduct/> }/>
-        <Route path="/admin/edit/product/:productMstId" element={ <EditProductDetailPage/> }/>        
+        <Route path="/admin/edit/product/:productMstId" element={ <EditProductDetailPage/> }/> 
+        <Route path="/admin/incoming" element={ <Incoming/> }/>       
+        <Route path="/admin/incoming/add" element={ <AddIncoming/> }/>  
+        <Route path="/admin/outgoing" element={ <Outgoing/> }/>       
+        <Route path="/admin/outgoing/add" element={ <AddOutgoing/> }/>       
+        <Route path="/admin/product/join/:productMstId" element={ <JoinProductDetail/> }/>  
+        <Route path="/admin/order" element={ <AdminOrder/> }/>      
+        <Route path="/admin/order/:orderId" element={ <AdminOrderDetail/> }/>      
       </Routes>
     </RootLayout>
   );

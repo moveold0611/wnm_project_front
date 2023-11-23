@@ -36,6 +36,8 @@ export const SCartTdBox = css`
         border-radius: 3px;
         width: 30px;
         height: 30px;
+        cursor: pointer;
+
     }
 `;
 
@@ -87,6 +89,7 @@ export const SShowpingButton = css`
     height: 46px;
 
     color: black;
+    cursor: pointer;
 `;
 
 export const SBuyButton = css`
@@ -98,6 +101,7 @@ export const SBuyButton = css`
     
     color: white;
     background-color: #272727;
+    cursor: pointer;
 `;
 
 

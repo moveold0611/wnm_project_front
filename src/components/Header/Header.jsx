@@ -30,6 +30,7 @@ function Header(props) {
     }
 
     const handleGoToCartOnClick = () => {
+        
         navigate(`/product/cart/${principal?.data?.data?.userId}`)
     }
 
@@ -94,7 +95,7 @@ function Header(props) {
                         <h3>LOGIN</h3>
                     </Link>
                 )}
-                    <Link to={"/mypage"}>
+                    <Link to={`/orders`}>
                         <h3>MYPAGE</h3>
                     </Link>
                         <div css={S.SCartIcon} onClick={handleGoToCartOnClick}>
