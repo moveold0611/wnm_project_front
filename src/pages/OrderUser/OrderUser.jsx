@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 /** @jsxImportSource @emotion/react */
 import * as S from './Style';
-import RootContainer from '../../components/RootContainer/RootContainer';
 import { useQuery, useQueryClient } from 'react-query';
 import Mypage from '../Mypage/Mypage';
-import { getUserOrderApi } from '../../apis/api/order';
+import { getUserOrderApi, updateConfirmationApi } from '../../apis/api/order';
 import { useNavigate, useParams } from 'react-router-dom';
 
 function OrderUser(props) {
@@ -44,6 +43,22 @@ function OrderUser(props) {
         navigate(`/orders/${orderId}`)
     }
 
+    const handleconfirmationOnClick = async (data) => {
+        try {
+            const option = {
+                headers: {
+                    Authorization: localStorage.getItem("accessToken")
+                }
+            }
+            await updateConfirmationApi(parseInt(data.orderId), option);
+            alert("구매확정!!")
+            getOrderUserProduct.refetch()
+
+        } catch(error) {
+            console.log(error)
+        }
+    }
+    
     if(getOrderUserProduct.isLoading) {
         return <></>;
     }
@@ -90,9 +105,11 @@ function OrderUser(props) {
                                     {totalPrice?.toLocaleString("ko-KR")}원
                                 </td>
                                 <td>
-                                    {data.orderStatus === 0 && "배송준비"}
-                                    {data.orderStatus === 1 && "배송중"}
-                                    {data.orderStatus === 2 && "배송완료"}
+                                    {data.orderStatus === 0 && "배송 준비"}
+                                    {data.orderStatus === 1 && "배송 중"}
+                                    {data.orderStatus === 2 && "배송 완료"}
+                                    {data.orderStatus === 2 && <button onClick={() => handleconfirmationOnClick(data)}>배송 확정</button>}
+                                    {data.orderStatus === 3 && "구매 확정"} 
                                 </td>
                                 <td>
                                     <button onClick={() => handleNavigateProductDetailClick(data.orderId)}>주문 상세</button> 

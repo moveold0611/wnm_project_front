@@ -56,7 +56,7 @@ function JoinProductDetail(props) {
                             </tr>
                             <tr>
                                 <th>상품 마스터 ID</th>
-                                <td>{getProduct?.data?.data.productDtlList[0].productMstId}</td>
+                                <td>{productMstId}</td>
                             </tr>
                         </table>
                         {getProduct?.data?.data.productDtlList?.map(dtl => {
