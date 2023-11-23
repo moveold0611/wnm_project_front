@@ -7,7 +7,7 @@ import { getOrdersForAdmin, updateOrderStatus } from '../../../../apis/api/order
 import Mypage from '../../../Mypage/Mypage';
 
 function AdminOrderDetail(props) {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const param = useParams();
     const orderId = param.orderId;
     const [ totalPrice,setTotalPrice ] = useState(0);
@@ -33,7 +33,7 @@ function AdminOrderDetail(props) {
             price += element.productDtl.price * element.count
         })
         setTotalPrice(price)
-    }
+        }
     })
 
 
@@ -103,9 +103,9 @@ function AdminOrderDetail(props) {
                                     {getProduct?.data?.data[0].shippingAddressDetailName}
                                 </td>
                                 <td>
-                                    {getProduct?.data?.data[0].orderStatus === 0 && "배송준비"}
-                                    {getProduct?.data?.data[0].orderStatus === 1 && "배송중"}
-                                    {getProduct?.data?.data[0].orderStatus === 2 && "배송완료"}
+                                    {getProduct?.data?.data[0].orderStatus === 0 && "배송 준비"}
+                                    {getProduct?.data?.data[0].orderStatus === 1 && "배송 중"}
+                                    {getProduct?.data?.data[0].orderStatus === 2 && "배송 완료"}
                                 </td>
                                 <td>
                                     <div css={S.SSettingBox}>

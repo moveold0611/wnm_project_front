@@ -1,17 +1,42 @@
 import { css } from '@emotion/react';
 
-export const SLayout = css`
-    display: flex;
-    margin: 50px auto;
+export const SContainer = css`
+    justify-content: center;
+    align-items: center;
+
+    margin: 15px 0px;
+    width: 90%;
+
+    & > h2 {
+        text-align: end;
+        font-size: 20px;
+    }
 `;
 
-export const SContainer = css`
+export const SubContainer = css`
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 20px;
+    width: 100%;
+    background-color: #fbfcff;
+`;
+
+export const SLayout = css`
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border: 1px solid #dbdbdb;
-    width: 100%;
+
+
+`;
+
+export const SH1 = css`
+    padding: 30px 80px;
+    color: #333;
+    font-weight: bold;
+    border-bottom: 1px dotted #aeaeae;
+    margin-bottom: 50px;
 `;
 
 export const SImgBox = css`
@@ -23,10 +48,8 @@ export const SImgBox = css`
     width: 100%;
     
     & img {
-        overflow: hidden;
-        box-sizing: border-box;
-        height: 300px;
-        width: 300px;
+        height: 700px;
+        width: 700px;
     }
 `
 

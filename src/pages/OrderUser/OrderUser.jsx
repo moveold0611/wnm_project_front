@@ -4,14 +4,14 @@ import * as S from './Style';
 import RootContainer from '../../components/RootContainer/RootContainer';
 import { useQuery, useQueryClient } from 'react-query';
 import Mypage from '../Mypage/Mypage';
-import logo from '../../images/Logo/Logo.png'
 import { getUserOrderApi } from '../../apis/api/order';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 function OrderUser(props) {
+    const navigate = useNavigate();
+
     const queryClient = useQueryClient();
     const principal = queryClient.getQueryState("getPrincipal");
-    const userId = useParams();
 
     const [ searchData, setSearchData ] = useState({
         searchOption: "all",
@@ -40,10 +40,13 @@ function OrderUser(props) {
         }
     })
 
+    const handleNavigateProductDetailClick = (orderId) => {
+        navigate(`/orders/${orderId}`)
+    }
+
     if(getOrderUserProduct.isLoading) {
         return <></>;
     }
-
 
     return (
         <Mypage>
@@ -51,30 +54,54 @@ function OrderUser(props) {
                 <h2>주문내역 조회</h2>
                 <table>
                     <thead>
-                        <tr css={S.SCartThBox}>
-                            <th>주문일자[주문번호]</th>
+                        <tr css={S.SThBox}>
+                            <th>
+                                주문일자<br/>
+                                [주문번호]
+                            </th>
                             <th>이미지</th>
                             <th>상품명</th>
-                            <th>사이즈</th>
-                            <th>상품구매금액</th>
-                            <th>주문처리</th>
+                            <th>주문 총액</th>
+                            <th>주문 처리</th>
+                            <th>주문 상세</th>
                             <th>상태</th>
                         </tr>
                     </thead>
                     <tbody>
-                            <tr css={S.SCartTdBox}>
-                                <td>2023.11.20[1]</td>
+                        {userOrder?.map(data => {
+                            let totalPrice = 0;
+                            data.getUserOrderProductsRespDtos.map(product => {
+                                totalPrice += product.count * product.productDtl.price
+                            })
+                            return <tr key={data.orderId} css={S.STdBox}>
                                 <td>
-                                    <img css={S.SProductImg} src={logo}/>
+                                    {data.orderDate}<br/>
+                                    [{data.orderId}]
                                 </td>
-                                <td>상품명</td>
-                                <td>M</td>
-                                <td>300,000원</td>
-                                <td>배송중</td>
+                                <td>
+                                    <img css={S.SProductImg} src={data.getUserOrderProductsRespDtos[0].productDtl.productMst.productThumbnailUrl}/>
+                                </td>
+
+                                <td>
+                                    {data.getUserOrderProductsRespDtos[0].productDtl.productMst.productName}<br/>
+                                    {data.getUserOrderProductsRespDtos.length > 1 && ` 외 ${data.getUserOrderProductsRespDtos.length - 1}개의 상품`}
+                                </td>
+                                <td>
+                                    {totalPrice?.toLocaleString("ko-KR")}원
+                                </td>
+                                <td>
+                                    {data.orderStatus === 0 && "배송준비"}
+                                    {data.orderStatus === 1 && "배송중"}
+                                    {data.orderStatus === 2 && "배송완료"}
+                                </td>
+                                <td>
+                                    <button onClick={() => handleNavigateProductDetailClick(data.orderId)}>주문 상세</button> 
+                                </td>
                                 <td>
                                     <button>리뷰쓰기</button>
                                 </td>
                             </tr>
+                        })}
                     </tbody>
                 </table>
             </div>
