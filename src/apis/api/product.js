@@ -21,6 +21,16 @@ export const getProductsApi = async (searchData) => {
     return response;
 }
 
+export const getAllProductsApi = async (searchData) => {
+    const response = await instance.get(`/api/allproduct`, {params: searchData});
+    return response;
+}
+
+export const getProductsCountApi = async (searchData) => {
+    const response = await instance.get(`/api/productcount`, {params: searchData});
+    return response;
+}
+
 export const updateProductApi = async (productId, productData) => {
     const response = await instance.put(`/api/admin/product/${productId}`, productData);
     return response;
