@@ -52,7 +52,8 @@ const PageNation = ({products, searchData, setSearchData}) => {
             </button>
             
             {ttPage.map(page => (
-                <button 
+                <button
+                    key={page}
                     css={S.PageButton}
                     name="pageIndex"
                     onClick={() => handlePageClick(page)}>
