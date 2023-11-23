@@ -237,7 +237,7 @@ return (
                     <div css={S.SDeleteButtonBox}>
                         <button onClick={HandleDeleteUser}>회원탈퇴</button>
                     </div>
-            </div>
+        </div>
         </Mypage>  
     );
 }
