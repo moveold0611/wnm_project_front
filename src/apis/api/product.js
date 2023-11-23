@@ -12,7 +12,7 @@ export const getProductMstApi = async(productMstId) => {
 
 
 export const addProductApi = async (product, option) => {
-    const response = await instance.post(`/api/products`, product, option);
+    const response = await instance.post(`/api/admin/product`, product, option);
     return response;
 } 
 
@@ -31,12 +31,12 @@ export const getProductsCountApi = async (searchData) => {
     return response;
 }
 
-export const updateProductApi = async (productId, productData) => {
-    const response = await instance.put(`/api/admin/product/${productId}`, productData);
+export const updateProductApi = async (productId, productData, option) => {
+    const response = await instance.put(`/api/admin/product/${productId}`, productData, option);
     return response;
 }
 
-export const removeProductApi = async (productId) => {
-    const response = await instance.delete(`/api/admin/product/${productId}`);
+export const removeProductApi = async (productId, option) => {
+    const response = await instance.delete(`/api/admin/product/${productId}`, option);
     return response;
 }

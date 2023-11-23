@@ -162,7 +162,6 @@ function ProductRegist(props) {
         })
         
     }
-    console.log(product)
 
     return (
         <Mypage>

@@ -10,7 +10,11 @@ import Mypage from '../../../Mypage/Mypage';
 
 function EditProductDetailPage(props) {
 
-
+    const option = {
+        headers: {
+            Authorization: localStorage.getItem("accessToken")
+        }
+    }
     const params = useParams("productDtlId")
     const productMstId = params.productMstId
     const [ productThumbnailFile, setProductThumbnailFile ] = useState();
@@ -145,7 +149,7 @@ function EditProductDetailPage(props) {
                 productData.productDetailUrl = downLoadURL
             }
 
-            await updateProductApi(productMstId, productData);
+            await updateProductApi(productMstId, productData, option);
             alert("수정이 완료되었습니다.")
         }catch(error) {
             console.log(error.response.data)

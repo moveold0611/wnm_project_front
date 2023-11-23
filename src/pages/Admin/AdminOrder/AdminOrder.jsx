@@ -6,8 +6,14 @@ import { getOrdersForAdmin, updateOrderStatus } from '../../../apis/api/order';
 import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import Mypage from '../../Mypage/Mypage';
+import { async } from 'q';
 
 function AdminOrder(props) {
+    const option = {
+        headers: {
+            Authorization: localStorage.getItem("accessToken")
+        }
+    }
     const navigate = useNavigate()
     const [ orderStatus, setOrderStatus ] = useState(0)
     const [ searchData, setSearchData ] = useState({
@@ -33,14 +39,21 @@ function AdminOrder(props) {
         { value: 3, label:"구매확정" }
     ]
 
-    const getOrders = useQuery(["getOrders"], () => {
-        return getOrdersForAdmin(searchData);
+    const getOrders = useQuery(["getOrders"], async () => {
+        try {
+            const option = {
+                headers: {
+                    Authorization: localStorage.getItem("accessToken")
+                }
+            }
+            return await getOrdersForAdmin(searchData, option);
+        } catch (error) {
+            alert(error.response.data)
+        }
     },{
         retry: 0,
         refetchOnWindowFocus: false
     })
-
-    console.log()
 
     if(getOrders.isLoading) {
         return <></>
@@ -67,11 +80,11 @@ function AdminOrder(props) {
                 alert("같은 상태로는 변경할 수 없습니다.")
                 return;
             }
-            await updateOrderStatus(parseInt(data.orderId), parseInt(orderStatus))
+            await updateOrderStatus(parseInt(data.orderId), parseInt(orderStatus), option)
             alert("배송상태 수정 완료")
             getOrders.refetch()
         } catch (error) {
-            console.log(error.response.data)
+            alert(error.response.data)
         }
     }
 
