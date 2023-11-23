@@ -15,8 +15,8 @@ function Header(props) {
     const [ isSubMenu, setIsSubMenu ] = useState(false);
     
     const menus = [
-        { name: 'Dog', subMenus: ['HomeLiving', 'Fashion', 'Toy', 'Walk'] },
-        { name: 'CustomerService', subMenus: ['Notice', 'FAQ'] },
+        { name: 'Dog', subMenus: ['HomeLiving', 'Movement', 'Fashion', 'Toy', 'Walk'] },
+        { name: 'Customer Service', subMenus: ['Notice', 'FAQ'] },
         { name: 'Cat', subMenus: ['HomeLiving', 'Movement', 'Toy', 'Accessories'] }
     ];
     
@@ -56,6 +56,7 @@ function Header(props) {
         const pathMap = {
             Dog: {
                 HomeLiving: '/products/dog/home-living',
+                Movement: '/products/dog/Movement',
                 Fashion: '/products/dog/fashion',
                 Toy: '/products/dog/toy',
                 Walk: '/products/dog/walk',

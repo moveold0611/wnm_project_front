@@ -19,7 +19,7 @@ function Products(props) {
         {value: "lowprice", label: "낮은가격순"},
         {value: "highprice", label: "높은가격순"}
     ]
-         
+
     const [ searchData, setSearchData ] = useState({
         petTypeName: type,
         productCategoryName: !!category ? category : 'all',
@@ -40,7 +40,7 @@ function Products(props) {
         retry: 0,
         refetchOnWindowFocus: false,
         onSuccess: response => {
-            setProducts(response.data)
+            setProducts(response?.data)
         }
     })
 
@@ -97,7 +97,7 @@ function Products(props) {
                                             <img id={product.productMstId} src={product.productThumbnailUrl} alt="" />
                                             <p>{product.productName}</p>
                                             <p>
-                                                가격 : {product.minPrice === "" && product.maxPrice === "" ? "품절" : product.minPrice.slice(4, product.minPrice.lastIndexOf())}
+                                                가격 : {product.minPrice === "" && product.maxPrice === "" ? "품절" : product.minPrice?.slice(4, product.minPrice.lastIndexOf())}
                                             </p>
                                         </li>
                                     </ul>

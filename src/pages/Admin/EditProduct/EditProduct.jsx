@@ -18,6 +18,7 @@ function EditProduct(props) {
         searchValue: '',
         sortOption: 'number',
         pageIndex: 1});
+        
     const petType = [
         { value: "all", label: "전부"},
         { value: "dog", label: "강아지"},
@@ -87,17 +88,11 @@ function EditProduct(props) {
         })
     }
 
-    console.log(searchData)
-
-
-
     const handleSearchInputChange = (e) => {
         setSearchInput(e.target.value)
     }
 
     const handleSearchClick = () => {
-
-        console.log(searchData)
         searchData.pageIndex = 1;
         getProducts.refetch();
     }
@@ -110,9 +105,7 @@ function EditProduct(props) {
         
     }
     
-
     const handleEditProductClick = (productMstId) => {
-        console.log(productMstId)
         navigate(`/admin/edit/product/${productMstId}`)
     }
 
@@ -121,7 +114,7 @@ function EditProduct(props) {
             await removeProductApi(productMstId)
             getProducts.refetch();
         } catch (error) {
-            
+            console.log(error)
         }
     }
 
