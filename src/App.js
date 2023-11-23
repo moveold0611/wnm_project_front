@@ -27,6 +27,7 @@ import JoinProductDetail from "./pages/Admin/JoinProductDetail/JoinProductDetail
 import AdminOrder from "./pages/Admin/AdminOrder/AdminOrder";
 import AdminOrderDetail from "./pages/Admin/AdminOrder/AdminOrderDetail/AdminOrderDetail";
 import OrderUserDetail from "./pages/OrderUser/OrderUserDetail/OrderUserDetail";
+import UserData from "./pages/Admin/UserData/UserData";
 
 
 function App() {
@@ -86,6 +87,7 @@ function App() {
         <Route path="/admin/product/join/:productMstId" element={ <JoinProductDetail/> }/>  
         <Route path="/admin/order" element={ <AdminOrder/> }/>      
         <Route path="/admin/order/:orderId" element={ <AdminOrderDetail/> }/>      
+        <Route path="/admin/users" element={ <UserData/> }/>      
       </Routes>
     </RootLayout>
   );

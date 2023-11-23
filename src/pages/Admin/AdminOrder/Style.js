@@ -41,6 +41,7 @@ export const SSelectBox = css`
         border-radius: 5px;
         padding: 5px;
         width: 50px;
+        cursor: pointer;
     }
 `;
 

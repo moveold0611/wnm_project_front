@@ -17,17 +17,17 @@ export const addProductApi = async (product, option) => {
 } 
 
 export const getProductsApi = async (searchData) => {
-    const response = await instance.get(`/api/products`, {params: searchData});
+    const response = await instance.get(`api/products/sizes`, {params: searchData});
     return response;
 }
 
 export const getAllProductsApi = async (searchData) => {
-    const response = await instance.get(`/api/allproduct`, {params: searchData});
+    const response = await instance.get(`api/products/minmax`, {params: searchData});
     return response;
 }
 
 export const getProductsCountApi = async (searchData) => {
-    const response = await instance.get(`/api/productcount`, {params: searchData});
+    const response = await instance.get(`/api/products/count`, {params: searchData});
     return response;
 }
 

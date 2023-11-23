@@ -132,7 +132,7 @@ function AdminOrder(props) {
                                     {data.orderStatus === 0 && "배송준비"}
                                     {data.orderStatus === 1 && "배송중"}
                                     {data.orderStatus === 2 && "배송완료"}
-                                    {data.orderStatus === 2 && "구매확정"}
+                                    {data.orderStatus === 3 && "구매확정"}
                                 </td>
                                 <td>
                                     <div css={S.SSettingBox}>
