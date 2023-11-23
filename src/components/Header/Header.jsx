@@ -74,6 +74,7 @@ function Header(props) {
         };
         
             const path = pathMap[menuName]?.[subMenu];
+            console.log(path)
             navigate(path);
         };
     

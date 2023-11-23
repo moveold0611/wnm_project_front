@@ -22,7 +22,7 @@ export const getProductsApi = async (searchData) => {
 }
 
 export const getAllProductsApi = async (searchData) => {
-    const response = await instance.get(`api/products/minmax`, {params: searchData});
+    const response = await instance.get(`/api/products/minmax`, {params: searchData});
     return response;
 }
 

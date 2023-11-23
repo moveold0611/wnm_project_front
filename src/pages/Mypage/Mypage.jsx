@@ -44,7 +44,7 @@ function Mypage({ children }) {
                                         <h4><Link to="/admin/outgoing">출고 관리</Link></h4>
                                     </li>
                                     <li>
-                                        <h4><Link to="/admin/notices">공지사항</Link></h4>
+                                        <h4><Link to="/admin/write/announcement">공지사항</Link></h4>
                                     </li>
                                     <li>
                                         <h4><Link to="/admin/notices">FAQ</Link></h4>
