@@ -2,24 +2,30 @@ import { css } from '@emotion/react';
 
 export const SLayout = css`
     display: flex;
-    flex-direction: column;
-    
-    margin: 20px auto 0px;
-    height: 200px;
+    justify-content: space-between;
+    border-bottom: 1px solid #dbdbdb;
+    border-radius: 30px;
+    padding: 0px 20px;
+    background-color: #fff;
+
 `;
 
 export const STopContainer = css`
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
+    align-items: center;
 
-    margin: 0px auto;
     width: 100%;
-    height: 130px;
+    height: 70px;
 `
 
 export const SLogo = css`
-    width: 150px;
-    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
 
     & > img {
         width: 100%;
@@ -32,22 +38,21 @@ export const SUserRelatedBox =css`
     justify-content: flex-end;
     align-items: center;
     width: 100%;
-    padding-right: 20px;
 
     & > a {
         font-size: 13px;
         text-decoration: none;
         color: black;
+        transition: color 0.1s ease;
 
         :hover {
-            transition: color 0.5s ease;
             color: darkgray;
         }
     }
 
     & > a > h3 {
         margin: 0px;
-            padding: 0px 8px;
+        padding: 0px 8px;
     }
 `;
 
@@ -59,9 +64,10 @@ export const SCartIcon = css`
     padding: 0px 8px;
     font-size: large;
     cursor: pointer;
+    transition: color 0.1s ease;
 
     :hover {
-            transition: color 0.5s ease;
+            
             color: darkgray;
         }
         
@@ -72,9 +78,7 @@ export const SBottomContainer = css`
     justify-content: center;
     align-items: center;
     margin: 0px auto;
-    border-bottom: 2px dashed black;
     width: 1350px;
-    height: 70px;
 `;
 
 export const SFullMenuBox = css`
@@ -83,10 +87,10 @@ export const SFullMenuBox = css`
     align-items: center;
 
     list-style-type: none;
-    padding: 10px;
+    transition: text-shadow 0.2s ease;
 
     & > h3 {
-        font-size: 24px;
+        font-size: 20px;
     }
 `;
 
@@ -94,54 +98,43 @@ export const SMenuBox = css`
     display: flex;
     justify-content: space-around;
     align-items: center;
+    position: relative;
     
     margin: 0px;
     padding: 0px;
     width: 550px;
-
-    cursor: pointer;
-    
-    & > li {
-        position: relative;
-
-        font-size: 16px;
-        line-height: 30px;
-        list-style-type: none;
-        
-        :hover {
-            transition: color 0.5s ease;
-            color: darkgray;
-        }
-    }
 `;
 
 export const SSubMenuBox = (isSubMenu) => css`
-    display: ${isSubMenu ? 'flex' : 'none'};
-    flex-direction: column;
-    justify-content: center;
+    display: ${true ? 'flex' : 'none'};
+    justify-content: flex-start;
     align-items: center;
 
     position: absolute;
-    top: 60px;
-    padding: 0px;
+    top: 25px;
+    left: 50px;
+
+    border-bottom: 1px solid #dbdbdb;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    padding: 10px;
+    width: 450px;
+    height: 50px;
+
+    background-color: #fff;
     
     transition: all 0.5s ease;
     opacity: ${isSubMenu ? 1 : 0};
-    cursor: pointer;
 
-    & > li {
-        position: relative;
+    & li h3 {
+        margin: 0px 10px;
         font-size: 16px;
-        line-height: 30px;
-        transition: color 0.5s ease;
+        transition: all 0.2s ease;
         list-style-type: none;
-        
-        :hover {
-            color: darkgray;
-        }
+        cursor: ${isSubMenu ? "pointer" : "default"};
 
-        & > h3 {
-            margin: 5px auto;
+        &:hover {
+            font-size: 20px;
         }
     }
 `;
