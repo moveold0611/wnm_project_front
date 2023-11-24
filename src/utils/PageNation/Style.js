@@ -1,14 +1,15 @@
 import { css } from '@emotion/react';
 
-export const PageButton = css`
+export const PageButton = () => css`
     margin: 5px;
     border: none;
     background-color: white;
     cursor: pointer;
+`
 
-    &:focus {
-        border: 1px solid #dbdbdb;
-        border-radius: 50%;
-        background-color: #dbdbdb;
-    }
+export const selectedPageButton = () => css`
+    margin: 5px;
+    border: 1px solid wheat;
+    border-radius: 50%;
+    cursor: pointer;
 `

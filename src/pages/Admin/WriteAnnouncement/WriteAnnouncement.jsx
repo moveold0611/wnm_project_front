@@ -14,7 +14,9 @@ function WriteAnnouncement(props) {
     const [ announcementData, setAnnouncementData ]= useState({
         title: "",
         content: "",
-        type: "공지사항"
+        type: "공지사항",
+        isPinned: 0,
+        createDate: ""
     });
 
     const handleInputChange = (e) => {
@@ -25,6 +27,9 @@ function WriteAnnouncement(props) {
         })
     }
 
+    const handleCheckBoxChange = (e) => {
+        console.log(e.target)
+    }
     useEffect(() => {
         if(principal?.data?.data.roleName !== "ROLE_ADMIN" || !principal?.data) {
             alert("정상적인 접근이 아닙니다.")
@@ -52,6 +57,9 @@ function WriteAnnouncement(props) {
         <Mypage>
             <div css={S.SContainer}>
                 <h2>공지사항 작성</h2>
+                <div>
+                    고정 여부 <input name='isPinned' type="checkbox" onChange={handleCheckBoxChange} />
+                </div>
                 <div css={S.SubContainer}>
                     <div css={S.SuSubContainer}>
                         <h1>공지사항 등록</h1>
