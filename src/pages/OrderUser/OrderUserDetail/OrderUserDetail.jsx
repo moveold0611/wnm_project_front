@@ -1,37 +1,43 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 /** @jsxImportSource @emotion/react */
 import * as S from './Style';
 import Mypage from '../../Mypage/Mypage';
-import { getUserOrderApi } from '../../../apis/api/order';
+import { getUserOrderApi, getUserOrderDetailApi } from '../../../apis/api/order';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
+import ReviewModal from '../../../components/Review/ReviewModal/ReviewModal';
+
 
 function OrderUserDetail(props) {
 
     const navigate = useNavigate();
-    const orderId = useParams();
+    const params = useParams();
+    const orderId = params.orderId
     const [ totalPrice, setTotalPrice ] = useState(0);
+    const [ modalOpen, setModalOpen ] = useState(false);
+    const [ selectedProduct, setSelectedProduct ] = useState(null); 
+    const modalBackground = useRef();
     
     let price = 0;
 
     const getOrderDtl = useQuery(["getOrderDtl"], async () => {
+        console.log(orderId)
         try {
             const option = {
                 headers: {
                     Authorization: localStorage.getItem("accessToken")
                 }
             }
-            const response = getUserOrderApi({
-                searchOption: "all",
-                searchValue: "",
-                sortOption: ""}, option);
+            const response = getUserOrderDetailApi(orderId, option);
             return await response;
         } catch(error) {
             console.log(error)
         }
     },{
         refetchOnWindowFocus: false,
-        onSuccess: response => {response?.data[0].getUserOrderProductsRespDtos.forEach(elemnt => {
+        onSuccess: response => {
+            console.log(response?.data)
+            response?.data.orderProducts.forEach(elemnt => {
             price += elemnt.productDtl.price * elemnt.count
         })
         setTotalPrice(price)
@@ -69,23 +75,23 @@ function OrderUserDetail(props) {
                         </tr>
                     </thead>
                     <tbody>
-                            <tr key={getOrderDtl?.data?.data[0].orderId} css={S.STdBox}>
+                            <tr key={getOrderDtl?.data?.data.orderId} css={S.STdBox}>
                                 <td>
-                                    {getOrderDtl?.data?.data[0].orderDate}<br/>
-                                    [{getOrderDtl?.data?.data[0].orderId}]
+                                    {getOrderDtl?.data?.data.orderDate}<br/>
+                                    [{getOrderDtl?.data?.data.orderId}]
                                 </td>
-                                <td>{getOrderDtl?.data?.data[0].shippingName}</td>
-                                <td>{getOrderDtl?.data?.data[0].shippingPhone}</td>
+                                <td>{getOrderDtl?.data?.data.shippingName}</td>
+                                <td>{getOrderDtl?.data?.data.shippingPhone}</td>
                                 <td>
-                                    우편번호 : [{getOrderDtl?.data?.data[0].shippingAddressNumber}]<br/>
-                                    {getOrderDtl?.data?.data[0].shippingAddressName}<br/>
-                                    {getOrderDtl?.data?.data[0].shippingAddressDetailName}
+                                    우편번호 : [{getOrderDtl?.data?.data.shippingAddressNumber}]<br/>
+                                    {getOrderDtl?.data?.data.shippingAddressName}<br/>
+                                    {getOrderDtl?.data?.data.shippingAddressDetailName}
                                 </td>
                                 <td>
-                                    {getOrderDtl?.data?.data[0].orderStatus === 0 && "배송 준비"}
-                                    {getOrderDtl?.data?.data[0].orderStatus === 1 && "배송 중"}
-                                    {getOrderDtl?.data?.data[0].orderStatus === 2 && "배송 완료"}
-                                    {getOrderDtl?.data?.data[0].orderStatus === 3 && "구매 확정"}
+                                    {getOrderDtl?.data?.data.orderStatus === 0 && "배송 준비"}
+                                    {getOrderDtl?.data?.data.orderStatus === 1 && "배송 중"}
+                                    {getOrderDtl?.data?.data.orderStatus === 2 && "배송 완료"}
+                                    {getOrderDtl?.data?.data.orderStatus === 3 && "구매 확정"}
                                 </td>
                                 <td>{totalPrice.toLocaleString('ko-KR')}원</td>
                             </tr>
@@ -107,10 +113,11 @@ function OrderUserDetail(props) {
                                 상품 가격<br/>
                                 [총 금액]
                             </th>
+                            <th>리뷰</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {getOrderDtl?.data?.data[0].getUserOrderProductsRespDtos.map(data => {
+                        {getOrderDtl?.data?.data.orderProducts.map(data => {
                             return <tr key={data.orderProductsId} css={S.STdBox}>
                                 <td>
                                     <img css={S.SImg}src={data.productDtl.productMst.productThumbnailUrl} alt="" />
@@ -124,11 +131,35 @@ function OrderUserDetail(props) {
                                     {data.productDtl.price.toLocaleString("ko-KR")}원<br/>
                                     [{(data.productDtl.price * data.count).toLocaleString("ko-KR")}원]
                                 </td>
+                                <td>
+                                    <div css={S.SBtnWrapper}>
+                                        <button onClick={() => {
+                                                setModalOpen(true);
+                                                setSelectedProduct(data);
+                                            }
+                                        }>리뷰쓰기</button>
+                                    </div>
+                                </td>
                             </tr>
                         })}
                     </tbody>
+                        
+                        {/* <div css={S.SModalContainer} ref={modalBackground} onClick={e => {
+                            if (e.target === modalBackground.current) {
+                                setModalOpen(false);
+                            }}}>
+                            <div css={S.SModalContent}>
+                                <p>리뷰내용</p>
+                                <button css={S.SModalButton} onClick={() => setModalOpen(false)}>
+                                    리뷰 등록하기
+                                </button>
+                            </div>
+                        </div> */}
                 </table>
             </div>
+            {modalOpen &&
+                <ReviewModal isOpen={modalOpen} onRequestClose={() => {setModalOpen(false)}} product={selectedProduct}/>
+            }
         </Mypage>
     );
 }

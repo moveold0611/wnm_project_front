@@ -1,16 +1,33 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+/** @jsxImportSource @emotion/react */
+import * as S from './Style';
 import { addOutgoing } from '../../../../apis/api/outgoing';
 import Mypage from '../../../Mypage/Mypage';
+import { useQueryClient } from 'react-query';
+import { useNavigate } from 'react-router-dom';
 
 function AddOutgoing(props) {
+    const queryClient = useQueryClient();
+    const principal = queryClient.getQueryState("getPrincipal");
+    const navigate = useNavigate();
     const [ productDtlId, setProductDtlId ] = useState(); 
     const [ count, setCount ] = useState(); 
 
+    useEffect(() => {
+        if(principal?.data?.data.roleName !== "ROLE_ADMIN" || !principal?.data) {
+            alert("정상적인 접근이 아닙니다.")
+            navigate("/")
+        }
+    }, [])
+
     const handleAddIncomingClick = async () => {
         try {
-
-            const response = await addOutgoing(productDtlId, count);
-            console.log(response) 
+            const option = {
+                headers: {
+                    Authorization: localStorage.getItem("accessToken")
+                }
+            }
+            const response = await addOutgoing(productDtlId, count, option);
         } catch (error) {
             console.log(error.response.data)
         }
@@ -26,9 +43,12 @@ function AddOutgoing(props) {
 
     return (
         <Mypage>
-            <input name='productDtlId' type='text' placeholder='productDtlId' onChange={handleInputChange} value={productDtlId}/>  
-            <input name='count' type='text' placeholder='count' onChange={handleInputChange} value={count}/>
-            <button onClick={handleAddIncomingClick}>추가 출고</button>
+            <div css={S.SContainer}>
+            <h2>출고 추가</h2>
+                <input name='productDtlId' type='text' placeholder='productDtlId' onChange={handleInputChange} value={productDtlId}/>  
+                <input name='count' type='text' placeholder='count' onChange={handleInputChange} value={count}/>
+                <button onClick={handleAddIncomingClick}>추가 출고</button>
+            </div>
         </Mypage>
     );
 }

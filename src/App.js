@@ -27,16 +27,17 @@ import JoinProductDetail from "./pages/Admin/JoinProductDetail/JoinProductDetail
 import AdminOrder from "./pages/Admin/AdminOrder/AdminOrder";
 import AdminOrderDetail from "./pages/Admin/AdminOrder/AdminOrderDetail/AdminOrderDetail";
 import OrderUserDetail from "./pages/OrderUser/OrderUserDetail/OrderUserDetail";
+import { Global, css } from "@emotion/react";
+import UserData from "./pages/Admin/UserData/UserData";
 import WriteAnnouncement from "./pages/Admin/WriteAnnouncement/WriteAnnouncement";
 import Announcement from "./pages/Announcement/Announcement";
 import AnnouncementDetail from "./pages/Announcement/AnnouncementDetail/AnnouncementDetail";
-
+import { reset } from "./style/reset";
 
 function App() {
 
   const getPrincipal = useQuery(["getPrincipal"], async () => {
     try{
-
       const option = {
         headers: {
           Authorization: !!localStorage.getItem("accessToken")
@@ -64,6 +65,7 @@ function App() {
 
   return (
     <RootLayout>
+      <Global styles={reset}/>
       <Routes>
         <Route path="/" element={ <Main /> } />
         <Route path="/mypage" element={ <Mypage /> }/>
@@ -90,8 +92,12 @@ function App() {
         <Route path="/admin/outgoing/add" element={ <AddOutgoing/> }/>       
         <Route path="/admin/product/join/:productMstId" element={ <JoinProductDetail/> }/>  
         <Route path="/admin/order" element={ <AdminOrder/> }/>      
-        <Route path="/admin/order/:orderId" element={ <AdminOrderDetail/> }/>   
+
+        <Route path="/admin/order/:orderId" element={ <AdminOrderDetail/> }/>      
+        <Route path="/admin/users" element={ <UserData/> }/>      
+
         <Route path="/admin/write/announcement" element={ <WriteAnnouncement />} />
+
       </Routes>
     </RootLayout>
   );

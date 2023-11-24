@@ -79,7 +79,6 @@ function OrderUser(props) {
                             <th>주문 총액</th>
                             <th>주문 처리</th>
                             <th>주문 상세</th>
-                            <th>상태</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -112,10 +111,7 @@ function OrderUser(props) {
                                     {data.orderStatus === 3 && "구매 확정"} 
                                 </td>
                                 <td>
-                                    <button onClick={() => handleNavigateProductDetailClick(data.orderId)}>주문 상세</button> 
-                                </td>
-                                <td>
-                                    <button>리뷰쓰기</button>
+                                    <button onClick={() => handleNavigateProductDetailClick(data.orderId)}>주문 상세 & 리뷰쓰기</button> 
                                 </td>
                             </tr>
                         })}

@@ -1,12 +1,20 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 /** @jsxImportSource @emotion/react */
 import * as S from './Style';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getOrdersForAdmin, updateOrderStatus } from '../../../../apis/api/order';
 import Mypage from '../../../Mypage/Mypage';
 
 function AdminOrderDetail(props) {
+    const queryClient = useQueryClient();
+    const principal = queryClient.getQueryState("getPrincipal");
+    const option = {
+        headers: {
+            Authorization: localStorage.getItem("accessToken"),
+            'Content-Type': 'application/json'
+        },
+    }
     const navigate = useNavigate();
     const param = useParams();
     const orderId = param.orderId;
@@ -17,16 +25,22 @@ function AdminOrderDetail(props) {
         { value: 0, label:"배송 준비" },
         { value: 1, label:"배송 중" },
         { value: 2, label:"배송 완료" },
-        { value: 2, label:"구매 확정" }
+        { value: 3, label:"구매 확정" }
     ]
 
+    useEffect(() => {
+        if(principal?.data?.data.roleName !== "ROLE_ADMIN" || !principal?.data) {
+            alert("정상적인 접근이 아닙니다.")
+            navigate("/")
+        }
+    }, [])
 
     const getProduct = useQuery([], () => {
         return getOrdersForAdmin({
             searchOption: "주문번호",
             searchValue: parseInt(orderId),
             sortOption: ""
-        });
+        }, option);
     }, {
         refetchOnWindowFocus: false,
         retry: 0,
@@ -42,6 +56,8 @@ function AdminOrderDetail(props) {
         return <></>
     }
 
+    
+
 
     const handleOrderStatusChange = (e) => {
         setOrderStatus(parseInt(e.target.value))
@@ -53,7 +69,7 @@ function AdminOrderDetail(props) {
                 alert("같은 상태로는 변경할 수 없습니다.")
                 return;
             }
-            await updateOrderStatus(parseInt(getProduct?.data?.data[0].orderId), parseInt(orderStatus))
+            await updateOrderStatus(parseInt(getProduct?.data?.data[0].orderId), parseInt(orderStatus), option)
             alert("배송상태 수정 완료")
             getProduct.refetch()
         } catch (error) {
@@ -64,6 +80,7 @@ function AdminOrderDetail(props) {
     const handleUsersOrdersOnClick = () => {
         navigate(-1)
     }
+
 
     return (
         <Mypage>
@@ -107,7 +124,7 @@ function AdminOrderDetail(props) {
                                     {getProduct?.data?.data[0].orderStatus === 0 && "배송 준비"}
                                     {getProduct?.data?.data[0].orderStatus === 1 && "배송 중"}
                                     {getProduct?.data?.data[0].orderStatus === 2 && "배송 완료"}
-                                    {getProduct?.data?.data[0].orderStatus === 2 && "구매 확정"}
+                                    {getProduct?.data?.data[0].orderStatus === 3 && "구매 확정"}
                                 </td>
                                 <td>
                                     <div css={S.SSettingBox}>

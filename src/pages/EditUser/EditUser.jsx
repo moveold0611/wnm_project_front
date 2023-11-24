@@ -12,13 +12,19 @@ function EditUser(props) {
     const navigate = useNavigate()
     const queryClient = useQueryClient();
     const principal = queryClient.getQueryState("getPrincipal");
-
     const profileFileRef = useRef();
     const [ uploadFile, setUploadFile ] = useState();
     const { userId } = useParams();
+    const option = {
+        headers: {
+            Authorization: localStorage.getItem("accessToken"),
+            'Content-Type': 'application/json'
+        },
+    }
     
     const [ userEditData, setUserEditData ] = useState({
         nickname: principal?.data?.data?.nickname,
+        phoneNumber: principal?.data?.data?.phoneNumber,
         defaultAddressNumber: principal?.data?.data?.defaultAddressNumber,
         defaultAddressName: principal?.data?.data?.defaultAddressName,
         defaultAddressDetailName: principal?.data?.data?.defaultAddressDetailName,
@@ -93,17 +99,13 @@ function EditUser(props) {
 
     const HandleDeleteUser = async () => {
         if(window.confirm("정말로 탈퇴하시겠습니까?")) {
-        try {
-            const response = await deleteUserApi(userId);
-            if (response.status === 200) {
+            try {
+                const response = await deleteUserApi(userId, option);
                 alert("회원 탈퇴 처리가 완료되었습니다.");
                 window.location.replace("/");
-            } else {
-                throw new Error("사용자 삭제 실패");
+            } catch (error) {
+                alert(error.response.data);
             }
-        } catch (error) {
-            console.error(error);
-        }
         }else {
             return;
         }
@@ -126,6 +128,8 @@ function EditUser(props) {
         reader.readAsDataURL(file);
     };
 
+
+
     const HandleEditUser = async () => {
         try {
                 if(!!uploadFile) {
@@ -135,7 +139,7 @@ function EditUser(props) {
                             getDownloadURL(storageRef)
                                 .then((downloadUrl) => {
                                     userEditData.profileUrl = downloadUrl;
-                                    updateUserApi(userId, userEditData).then((response) => {
+                                    updateUserApi(userId, userEditData, option).then((response) => {
                                         if (response.status === 200) {
                                             alert("회원정보 수정이 완료되었습니다.");
                                             window.location.reload();
@@ -147,7 +151,7 @@ function EditUser(props) {
                         });
                         
                 }else {
-                    const response = await updateUserApi(userId, userEditData)
+                    const response = await updateUserApi(userId, userEditData, option)
                         if (response.status === 200) {
                             alert("회원정보 수정이 완료되었습니다.");
                             window.location.reload();
@@ -229,15 +233,16 @@ return (
                                 ref={addressDetailNameRef}/>
                         </div>
                 </div>
-            </div>
+                </div>
                     <div css={S.SEditButtonBox}>
                         <button css={S.SEditButton} onClick={HandleEditUser}>회원정보수정</button>
                         <button css={S.SCancelbutton} onClick={HandleCancle}>취소</button>
                     </div>
                     <div css={S.SDeleteButtonBox}>
-                        <button onClick={HandleDeleteUser}>회원탈퇴</button>
-                    </div>
-        </div>
+                        <button onClick={HandleDeleteUser}>회원탈퇴
+                    </button>
+                </div>
+            </div>
         </Mypage>  
     );
 }

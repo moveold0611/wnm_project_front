@@ -10,6 +10,38 @@ export const SLayout = css`
     width: 1400px;
 `;
 
+export const SSubContainer = css`
+    display: flex;
+    justify-content: flex-end;
+    margin: 0px auto;
+    width: 91%;
+`;
+
+export const SSelectBox = css`
+
+    & > select {
+        margin: 5px;
+        padding: 5px;
+        border-radius: 5px;
+    }
+
+    & > input { 
+        margin: 5px;
+        border: 1px solid black;
+        border-radius: 5px;
+        padding: 5.25px;
+    }
+
+    & > button {
+        margin: 5px 1px 5px 5px;
+        border: 1px solid black;
+        border-radius: 5px;
+        padding: 5px;
+        width: 50px;
+        cursor: pointer;
+    }
+`;
+
 export const SContainer = css`
     width: 700px;
     height: 850px;

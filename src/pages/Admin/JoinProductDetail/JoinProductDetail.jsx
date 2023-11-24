@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 /** @jsxImportSource @emotion/react */
 import * as S from './Style';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getProductMstApi } from '../../../apis/api/product';
 import Mypage from '../../Mypage/Mypage';
@@ -10,6 +10,15 @@ function JoinProductDetail(props) {
     const param = useParams()
     const productMstId = parseInt(param.productMstId)
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
+    const principal = queryClient.getQueryState("getPrincipal");
+
+    useEffect(() => {
+        if(principal?.data?.data.roleName !== "ROLE_ADMIN" || !principal?.data) {
+            alert("정상적인 접근이 아닙니다.")
+            navigate("/")
+        }
+    }, [])
 
     const getProduct = useQuery(["getProduct"], () => {
         return getProductMstApi(productMstId);
@@ -33,7 +42,7 @@ function JoinProductDetail(props) {
             <h2>상품 상세 정보</h2>
                 <div css={S.SubContainer}>
                     <div css={S.SLayout}>
-                        <table css={S.STableBox}>
+                        <table css={S.STopTableBox}>
                             <tr>
                                 <th>상품 추가 일자</th>
                                 <td>{getProduct?.data?.data.createDate}</td>
@@ -60,7 +69,7 @@ function JoinProductDetail(props) {
                             </tr>
                         </table>
                         {getProduct?.data?.data.productDtlList?.map(dtl => {
-                        return <table key={dtl.productDtl} css={S.STableBox}>
+                        return <table key={dtl.productDtl} css={S.SBottomTableBox}>
                             <tr>
                                 <th>상품 상세(사이즈별) ID</th>
                                 <td>{dtl.productDtlId}</td>
