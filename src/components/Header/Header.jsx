@@ -81,13 +81,6 @@ function Header(props) {
     
     return (
         <div css={S.SLayout}>
-            <div css={S.STopContainer}>
-                <div>
-                    <div css={S.SLogo}>
-                        <img src={logo} onClick={handleLogoOnClick}/>
-                    </div>
-                </div>
-            </div>
             <div css={S.SUserRelatedBox}>
                     {!!principal.data 
                         ? (
@@ -130,6 +123,15 @@ function Header(props) {
                     }
                     
             </div>
+
+            <div css={S.STopContainer}>
+                <div>
+                    <div css={S.SLogo}>
+                        <img src={logo} onClick={handleLogoOnClick}/>
+                    </div>
+                </div>
+            </div>
+            
             
             <div css={S.SBottomContainer}>
                 <ul css={S.SMenuBox} onMouseEnter={handleSubMenuMouseEnter} onMouseLeave={handleSubMenuMouseLeave}>

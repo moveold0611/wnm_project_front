@@ -54,7 +54,7 @@ export const STdBox = css`
         border: 1px solid black;
         border-radius: 10px;
         padding: 5px;
-        width: 65px;
+        width: 75px;
         
         color: black;
         background-color: #efefef;
@@ -97,4 +97,11 @@ export const SSettingBox = css`
 
 export const SImg = css`
     width: 100px;
+`;
+
+export const SBtnWrapper = css`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
 `;
