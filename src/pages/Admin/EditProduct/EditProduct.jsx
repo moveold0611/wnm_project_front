@@ -5,6 +5,7 @@ import { getProductsApi, removeProductApi } from '../../../apis/api/product';
 import { useQuery, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import Mypage from '../../Mypage/Mypage';
+import PageNation from '../../../utils/PageNation/PageNation';
 
 
 function EditProduct(props) {
@@ -198,8 +199,7 @@ function EditProduct(props) {
                     </tbody>
                 </table>
                 <div css={S.SPageButtonBox}>
-                    <button onClick={handleMinusPageClick}>page - 1</button>
-                    <button onClick={handlePlusPageClick}>page + 1</button>
+                    <PageNation products={productList} searchData={searchData} setSearchData={setSearchData} />
                 </div>
             </div>
         </Mypage>

@@ -16,12 +16,12 @@ export const getOrdersForAdmin = async (searchData, option) => {
 }
 
 export const updateOrderStatus = async (orderId, orderStatus, option) => {
-    const response  = await instance.put(`/api/admin/order/${orderId}/${orderStatus}`, undefined , option);
+    const response  = await instance.put(`/api/admin/order/${orderId}/${orderStatus}`, null , option);
     return response;
 }
 
 export const updateConfirmationApi = async (orderId, option) => {
-    const response = await instance.put(`/api/order/${orderId}`, option);
+    const response = await instance.put(`/api/order/${orderId}`, null, option);
     return response;
 }
 

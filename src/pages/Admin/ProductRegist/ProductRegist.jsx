@@ -147,6 +147,8 @@ function ProductRegist(props) {
                 }
             }
             await addProductApi(product, option);
+            alert("상품 등록 완료")
+            window.location.reload()
         } catch (error) {
             console.error(error);
         }    
