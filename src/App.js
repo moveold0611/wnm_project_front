@@ -29,6 +29,7 @@ import AdminOrderDetail from "./pages/Admin/AdminOrder/AdminOrderDetail/AdminOrd
 import OrderUserDetail from "./pages/OrderUser/OrderUserDetail/OrderUserDetail";
 import WriteAnnouncement from "./pages/Admin/WriteAnnouncement/WriteAnnouncement";
 import Announcement from "./pages/Announcement/Announcement";
+import AnnouncementDetail from "./pages/Announcement/AnnouncementDetail/AnnouncementDetail";
 
 
 function App() {
@@ -77,6 +78,7 @@ function App() {
         <Route path="/orders/:orderId" element={ <OrderUserDetail /> }/>
         <Route path="/product/cart/:userId" element={ <CartProducts/> } />
         <Route path="/notice" element={<Announcement />} />
+        <Route path="/notice/:announcementId" element={ <AnnouncementDetail />} />
         
         {/* 주소입력시 막기 */}
         <Route path="/admin/product" element={ <ProductRegist/> } />

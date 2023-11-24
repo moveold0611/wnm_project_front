@@ -4,11 +4,12 @@ import * as S from './Style';
 import { useQuery } from "react-query";
 import { getProductsCountApi } from "../../apis/api/product";
 
-const PageNation = ({products, searchData, setSearchData}) => {
+const PageNation = ({products, searchData, setSearchData, }) => {
 
     const itemCount = 12;
     const [ count, setCount ] = useState(0);
     const [ currentPage, setCurrentPage ] = useState(searchData.pageIndex);
+    const [selectedPage, setSelectedPage] = useState(currentPage);
 
     const getProductsPagenation = useQuery(["getProductsPageNation"], async () => {
         try {
@@ -16,7 +17,8 @@ const PageNation = ({products, searchData, setSearchData}) => {
             console.log(response)
             return response;
         } catch (error) {
-            console.log(error)
+            console.error("Error in getProductsCountApi:", error);
+            throw error;
         }
     },
     {
@@ -25,23 +27,31 @@ const PageNation = ({products, searchData, setSearchData}) => {
             setCount(response.data)
         }
     })  
+    const [totalPages, setTotalPages] = useState([]);
     
     const totalPage = Math.ceil(count / itemCount);
+    const ttPage = Array.from({ length: totalPage }, (_, index) => index + 1);
     
-    const ttPage = [];
-    for(let i = 1; i <= totalPage; ++i) {
-        ttPage.push(i)
-    }
+    useEffect(() => {
+        setTotalPages(ttPage);
+    }, [totalPage]);
 
     useEffect(() => {
-        const newSearchData = {...searchData, pageIndex: currentPage}
-        setSearchData(newSearchData)
-    }, [currentPage])
-
+        setSelectedPage(currentPage);
+      }, [currentPage]);
+    
+    
     const handlePageClick = (page) => {
         setCurrentPage(page);
     }
 
+    useEffect(() => {
+        const newSearchData = {...searchData, pageIndex: currentPage};
+        setSearchData(newSearchData);
+        
+        getProductsPagenation.refetch();
+      }, [currentPage , searchData.productCategoryName, searchData.pageIndex]);
+    
     return (
         <div>
             <button
@@ -51,9 +61,9 @@ const PageNation = ({products, searchData, setSearchData}) => {
                 {"<"}
             </button>
             
-            {ttPage.map(page => (
+            {totalPages.map(page => (
                 <button 
-                    css={S.PageButton}
+                    css={selectedPage === page ? S.selectedPageButton : S.PageButton}
                     name="pageIndex"
                     onClick={() => handlePageClick(page)}>
                     {page}
@@ -62,7 +72,7 @@ const PageNation = ({products, searchData, setSearchData}) => {
             
             <button
             onClick={() => handlePageClick(searchData.pageIndex + 1)}
-            disabled={currentPage === totalPage}
+            disabled={currentPage === totalPages.length}
             >
                 {">"}
             </button>
