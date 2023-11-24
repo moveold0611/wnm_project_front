@@ -169,8 +169,8 @@ function EditProductDetailPage(props) {
                             <img src={productThumbnailSrc} alt='썸네일 이미지' width={'700px'} onChange={handleProductDataOnChange}/>
                         </div>
                         <div>
-                            <input type="file" id="fileInput" name='productThumbnailUrl' onChange={handleThumbnailChange} css={S.SFileSelect} />
-                            <label htmlFor="fileInput" css={S.SLabelUpload}>메인 이미지 수정 파일 업로드</label>
+                            <input type="file" id="productThumbnailUrl" onChange={handleThumbnailChange} css={S.SFileSelect} />
+                            <label htmlFor="productThumbnailUrl" css={S.SLabelUpload}>메인 이미지 수정 파일 업로드</label>
                         </div>
 
 
@@ -180,8 +180,8 @@ function EditProductDetailPage(props) {
                                 <img src={productDetailImgSrc} alt='상품 디테일 이미지' width={'700px'} onChange={handleProductDataOnChange}/>
                             </div>
                             <div>
-                                <input type="file" id="fileInput" name='productDetailUrl' onChange={handleDetailImgChange} css={S.SFileSelect} />
-                                <label htmlFor="fileInput" css={S.SLabelUpload}>상세이미지 수정 파일 업로드</label>
+                                <input type="file" id="productDetailUrl" onChange={handleDetailImgChange} css={S.SFileSelect} />
+                                <label htmlFor="productDetailUrl" css={S.SLabelUpload}>상세이미지 수정 파일 업로드</label>
                             </div>
 
 
