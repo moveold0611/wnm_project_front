@@ -1,16 +1,21 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 /** @jsxImportSource @emotion/react */
 import * as S from './Style';
 import Mypage from '../../Mypage/Mypage';
 import { getUserOrderApi } from '../../../apis/api/order';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
+import ReviewModal from '../../../components/Review/ReviewModal/ReviewModal';
+
 
 function OrderUserDetail(props) {
 
     const navigate = useNavigate();
     const orderId = useParams();
     const [ totalPrice, setTotalPrice ] = useState(0);
+    const [ modalOpen, setModalOpen ] = useState(false);
+    const [ selectedProduct, setSelectedProduct ] = useState(null); 
+    const modalBackground = useRef();
     
     let price = 0;
 
@@ -106,6 +111,7 @@ function OrderUserDetail(props) {
                                 상품 가격<br/>
                                 [총 금액]
                             </th>
+                            <th>리뷰</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -123,11 +129,35 @@ function OrderUserDetail(props) {
                                     {data.productDtl.price.toLocaleString("ko-KR")}원<br/>
                                     [{(data.productDtl.price * data.count).toLocaleString("ko-KR")}원]
                                 </td>
+                                <td>
+                                    <div css={S.SBtnWrapper}>
+                                        <button onClick={() => {
+                                                setModalOpen(true);
+                                                setSelectedProduct(data);
+                                            }
+                                        }>리뷰쓰기</button>
+                                    </div>
+                                </td>
                             </tr>
                         })}
                     </tbody>
+                        
+                        {/* <div css={S.SModalContainer} ref={modalBackground} onClick={e => {
+                            if (e.target === modalBackground.current) {
+                                setModalOpen(false);
+                            }}}>
+                            <div css={S.SModalContent}>
+                                <p>리뷰내용</p>
+                                <button css={S.SModalButton} onClick={() => setModalOpen(false)}>
+                                    리뷰 등록하기
+                                </button>
+                            </div>
+                        </div> */}
                 </table>
             </div>
+            {modalOpen &&
+                <ReviewModal isOpen={modalOpen} onRequestClose={() => {setModalOpen(false)}} product={selectedProduct}/>
+            }
         </Mypage>
     );
 }
