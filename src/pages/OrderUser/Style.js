@@ -5,7 +5,7 @@ export const SContainer = css`
     align-items: center;
 
     margin: 15px 0px;
-    width: 90%;
+    width: 95%;
 
     & > h2 {
         text-align: end;

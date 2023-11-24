@@ -6,6 +6,7 @@ export const SContainer = css`
     width: 1400px;
 
     & > h2 {
+        padding-right: 35px;
         text-align: end;
     }
 `;
@@ -26,7 +27,7 @@ export const SSubConatainer = css`
         width: 125px;
         list-style-type: none;
         text-align: center;
-        background-color: #a9a9a9;
+        background-color: #DEEFE7;
     }
 
     & > ul > li > h4 {
@@ -48,5 +49,5 @@ export const SChangeContainer = css`
     margin: 0px 2px;
     border-radius: 20px;
     width: 100%;
-    background-color: #f5f5f5;
+    background-color: #DEEFE7;
 `;

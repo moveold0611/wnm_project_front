@@ -5,7 +5,7 @@ export const SContainer = css`
     align-items: center;
 
     margin: 15px 0px;
-    width: 92%;
+    width: 95%;
 
     & > h2 {
         text-align: end;
@@ -58,7 +58,7 @@ export const SThBox = css`
 
 export const STdBox = css`
     & > td {
-        border-bottom: 1px solid black;
+        border-bottom: 1px dashed black;
         padding: 10px 15px;
         font-size: 15px;
         text-align: center;

@@ -2,10 +2,16 @@ import React, { useEffect, useState } from 'react';
 /** @jsxImportSource @emotion/react */
 import * as S from './Style';
 import Mypage from '../../Mypage/Mypage';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import { deleteAdminToUserApi, getUsersApi } from '../../../apis/api/user';
+import { useNavigate } from 'react-router-dom';
 
 function UserData(props) {
+    const navigate = useNavigate();
+
+    const queryClient = useQueryClient();
+    const principal = queryClient.getQueryState("getPrincipal");
+
     const [ userData, setUserData ] = useState([])
     const [ searchData, setSearchData ] = useState({
         searchOption: "all",
@@ -19,6 +25,13 @@ function UserData(props) {
         {value: "이름"},
         {value: "휴대전화"}
     ]
+
+    useEffect(() => {
+        if(principal?.data?.data.roleName !== "ROLE_ADMIN" || !principal?.data) {
+            alert("정상적인 접근이 아닙니다.")
+            navigate("/")
+        }
+    }, [])
 
     const getUserData = useQuery(["getUserData"], async () => {
         try {
@@ -38,6 +51,8 @@ function UserData(props) {
             setUserData(response)
         }
     });
+
+
 
     useEffect(() => {
         setSearchData({

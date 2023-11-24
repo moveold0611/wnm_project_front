@@ -94,32 +94,84 @@ function Signup(props) {
         }catch(error) {
                 console.error(error);
                 }
-            }
-            return (
-                <div css={S.SLayout}>
-                    <div css={S.SContainer}>
-                        <div>
-                            <div><h1>회원가입</h1></div>
-                            <div><h3 css={S.Sh3}>회원이 되어 다양한 혜택을 경험해 보세요!</h3></div>
-                            <div><h4 css={S.Sh4}>이름</h4></div>
-                            <div><input type="text" name='name' placeholder='이름을 입력해주세요' onChange={handleInputChange} css={S.Sinput} /></div>
-                            <div><h4 css={S.Sh4}>이메일</h4></div>
-                            <div><input type="email" name='email' placeholder='이메일을 입력해주세요' onChange={handleInputChange} css={S.Sinput} /></div>
-                            <div><h4 css={S.Sh4}>닉네임</h4></div>
-                            <div><input type="text" name='nickname' placeholder='닉네임을 입력해주세요' onChange={handleInputChange} css={S.Sinput} /></div>
-                            <div><h4 css={S.Sh4}>전화번호</h4></div>
-                            <div><input type="text" name='phoneNumber' placeholder='전화번호를 입력해주세요' onChange={handleInputChange} css={S.Sinput} /></div>
-                            <div><h4 css={S.Sh4}>주소</h4></div>
-                            <div><input type="text" name='defaultAddressNumber' id="sample6_postcode" placeholder="우편번호" onChange={handleInputChange} css={S.Sinput} /></div>
-                            <div><input type="button" name='findDefaultAddressNumber' onClick={sample6_execDaumPostcode} value="우편번호 찾기" css={S.Sbutton} /></div>
-                            <div><input type="text" name='defaultAddressName' id="sample6_address" placeholder="주소" css={S.Sinput} onChange={handleInputChange} /></div>
-                            <div><input type="text" name='defaultAddressDetailName' id="sample6_detailAddress" placeholder="상세주소" onChange={handleInputChange} css={S.Sinput} /></div>
-                            <div><button onClick={handleSignupSubmit}>가입하기</button></div>
+    }
+
+    const handleCancelOnClick = () => {
+        navigate(-1)
+    }
+
+    return (
+        <div css={S.SLayout}>
+            <div css={S.SContainer}>
+                <div css={S.SUserInfoContiner}>
+                    <h1>회원가입</h1>
+                    <div>
+                        <h3>회원이 되어 다양한 혜택을 경험해 보세요!</h3>
+                    </div>
+                    <div css={S.SUserInfoBox}>
+                        <h3 css={S.STitle}>이름</h3>
+                        <input type="text" 
+                            name='name' 
+                            placeholder='이름을 입력해주세요' 
+                            onChange={handleInputChange}/>
+                    </div>
+                    <div css={S.SUserInfoBox}> 
+                        <h3 css={S.STitle}>이메일</h3>
+                        <input type="email" 
+                            name='email' 
+                            placeholder='이메일을 입력해주세요' 
+                            onChange={handleInputChange}/>
+                    </div>
+                    <div css={S.SUserInfoBox}>
+                        <h3 css={S.STitle}>닉네임</h3>
+                        <input type="text" 
+                            name='nickname' 
+                            placeholder='닉네임을 입력해주세요' 
+                            onChange={handleInputChange}/>
+                    </div>
+                    <div css={S.SUserInfoBox}>
+                        <h3 css={S.STitle}>전화번호</h3>
+                        <input type="text" 
+                            name='phoneNumber' 
+                            placeholder='전화번호를 입력해주세요' 
+                            onChange={handleInputChange}/>
+                    </div>
+                    <div css={S.SUserInfoBox}>
+                        <h3 css={S.STitle}>주소</h3>
+                        <div css={S.SAddressBox}>
+                            <div css={S.SAddressNumberBox}>
+                                <input type="text" 
+                                    name='defaultAddressNumber' 
+                                    id="sample6_postcode" 
+                                    placeholder="우편번호" 
+                                    onChange={handleInputChange}/>
+                                <div css={S.SAddressButtonBox}>
+                                    <button type="button" 
+                                        name='findDefaultAddressNumber' 
+                                        onClick={sample6_execDaumPostcode} 
+                                        value="우편번호 찾기">주소검색</button>
+                                </div>
+                            </div>
+                            <input type="text" 
+                                name='defaultAddressName' 
+                                id="sample6_address" 
+                                placeholder="주소"  
+                                onChange={handleInputChange}/>
+                            <input type="text" 
+                                name='defaultAddressDetailName' 
+                                id="sample6_detailAddress" 
+                                placeholder="상세주소" 
+                                onChange={handleInputChange}/>
                         </div>
                     </div>
+                    <div>
+                        <button css={S.SSignupButton}onClick={handleSignupSubmit}>가입하기</button>
+                        <button css={S.SCencelButton}onClick={handleCancelOnClick}>취소하기</button>
+                    </div>
                 </div>
-                
-            );
-        }
+            </div>
+        </div>
+    );
+}
 
 export default Signup;
