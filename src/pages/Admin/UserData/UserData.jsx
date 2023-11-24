@@ -22,10 +22,15 @@ function UserData(props) {
 
     const getUserData = useQuery(["getUserData"], async () => {
         try {
-            const response = getUsersApi(searchData);
+            const option = {
+                headers: {
+                    Authorization: localStorage.getItem("accessToken")
+                }
+            }
+            const response = getUsersApi(searchData, option);
             return response;
         } catch(error) {
-            console.log(error)
+            alert(error.response.data)
         }
     }, {
         refetchOnWindowFocus: false,
@@ -59,7 +64,12 @@ function UserData(props) {
     const handleUserDeleteOnClick = async (userId) => {
         try {
             if(window.confirm("선택하신 회원님을 삭제시키겠습니까?")) {
-                await deleteAdminToUserApi(userId)
+                const option = {
+                    headers: {
+                        Authorization: localStorage.getItem("accessToken")
+                    }
+                }
+                await deleteAdminToUserApi(userId, option)
                 getUserData.refetch();
             } else {
                 alert("회원 삭제가 취소되었습니다.")

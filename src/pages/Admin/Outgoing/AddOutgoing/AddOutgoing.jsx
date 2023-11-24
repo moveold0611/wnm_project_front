@@ -8,9 +8,12 @@ function AddOutgoing(props) {
 
     const handleAddIncomingClick = async () => {
         try {
-
-            const response = await addOutgoing(productDtlId, count);
-            console.log(response) 
+            const option = {
+                headers: {
+                    Authorization: localStorage.getItem("accessToken")
+                }
+            }
+            const response = await addOutgoing(productDtlId, count, option);
         } catch (error) {
             console.log(error.response.data)
         }

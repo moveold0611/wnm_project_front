@@ -13,8 +13,12 @@ function Incoming(props) {
 
     const handleGetIncomingClick = async () => {
         try {
-            const response = await getIncoming(parseInt(productDtlIdInput));
-            console.log(response)
+            const option = {
+                headers: {
+                    Authorization: localStorage.getItem("accessToken")
+                }
+            }
+            const response = await getIncoming(parseInt(productDtlIdInput), option);
             setGetData(response?.data)
         } catch (error) {            
             console.log(error)
