@@ -155,7 +155,7 @@ function EditProductDetailPage(props) {
         }
     }
 
-
+console.log(productData)
 
     return (
         <Mypage>
@@ -191,11 +191,11 @@ function EditProductDetailPage(props) {
                     <div css={S.SInformation}>
                         <div css={S.SInfoNameInput}>
                             <h2>상품명</h2>
-                            <input type="text" name='productName' defaultValue={getProduct?.data?.data?.productName} onChange={handleProductDataOnChange}/>
+                            <input type="text" name='productName' defaultValue={getProduct?.data?.data[0]?.productName} onChange={handleProductDataOnChange}/>
                         </div>
                         <div css={S.SInfoTextInput}>
                             <h2>상품 설명</h2>
-                            <textarea type="text" name='productDetailText' defaultValue={getProduct?.data?.data?.productDetailText} onChange={handleProductDataOnChange}/>
+                            <textarea type="text" name='productDetailText' defaultValue={getProduct?.data?.data[0]?.productDetailText} onChange={handleProductDataOnChange}/>
                         </div>
                         <div css={S.SInfoSizeInput}>
                             <h2>사이즈별 가격</h2> 
