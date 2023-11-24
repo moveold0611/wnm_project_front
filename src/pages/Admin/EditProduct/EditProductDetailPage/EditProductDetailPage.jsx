@@ -29,7 +29,6 @@ function EditProductDetailPage(props) {
         sortOption: 'number',
         pageIndex: 1}
     const [ productData, setProductData ] = useState({});
-    console.log(productData)
 
 
     let productMinimumData = [];
@@ -114,19 +113,19 @@ function EditProductDetailPage(props) {
         const file = e.target.files[0];
         setProductThumbnailFile(file)
         reader.onload = (e) => {
-            const productThumnailUrl = e.target.result;
-            setProductThumbnailSrc(productThumnailUrl)
+            setProductThumbnailSrc(e.target.result)
         }
         reader.readAsDataURL(file)
     }
+
+
 
     const handleDetailImgChange = (e) => {
         const reader = new FileReader();
         const file = e.target.files[0];
         setProductDetailImgFile(file)
         reader.onload = (e) => {
-            const productDetailImgUrl = e.target.result;
-            setProductDetailImgSrc(productDetailImgUrl)
+            setProductDetailImgSrc(e.target.result)
         }
         reader.readAsDataURL(file)
     }
@@ -156,7 +155,7 @@ function EditProductDetailPage(props) {
         }
     }
 
-
+console.log(productData)
 
     return (
         <Mypage>
@@ -170,27 +169,33 @@ function EditProductDetailPage(props) {
                             <img src={productThumbnailSrc} alt='썸네일 이미지' width={'700px'} onChange={handleProductDataOnChange}/>
                         </div>
                         <div>
-                            <input type="file" id="fileInput" onChange={handleThumbnailChange} css={S.SFileSelect} />
-                            <label htmlFor="fileInput" css={S.SLabelUpload}>메인 이미지 수정 파일 업로드</label>
+                            <input type="file" id="productThumbnailUrl" onChange={handleThumbnailChange} css={S.SFileSelect} />
+                            <label htmlFor="productThumbnailUrl" css={S.SLabelUpload}>메인 이미지 수정 파일 업로드</label>
                         </div>
-                        <div><h1 css={S.SH1}>상품 상세 이미지 수정</h1></div>
-                        <div>
-                            <img src={productDetailImgSrc} alt='상품 디테일 이미지' width={'700px'} onChange={handleProductDataOnChange}/>
-                        </div>
-                        <div>
-                            <input type="file" id="fileInput" onChange={handleDetailImgChange} css={S.SFileSelect} />
-                            <label htmlFor="fileInput" css={S.SLabelUpload}>상세이미지 수정 파일 업로드</label>
-                        </div>
+
+
+
+                            <div><h1 css={S.SH1}>상품 상세 이미지 수정</h1></div>
+                            <div>
+                                <img src={productDetailImgSrc} alt='상품 디테일 이미지' width={'700px'} onChange={handleProductDataOnChange}/>
+                            </div>
+                            <div>
+                                <input type="file" id="productDetailUrl" onChange={handleDetailImgChange} css={S.SFileSelect} />
+                                <label htmlFor="productDetailUrl" css={S.SLabelUpload}>상세이미지 수정 파일 업로드</label>
+                            </div>
+
+
+
                         <div><h1 css={S.SH1}>상품 정보 수정</h1></div>
                     </div>
                     <div css={S.SInformation}>
                         <div css={S.SInfoNameInput}>
                             <h2>상품명</h2>
-                            <input type="text" name='productName' defaultValue={getProduct?.data?.data?.productName} onChange={handleProductDataOnChange}/>
+                            <input type="text" name='productName' defaultValue={getProduct?.data?.data[0]?.productName} onChange={handleProductDataOnChange}/>
                         </div>
                         <div css={S.SInfoTextInput}>
                             <h2>상품 설명</h2>
-                            <textarea type="text" name='productDetailText' defaultValue={getProduct?.data?.data?.productDetailText} onChange={handleProductDataOnChange}/>
+                            <textarea type="text" name='productDetailText' defaultValue={getProduct?.data?.data[0]?.productDetailText} onChange={handleProductDataOnChange}/>
                         </div>
                         <div css={S.SInfoSizeInput}>
                             <h2>사이즈별 가격</h2> 
