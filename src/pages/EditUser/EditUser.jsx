@@ -21,7 +21,7 @@ function EditUser(props) {
             'Content-Type': 'application/json'
         },
     }
-    console.log(option)
+    
     const [ userEditData, setUserEditData ] = useState({
         nickname: principal?.data?.data?.nickname,
         phoneNumber: principal?.data?.data?.phoneNumber,
@@ -233,15 +233,16 @@ return (
                                 ref={addressDetailNameRef}/>
                         </div>
                 </div>
-            </div>
+                </div>
                     <div css={S.SEditButtonBox}>
                         <button css={S.SEditButton} onClick={HandleEditUser}>회원정보수정</button>
                         <button css={S.SCancelbutton} onClick={HandleCancle}>취소</button>
                     </div>
                     <div css={S.SDeleteButtonBox}>
-                        <button onClick={HandleDeleteUser}>회원탈퇴</button>
-                    </div>
-        </div>
+                        <button onClick={HandleDeleteUser}>회원탈퇴
+                    </button>
+                </div>
+            </div>
         </Mypage>  
     );
 }

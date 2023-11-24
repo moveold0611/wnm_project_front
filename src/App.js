@@ -92,7 +92,7 @@ function App() {
 
         <Route path="/admin/order/:orderId" element={ <AdminOrderDetail/> }/>      
         <Route path="/admin/users" element={ <UserData/> }/>      
- 
+
         <Route path="/admin/write/announcement" element={ <WriteAnnouncement />} />
 
       </Routes>

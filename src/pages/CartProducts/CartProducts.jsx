@@ -89,6 +89,7 @@ function CartProducts(props) {
                     deleteProduct.splice(index, 1);
                     console.log("삭제 후 상태:", deleteProduct);
                     setCartProducts(deleteProduct);
+                    window.location.reload();
                 } else {
                     throw new Error("상품 삭제 실패")
                 }

@@ -5,7 +5,7 @@ export const SContainer = css`
     align-items: center;
 
     margin: 15px 0px;
-    width: 90%;
+    width: 95%;
 
     & > h2 {
         text-align: end;
@@ -37,8 +37,33 @@ export const SLayout = css`
     }
 `;
 
-export const STableBox = css`
+export const STopTableBox = css`
     margin-top: 20px;
+    padding-bottom: 14px;
+    width: 95%;
+    border-bottom: 1px dashed black;
+
+    & > tr > th {
+        border: 1px solid black;
+        padding: 10px 15px;
+        width: 500px;
+        font-size: 15px;
+        text-align: center;
+
+        background-color: darkgray;
+    }
+
+    & > tr > td {
+        border: 1px solid black;
+        padding: 10px 15px;
+        font-size: 15px;
+        text-align: center;
+
+    }
+`;
+
+export const SBottomTableBox = css`
+    margin-top: 15px;
     width: 95%;
 
     & > tr > th {

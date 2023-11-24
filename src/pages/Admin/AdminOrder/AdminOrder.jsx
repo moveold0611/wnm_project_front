@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import * as S from './Style';
 import { getOrdersForAdmin, updateOrderStatus } from '../../../apis/api/order';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import Mypage from '../../Mypage/Mypage';
 import { async } from 'q';
 
 function AdminOrder(props) {
+    const queryClient = useQueryClient();
+    const principal = queryClient.getQueryState("getPrincipal");
     const option = {
         headers: {
             Authorization: localStorage.getItem("accessToken")
@@ -38,6 +40,13 @@ function AdminOrder(props) {
         { value: 2, label:"배송완료" },
         { value: 3, label:"구매확정" }
     ]
+
+    useEffect(() => {
+        if(principal?.data?.data.roleName !== "ROLE_ADMIN" || !principal?.data) {
+            alert("정상적인 접근이 아닙니다.")
+            navigate("/")
+        }
+    }, [])
 
     const getOrders = useQuery(["getOrders"], async () => {
         try {

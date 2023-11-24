@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 /** @jsxImportSource @emotion/react */
 import * as S from './Style';
 import logo from '../../images/Logo/Logo.png'
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { TbShoppingBag } from "react-icons/tb";
 import { useQueryClient } from 'react-query';
 
@@ -11,7 +11,7 @@ function Header(props) {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
     const principal = queryClient.getQueryState("getPrincipal");
-
+    const parsm = useParams();
     const [ isSubMenu, setIsSubMenu ] = useState(false);
     
     const menus = [
@@ -19,6 +19,8 @@ function Header(props) {
         { name: 'Customer Service', subMenus: ['Notice', 'FAQ'] },
         { name: 'Cat', subMenus: ['HomeLiving', 'Movement', 'Toy', 'Accessories'] }
     ];
+
+    console.log(parsm)
     
     const handleLogoOnClick = () => {
         navigate("")
@@ -30,7 +32,6 @@ function Header(props) {
     }
 
     const handleGoToCartOnClick = () => {
-        
         navigate(`/product/cart/${principal?.data?.data?.userId}`)
     }
 
@@ -88,22 +89,48 @@ function Header(props) {
                 </div>
             </div>
             <div css={S.SUserRelatedBox}>
-                {!!principal?.data?.data ? (
-                    <Link>
-                        <h3 onClick={handleLogoutOnClick}>LOGOUT</h3>
-                    </Link>
-                ) : (
-                    <Link to="/auth/signin">
-                        <h3>LOGIN</h3>
-                    </Link>
-                )}
-                    <Link to={`/orders`}>
-                        <h3>MYPAGE</h3>
-                    </Link>
-                        <div css={S.SCartIcon} onClick={handleGoToCartOnClick}>
-                            <TbShoppingBag />
-                        </div>
-                </div>
+                    {!!principal.data 
+                        ? (
+                            <>
+                                <Link>
+                                    <h3 onClick={handleLogoutOnClick}>LOGOUT</h3>
+                                </Link>
+                                {principal.data.data.roleName === "ROLE_ADMIN"
+                                    ? (
+                                        <Link to={`/admin/users`}>
+                                            <h3>ADMIN PAGE</h3>
+                                        </Link>
+                                    )
+                                    : (
+                                        <>
+                                            <Link to={`/orders`}>
+                                                <h3>MY PAGE</h3> 
+                                            </Link>
+                                            <div css={S.SCartIcon} onClick={handleGoToCartOnClick}>
+                                                <TbShoppingBag />
+                                            </div>
+                                        </>
+                                    )
+                                }
+                            </>
+                        )
+                        : (
+                            <>
+                                <Link to="/auth/signin">
+                                    <h3>LOGIN</h3>
+                                </Link>
+                                <Link to={`/orders`}>
+                                    <h3>MY PAGE</h3> 
+                                </Link>
+                                <div css={S.SCartIcon} onClick={handleGoToCartOnClick}>
+                                    <TbShoppingBag />
+                                </div>
+                            </>
+                        )
+                    }
+                    
+            </div>
+            
             <div css={S.SBottomContainer}>
                 <ul css={S.SMenuBox} onMouseEnter={handleSubMenuMouseEnter} onMouseLeave={handleSubMenuMouseLeave}>
                     {menus.map((menu, index) => (
@@ -122,6 +149,7 @@ function Header(props) {
                     ))}
                     </ul>
             </div>
+
         </div>
     );
 }

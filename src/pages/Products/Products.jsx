@@ -78,16 +78,18 @@ function Products(props) {
     return (
         <RootContainer>
             <div css={S.SLayout}>
-                <div>
-                    <select 
-                        options={sortOptions}
-                        onChange={handleSortOptionChange}>
-                            {sortOptions.map(option => {
-                                return <option name='sortOption' key={option.label} value={option.value}>{option.label}</option>
-                            })}
-                    </select> 
-                    <input type="text" name='value' onChange={handleSearchValueChange} value={searchValue}/>
-                    <button onClick={handleSearchButtonClick}>검색</button>
+                <div css={S.SSubContainer}>
+                    <div css={S.SSelectBox}>
+                        <select 
+                            options={sortOptions}
+                            onChange={handleSortOptionChange}>
+                                {sortOptions.map(option => {
+                                    return <option name='sortOption' key={option.label} value={option.value}>{option.label}</option>
+                                })}
+                        </select> 
+                        <input type="text" name='value' onChange={handleSearchValueChange} value={searchValue}/>
+                        <button onClick={handleSearchButtonClick}>검색</button>
+                    </div>
                 </div>
                 <div css={S.SProductContainer}>
                     {!getProducts.isLoading && getProducts?.data?.data.map((product, index) => {

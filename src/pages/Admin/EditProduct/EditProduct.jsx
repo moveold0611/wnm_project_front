@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 /** @jsxImportSource @emotion/react */
 import * as S from './Style';
 import { getProductsApi, removeProductApi } from '../../../apis/api/product';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import Mypage from '../../Mypage/Mypage';
 
 
 function EditProduct(props) {
+    const queryClient = useQueryClient();
+    const principal = queryClient.getQueryState("getPrincipal");
     const navigate = useNavigate();
     const [ productList, setProductList ] = useState([]);
     const [ searchInput, setSearchInput ] = useState('');
@@ -42,6 +44,13 @@ function EditProduct(props) {
         { value: "name", label: "상품명"},
         { value: "number", label: "상품번호"},
     ]
+
+    useEffect(() => {
+        if(principal?.data?.data.roleName !== "ROLE_ADMIN" || !principal?.data) {
+            alert("정상적인 접근이 아닙니다.")
+            navigate("/")
+        }
+    }, [])
     
     useEffect(() => {
         setSearchData({
@@ -49,8 +58,6 @@ function EditProduct(props) {
             searchValue: searchInput
         })
     }, [searchInput])
-
-
 
     const getProducts = useQuery(["getProducts", searchData.pageIndex], async () => {
         const response = await getProductsApi(searchData);

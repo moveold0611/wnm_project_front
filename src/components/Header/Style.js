@@ -73,7 +73,9 @@ export const SBottomContainer = css`
     display: flex;
     justify-content: center;
     align-items: center;
-
+    margin: 0px auto;
+    border-bottom: 2px dashed black;
+    width: 1350px;
     height: 70px;
 `;
 

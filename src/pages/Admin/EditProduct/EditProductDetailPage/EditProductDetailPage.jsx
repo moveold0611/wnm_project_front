@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { useQuery } from 'react-query';
+import React, { useEffect, useState } from 'react';
+import { useQuery, useQueryClient } from 'react-query';
 import { getProductsApi, updateProductApi } from '../../../../apis/api/product';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { storage } from '../../../../apis/firebase/firebase';
 /** @jsxImportSource @emotion/react */
@@ -9,6 +9,9 @@ import * as S from './Style';
 import Mypage from '../../../Mypage/Mypage';
 
 function EditProductDetailPage(props) {
+    const queryClient = useQueryClient();
+    const principal = queryClient.getQueryState("getPrincipal");
+    const navigate = useNavigate();
 
     const option = {
         headers: {
@@ -29,12 +32,15 @@ function EditProductDetailPage(props) {
         sortOption: 'number',
         pageIndex: 1}
     const [ productData, setProductData ] = useState({});
-    console.log(productData)
-
 
     let productMinimumData = [];
 
-
+    useEffect(() => {
+        if(principal?.data?.data.roleName !== "ROLE_ADMIN" || !principal?.data) {
+            alert("정상적인 접근이 아닙니다.")
+            navigate("/")
+        }
+    }, [])
 
     const getProduct = useQuery(["getProduct"], async () => {
         const response = await getProductsApi(searchData);
