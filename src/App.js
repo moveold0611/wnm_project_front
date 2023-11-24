@@ -31,15 +31,13 @@ import { Global, css } from "@emotion/react";
 import UserData from "./pages/Admin/UserData/UserData";
 import WriteAnnouncement from "./pages/Admin/WriteAnnouncement/WriteAnnouncement";
 import Announcement from "./pages/Announcement/Announcement";
+import AnnouncementDetail from "./pages/Announcement/AnnouncementDetail/AnnouncementDetail";
 import { reset } from "./style/reset";
-
-
 
 function App() {
 
   const getPrincipal = useQuery(["getPrincipal"], async () => {
     try{
-
       const option = {
         headers: {
           Authorization: !!localStorage.getItem("accessToken")
@@ -82,6 +80,7 @@ function App() {
         <Route path="/orders/:orderId" element={ <OrderUserDetail /> }/>
         <Route path="/product/cart/:userId" element={ <CartProducts/> } />
         <Route path="/notice" element={<Announcement />} />
+        <Route path="/notice/:announcementId" element={ <AnnouncementDetail />} />
         
         {/* 주소입력시 막기 */}
         <Route path="/admin/product" element={ <ProductRegist/> } />
