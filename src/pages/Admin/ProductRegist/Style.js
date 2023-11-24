@@ -5,7 +5,7 @@ export const SContainer = css`
     align-items: center;
 
     margin: 15px 0px;
-    width: 90%;
+    width: 95%;
 
     & > h2 {
         text-align: end;
@@ -27,8 +27,6 @@ export const SLayout = css`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
-
 `;
 
 export const SH1 = css`
@@ -62,24 +60,6 @@ export const Sfile = css`
     display: none;
 `;
 
-export const SButton = css`
-    padding: 12px 180px;
-    background-color: #333;
-    color: #f9fbff;
-    cursor: pointer;
-    font-size: 20px;
-    margin: 30px 0 100px;
-    border: none;
-    font-weight: bold;
-    border-radius: 50px;
-
-    &:hover {
-        background-color: #2b64fb;
-        color: #f9fbff;
-        font-weight: bold;
-    }
-`;
-
 export const SH2 = css`
 padding: 30px 80px;
 color: #333;
@@ -90,25 +70,47 @@ margin-bottom: 50px;
 
 export const SInfoInput = css`
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
     margin: 15px 0;
 
-    & > h2 {
-        width: 200px;
-        margin-bottom: 20px;
+    & > input { 
+        border: 1px solid black;
+        border-radius: 10px;
+        padding: 10px;
+        width: 350px;
+        font-size: 15px;
     }
     
-    & > input{
-        width: 500px;
-        height: 35px;
-        font-size: 18px;
-        padding-left: 20px;
+    & > h4 {
+        color: red;
     }
 `;
 
 export const SSelect = css`
-    width: 520px;
-    height: 40px;
-    font-size: 18px;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 10px;
+    width: 370px;
+    font-size: 15px;
+`;
+
+export const SButton = css`
+    margin: 15px 0 100px;
+    padding: 12px 180px;
+    background-color: #333;
+    color: #f9fbff;
+    cursor: pointer;
+    font-size: 20px;
+    border: none;
+    font-weight: bold;
+    border-radius: 50px;
+
+    &:hover {
+        background-color: #2b64fb;
+        color: #f9fbff;
+        font-weight: bold;
+    }
+    
 `;

@@ -5,9 +5,13 @@ import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { storage } from '../../../apis/firebase/firebase';
 import { addProductApi } from '../../../apis/api/product';
 import Mypage from '../../Mypage/Mypage';
+import { useQueryClient } from 'react-query';
+import { useNavigate } from 'react-router-dom';
 
 function ProductRegist(props) {
-    
+    const queryClient = useQueryClient();
+    const principal = queryClient.getQueryState("getPrincipal");
+    const navigate = useNavigate();
     const productThumnailImgRef = useRef();
     const productDetailImgRef = useRef();
     const [uploadFiles, setUploadFiles] = useState([]);
@@ -47,6 +51,13 @@ function ProductRegist(props) {
         petTypeId: 1,
         productCategoryId: 1
     })
+
+    useEffect(() => {
+        if(principal?.data?.data.roleName !== "ROLE_ADMIN" || !principal?.data) {
+            alert("정상적인 접근이 아닙니다.")
+            navigate("/")
+        }
+    }, [])
 
     const handleProductDetailImgUploadClick = () => {
         if(window.confirm("상품 사진을 등록하시겠습니까?")) {
@@ -136,6 +147,8 @@ function ProductRegist(props) {
                 }
             }
             await addProductApi(product, option);
+            alert("상품 등록 완료")
+            window.location.reload()
         } catch (error) {
             console.error(error);
         }    
@@ -162,7 +175,6 @@ function ProductRegist(props) {
         })
         
     }
-    console.log(product)
 
     return (
         <Mypage>

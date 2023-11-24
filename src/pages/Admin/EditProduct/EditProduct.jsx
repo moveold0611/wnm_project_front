@@ -2,12 +2,15 @@ import React, { useEffect, useState } from 'react';
 /** @jsxImportSource @emotion/react */
 import * as S from './Style';
 import { getProductsApi, removeProductApi } from '../../../apis/api/product';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import Mypage from '../../Mypage/Mypage';
+import PageNation from '../../../utils/PageNation/PageNation';
 
 
 function EditProduct(props) {
+    const queryClient = useQueryClient();
+    const principal = queryClient.getQueryState("getPrincipal");
     const navigate = useNavigate();
     const [ productList, setProductList ] = useState([]);
     const [ searchInput, setSearchInput ] = useState('');
@@ -18,6 +21,7 @@ function EditProduct(props) {
         searchValue: '',
         sortOption: 'number',
         pageIndex: 1});
+        
     const petType = [
         { value: "all", label: "전부"},
         { value: "dog", label: "강아지"},
@@ -41,6 +45,13 @@ function EditProduct(props) {
         { value: "name", label: "상품명"},
         { value: "number", label: "상품번호"},
     ]
+
+    useEffect(() => {
+        if(principal?.data?.data.roleName !== "ROLE_ADMIN" || !principal?.data) {
+            alert("정상적인 접근이 아닙니다.")
+            navigate("/")
+        }
+    }, [])
     
     useEffect(() => {
         setSearchData({
@@ -48,8 +59,6 @@ function EditProduct(props) {
             searchValue: searchInput
         })
     }, [searchInput])
-
-
 
     const getProducts = useQuery(["getProducts", searchData.pageIndex], async () => {
         const response = await getProductsApi(searchData);
@@ -87,17 +96,11 @@ function EditProduct(props) {
         })
     }
 
-    console.log(searchData)
-
-
-
     const handleSearchInputChange = (e) => {
         setSearchInput(e.target.value)
     }
 
     const handleSearchClick = () => {
-
-        console.log(searchData)
         searchData.pageIndex = 1;
         getProducts.refetch();
     }
@@ -110,9 +113,7 @@ function EditProduct(props) {
         
     }
     
-
     const handleEditProductClick = (productMstId) => {
-        console.log(productMstId)
         navigate(`/admin/edit/product/${productMstId}`)
     }
 
@@ -121,7 +122,7 @@ function EditProduct(props) {
             await removeProductApi(productMstId)
             getProducts.refetch();
         } catch (error) {
-            
+            console.log(error)
         }
     }
 
@@ -198,8 +199,7 @@ function EditProduct(props) {
                     </tbody>
                 </table>
                 <div css={S.SPageButtonBox}>
-                    <button onClick={handleMinusPageClick}>page - 1</button>
-                    <button onClick={handlePlusPageClick}>page + 1</button>
+                    <PageNation products={productList} searchData={searchData} setSearchData={setSearchData} />
                 </div>
             </div>
         </Mypage>

@@ -30,6 +30,9 @@ import OrderUserDetail from "./pages/OrderUser/OrderUserDetail/OrderUserDetail";
 import { Reset } from "styled-reset";
 import { Global, css } from "@emotion/react";
 /** @jsxImportSource @emotion/react */
+import UserData from "./pages/Admin/UserData/UserData";
+import WriteAnnouncement from "./pages/Admin/WriteAnnouncement/WriteAnnouncement";
+import Announcement from "./pages/Announcement/Announcement";
 
 const common = css`
   @font-face {
@@ -76,38 +79,42 @@ function App() {
   }
 
   return (
-    <>
+    <RootLayout>
       <Reset />
       <Global styles={common}/>
-      <RootLayout>
-        <Routes>
-          <Route path="/" element={ <Main /> } />
-          <Route path="/mypage" element={ <Mypage /> }/>
-          <Route path="/auth/signup" element={ <Signup /> } /> 
-          <Route path="/auth/signin" element={ <Signin /> } />
-          <Route path="/auth/oauth2/signin" element={ <OAuth2Signin /> } />
-          <Route path="/useredit/:userId" element={ <EditUser /> } />
-          <Route path="/products/:type/*" element={ <ProductRoute /> } />
-          <Route path="/product/:productId" element={ <BuyProduct/> } />
-          <Route path="/order" element={ <BuyInfo/> } />
-          <Route path="/orders" element={ <OrderUser /> }/>
-          <Route path="/orders/:orderId" element={ <OrderUserDetail /> }/>
-          <Route path="/product/cart/:userId" element={ <CartProducts/> } />
-          
-          {/* 주소입력시 막기 */}
-          <Route path="/admin/product" element={ <ProductRegist/> } />
-          <Route path="/admin/product/edit/*" element={ <EditProduct/> }/>
-          <Route path="/admin/edit/product/:productMstId" element={ <EditProductDetailPage/> }/> 
-          <Route path="/admin/incoming" element={ <Incoming/> }/>       
-          <Route path="/admin/incoming/add" element={ <AddIncoming/> }/>  
-          <Route path="/admin/outgoing" element={ <Outgoing/> }/>       
-          <Route path="/admin/outgoing/add" element={ <AddOutgoing/> }/>       
-          <Route path="/admin/product/join/:productMstId" element={ <JoinProductDetail/> }/>  
-          <Route path="/admin/order" element={ <AdminOrder/> }/>      
-          <Route path="/admin/order/:orderId" element={ <AdminOrderDetail/> }/>      
-        </Routes>
-      </RootLayout>
-    </>
+      <Routes>
+        <Route path="/" element={ <Main /> } />
+        <Route path="/mypage" element={ <Mypage /> }/>
+        <Route path="/auth/signup" element={ <Signup /> } /> 
+        <Route path="/auth/signin" element={ <Signin /> } />
+        <Route path="/auth/oauth2/signin" element={ <OAuth2Signin /> } />
+        <Route path="/useredit/:userId" element={ <EditUser /> } />
+        <Route path="/products/:type/*" element={ <ProductRoute /> } />
+        <Route path="/product/:productId" element={ <BuyProduct/> } />
+        <Route path="/order" element={ <BuyInfo/> } />
+        <Route path="/orders" element={ <OrderUser /> }/>
+        <Route path="/orders/:orderId" element={ <OrderUserDetail /> }/>
+        <Route path="/product/cart/:userId" element={ <CartProducts/> } />
+        <Route path="/notice" element={<Announcement />} />
+        
+        {/* 주소입력시 막기 */}
+        <Route path="/admin/product" element={ <ProductRegist/> } />
+        <Route path="/admin/product/edit/*" element={ <EditProduct/> }/>
+        <Route path="/admin/edit/product/:productMstId" element={ <EditProductDetailPage/> }/> 
+        <Route path="/admin/incoming" element={ <Incoming/> }/>       
+        <Route path="/admin/incoming/add" element={ <AddIncoming/> }/>  
+        <Route path="/admin/outgoing" element={ <Outgoing/> }/>       
+        <Route path="/admin/outgoing/add" element={ <AddOutgoing/> }/>       
+        <Route path="/admin/product/join/:productMstId" element={ <JoinProductDetail/> }/>  
+        <Route path="/admin/order" element={ <AdminOrder/> }/>      
+
+        <Route path="/admin/order/:orderId" element={ <AdminOrderDetail/> }/>      
+        <Route path="/admin/users" element={ <UserData/> }/>      
+
+        <Route path="/admin/write/announcement" element={ <WriteAnnouncement />} />
+
+      </Routes>
+    </RootLayout>
   );
 }
 

@@ -12,31 +12,31 @@ export const getProductMstApi = async(productMstId) => {
 
 
 export const addProductApi = async (product, option) => {
-    const response = await instance.post(`/api/products`, product, option);
+    const response = await instance.post(`/api/admin/product`, product, option);
     return response;
 } 
 
 export const getProductsApi = async (searchData) => {
-    const response = await instance.get(`/api/products`, {params: searchData});
+    const response = await instance.get(`api/products/sizes`, {params: searchData});
     return response;
 }
 
 export const getAllProductsApi = async (searchData) => {
-    const response = await instance.get(`/api/allproduct`, {params: searchData});
+    const response = await instance.get(`/api/products/minmax`, {params: searchData});
     return response;
 }
 
 export const getProductsCountApi = async (searchData) => {
-    const response = await instance.get(`/api/productcount`, {params: searchData});
+    const response = await instance.get(`/api/products/count`, {params: searchData});
     return response;
 }
 
-export const updateProductApi = async (productId, productData) => {
-    const response = await instance.put(`/api/admin/product/${productId}`, productData);
+export const updateProductApi = async (productId, productData, option) => {
+    const response = await instance.put(`/api/admin/product/${productId}`, productData, option);
     return response;
 }
 
-export const removeProductApi = async (productId) => {
-    const response = await instance.delete(`/api/admin/product/${productId}`);
+export const removeProductApi = async (productId, option) => {
+    const response = await instance.delete(`/api/admin/product/${productId}`, option);
     return response;
 }
