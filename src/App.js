@@ -27,26 +27,13 @@ import JoinProductDetail from "./pages/Admin/JoinProductDetail/JoinProductDetail
 import AdminOrder from "./pages/Admin/AdminOrder/AdminOrder";
 import AdminOrderDetail from "./pages/Admin/AdminOrder/AdminOrderDetail/AdminOrderDetail";
 import OrderUserDetail from "./pages/OrderUser/OrderUserDetail/OrderUserDetail";
-import { Reset } from "styled-reset";
 import { Global, css } from "@emotion/react";
-/** @jsxImportSource @emotion/react */
 import UserData from "./pages/Admin/UserData/UserData";
 import WriteAnnouncement from "./pages/Admin/WriteAnnouncement/WriteAnnouncement";
 import Announcement from "./pages/Announcement/Announcement";
+import { reset } from "./style/reset";
 
-const common = css`
-  @font-face {
-    font-family: 'BMJUA';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMJUA.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-  }
 
-  * {
-    font-family: 'BMJUA' !important;
-    box-sizing: border-box;
-  }
-`;
 
 function App() {
 
@@ -80,8 +67,7 @@ function App() {
 
   return (
     <RootLayout>
-      <Reset />
-      <Global styles={common}/>
+      <Global styles={reset}/>
       <Routes>
         <Route path="/" element={ <Main /> } />
         <Route path="/mypage" element={ <Mypage /> }/>

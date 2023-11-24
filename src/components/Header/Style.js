@@ -29,13 +29,11 @@ export const SLogo = css`
 
 export const SUserRelatedBox =css`
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
+    width: 100%;
+    padding-right: 20px;
 
-    position: absolute;
-    top: 20px;
-    right: 50px;   
-    
     & > a {
         font-size: 13px;
         text-decoration: none;
@@ -85,6 +83,11 @@ export const SFullMenuBox = css`
     align-items: center;
 
     list-style-type: none;
+    padding: 10px;
+
+    & > h3 {
+        font-size: 24px;
+    }
 `;
 
 export const SMenuBox = css`
