@@ -68,32 +68,11 @@ function EditProduct(props) {
         refetchOnWindowFocus: false,
         retry: 0,
         onSuccess: response => {
-            console.log(response?.data)
             setProductList(response?.data)}
     });
 
     if(getProducts.isLoading) {
         return <></>
-    }
-
-
-    const handlePlusPageClick = () => {
-        setSearchData({
-            ...searchData,
-            pageIndex: searchData.pageIndex + 1
-        })
-    }
-
-
-    const handleMinusPageClick = () => {
-        if(searchData.pageIndex === 1) {
-            alert("1페이지입니다.")
-            return
-        }
-        setSearchData({
-            ...searchData,
-            pageIndex: searchData.pageIndex - 1
-        })
     }
 
     const handleSearchInputChange = (e) => {
@@ -112,6 +91,10 @@ function EditProduct(props) {
         })
         
     }
+
+    const handleNavigateJoinProductDetailPageClick = (productMstId) => {
+        navigate(`/admin/product/join/${productMstId}`)
+    }
     
     const handleEditProductClick = (productMstId) => {
         navigate(`/admin/edit/product/${productMstId}`)
@@ -119,16 +102,23 @@ function EditProduct(props) {
 
     const handleRemoveProductClick = async (productMstId) => {
         try {
-            await removeProductApi(productMstId)
-            getProducts.refetch();
+            const option = {
+                headers: {
+                    Authorization: localStorage.getItem("accessToken")
+                }
+            }
+            if(window.confirm("정말로 해당 상품을 삭제 하시겠습니까?")) {
+                await removeProductApi(productMstId, option)
+                alert("상품이 삭제되었습니다.")
+                getProducts.refetch();
+            } else {
+                alert("취소 되었습니다.")
+            }
         } catch (error) {
             console.log(error)
         }
     }
 
-    const handleNavigateJoinProductDetailPageClick = (productMstId) => {
-        navigate(`/admin/product/join/${productMstId}`)
-    }
 
     
 

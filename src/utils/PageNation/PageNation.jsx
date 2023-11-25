@@ -14,7 +14,6 @@ const PageNation = ({products, searchData, setSearchData, }) => {
     const getProductsPagenation = useQuery(["getProductsPageNation"], async () => {
         try {
             const response = getProductsCountApi(searchData);
-            console.log(response)
             return response;
         } catch (error) {
             console.error("Error in getProductsCountApi:", error);
@@ -38,7 +37,7 @@ const PageNation = ({products, searchData, setSearchData, }) => {
 
     useEffect(() => {
         setSelectedPage(currentPage);
-      }, [currentPage]);
+    }, [currentPage]);
     
     
     const handlePageClick = (page) => {
@@ -50,7 +49,7 @@ const PageNation = ({products, searchData, setSearchData, }) => {
         setSearchData(newSearchData);
         
         getProductsPagenation.refetch();
-      }, [currentPage , searchData.productCategoryName, searchData.pageIndex]);
+    }, [currentPage , searchData.productCategoryName, searchData.pageIndex]);
     
     return (
         <div>
