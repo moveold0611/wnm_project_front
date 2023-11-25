@@ -61,13 +61,13 @@ function ProductRegist(props) {
 
     const handleProductDetailImgUploadClick = () => {
         if(window.confirm("상품 사진을 등록하시겠습니까?")) {
-            productThumnailImgRef.current.click();
+            productDetailImgRef.current.click();
         }
     }
 
     const handleProductThumnailImgUploadClick = () => {
         if(window.confirm("상품 사진을 등록하시겠습니까?")) {
-            productDetailImgRef.current.click();
+            productThumnailImgRef.current.click();
         }
     }
 
@@ -148,7 +148,7 @@ function ProductRegist(props) {
             }
             await addProductApi(product, option);
             alert("상품 등록 완료")
-            window.location.reload()
+            window.location.replace("/admin/product/edit")
         } catch (error) {
             console.error(error);
         }    
@@ -179,79 +179,93 @@ function ProductRegist(props) {
     return (
         <Mypage>
             <div css={S.SContainer}>
-                <h2>상품 등록</h2>
+                <div css={S.STopTitle}>
+                    <h2>상품 등록</h2>
+                </div>
                 <div css={S.SubContainer}>
-                    <div css={S.SLayout}>
-                            <h1 css={S.SH1}>상품 등록</h1>
-                            <div>
-                                <div css={S.SImgBox} onClick={handleProductDetailImgUploadClick}>
-                                    <img src={productThumbnailUrlSrc} alt='썸네일 이미지'/>
-                                </div>
-                                <div>
-                                    <input css={S.Sfile} type="file" onChange={handleProductThumnailImgChange} ref={productThumnailImgRef}/>
-                                </div>
-                                <div css={S.SImgBox} onClick={handleProductThumnailImgUploadClick}>
-                                    <img src={productDetailUrlSrc} alt='상품 디테일 이미지'/>
-                                </div>
-                                <div>
-                                    <input css={S.Sfile} type="file" onChange={handleProductDetailImgChange} ref={productDetailImgRef}/>
-                                </div>
-                            </div>
-                            <div css={S.SInputBox}>
-                                <div css={S.SInfoInput}>
-                                    <h2>상품명</h2> 
-                                    <input type="text" name='productName' onChange={handleInputChange}/>
-                                </div>
-                                <div css={S.SInfoInput}>
-                                    <h2>상품설명</h2>
-                                    <input type="text" name='productDetailText' onChange={handleInputChange}/>
-                                </div>
-                                <div css={S.SInfoInput}>
-                                    <h2>동물타입</h2> 
-                                    <select 
-                                        options={petTypes}
-                                        onChange={handlePetTypeOptionChange}
-                                        css={S.SSelect}>
-                                        
-                                        {petTypes.map(type => {
-                                            return <option key={type.value} value={type.value} label={type.label}>{type.label}</option>
-                                        })}
-                                    </select>
-                                </div>
-                                {product.petTypeId === 1 ? 
-                                    <div css={S.SInfoInput}>
-                                        <h2>카테고리 </h2>
-                                        <select
-                                            options={productDogCategoeies}
-                                            onChange={handleCategoryTypeOptionChange}
-                                            css={S.SSelect}
-                                            >
-                                            {productDogCategoeies.map(category => {
-                                                return <option key={category.value} value={category.value} label={category.label}>{category.label}</option>
-                                            })}
-                                        </select> 
-                                    </div>
-                                    :
-                                    <div css={S.SInfoInput}>
-                                        <h2>카테고리 </h2>
-                                        <select
-                                            options={productCatCategoeies}
-                                            onChange={handleCategoryTypeOptionChange}
-                                            >
-                                            {productCatCategoeies.map(category => {
-                                                return <option key={category.value} value={category.value} label={category.label}>{category.label}</option>
-                                            })}
-                                        </select> 
-                                    </div>
-                                }
-                                <div css={S.SInfoInput}>
-                                    <input type="text" name='price' placeholder='가격' onChange={handleInputChange} />
-                                </div>
-                            </div>
-                            <div>
-                                <button onClick={handleProductSubmitClick} css={S.SButton}>등록하기</button>
-                            </div>
+                    <div>
+                        <h1 css={S.SH1}>상품 메인 이미지 등록</h1>
+                    </div>
+                    <div css={S.SImgBox} >
+                        <img src={productThumbnailUrlSrc} alt='상품 메인 이미지'/>
+                    </div>
+                    <div css={S.SButtonBox}>
+                        <input css={S.Sfile} type="file" onChange={handleProductThumnailImgChange} ref={productThumnailImgRef}/>
+                        <button onClick={handleProductThumnailImgUploadClick}>메인 이미지 수정 파일 업로드</button>
+                    </div>
+                    <div>
+                        <h1 css={S.SH1}>상품 상세 이미지 등록</h1>
+                    </div>
+                    <div css={S.SImgBox}>
+                        <img src={productDetailUrlSrc} alt='상품 상세 이미지'/>
+                    </div>
+                    <div css={S.SButtonBox}>
+                        <input css={S.Sfile} type="file" onChange={handleProductDetailImgChange} ref={productDetailImgRef}/>
+                        <button onClick={handleProductDetailImgUploadClick}>상품 상세 이미지 파일 업로드</button>
+                    </div>
+                    <div>
+                        <h1 css={S.SH1}>상품 정보 등록</h1>
+                    </div>
+                    <div css={S.SInputBox}>
+                        <div css={S.SInfoInput}>
+                            <h2>상품명</h2> 
+                            <input type="text" 
+                                name='productName'
+                                placeholder='상품명'
+                                onChange={handleInputChange}/>
                         </div>
+                        <div css={S.SInfoInput}>
+                            <h2>상품 설명</h2>
+                            <textarea type="text" 
+                                name='productDetailText'
+                                placeholder='상품 설명'
+                                onChange={handleInputChange}/>
+                        </div>
+                        <div css={S.SInfoInput}>
+                            <h2>동물타입</h2> 
+                            <select 
+                                options={petTypes}
+                                onChange={handlePetTypeOptionChange}
+                                css={S.SSelect}>
+                                {petTypes.map(type => {
+                                    return <option key={type.value} value={type.value} label={type.label}>{type.label}</option>
+                                })}
+                            </select>
+                        </div>
+                        {product.petTypeId === 1 ? 
+                            <div css={S.SInfoInput}>
+                                <h2>카테고리</h2>
+                                <select
+                                    options={productDogCategoeies}
+                                    onChange={handleCategoryTypeOptionChange}
+                                    css={S.SSelect}>
+                                    {productDogCategoeies.map(category => {
+                                        return <option key={category.value} value={category.value} label={category.label}>{category.label}</option>
+                                    })}
+                                </select> 
+                            </div>
+                            :
+                            <div css={S.SInfoInput}>
+                                <h2>카테고리</h2>
+                                <select
+                                    options={productCatCategoeies}
+                                    onChange={handleCategoryTypeOptionChange}
+                                    css={S.SSelect}>
+                                    {productCatCategoeies.map(category => {
+                                        return <option key={category.value} value={category.value} label={category.label}>{category.label}</option>
+                                    })}
+                                </select> 
+                            </div>
+                        }
+                        <div css={S.SInfoInput}>
+                            <h2>가격</h2>
+                            <input type="text" name='price' placeholder='가격' onChange={handleInputChange} />
+                            <h4>*사이즈별 가격 설정은 등록 후 수정 페이지에서 수정*</h4>
+                        </div>
+                    </div>
+                    <div>
+                        <button onClick={handleProductSubmitClick} css={S.SButton}>등록하기</button>
+                    </div>
                 </div>
             </div>
         </Mypage>

@@ -38,7 +38,7 @@ const PageNation = ({products, searchData, setSearchData, }) => {
 
     useEffect(() => {
         setSelectedPage(currentPage);
-      }, [currentPage]);
+    }, [currentPage]);
     
     
     const handlePageClick = (page) => {
@@ -50,7 +50,7 @@ const PageNation = ({products, searchData, setSearchData, }) => {
         setSearchData(newSearchData);
         
         getProductsPagenation.refetch();
-      }, [currentPage , searchData.productCategoryName, searchData.pageIndex]);
+    }, [currentPage , searchData.productCategoryName, searchData.pageIndex]);
     
     return (
         <div>

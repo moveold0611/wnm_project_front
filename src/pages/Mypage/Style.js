@@ -6,8 +6,10 @@ export const SContainer = css`
     width: 1400px;
 
     & > h2 {
+        margin: 15px 0px;
         padding-right: 35px;
         text-align: end;
+        font-size: 30px;
     }
 `;
 
@@ -22,12 +24,12 @@ export const SSubConatainer = css`
     & > ul > li {
         margin: 5px 0px;
         padding: 5px 0px;
-        border: none;
+        border-bottom: 2px solid #dbdbdb;
         border-radius: 15px;
         width: 125px;
         list-style-type: none;
         text-align: center;
-        background-color: #DEEFE7;
+        background-color: #fff;
     }
 
     & > ul > li > h4 {
@@ -46,8 +48,10 @@ export const SSubConatainer = css`
 export const SChangeContainer = css`
     display: flex;
     justify-content: center;
-    margin: 0px 2px;
+
+    margin: 0px auto;
+    border-bottom: 2px solid #dbdbdb;
     border-radius: 20px;
     width: 100%;
-    background-color: #DEEFE7;
+    background-color: #fff;
 `;

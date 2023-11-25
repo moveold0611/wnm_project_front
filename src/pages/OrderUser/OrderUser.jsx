@@ -66,57 +66,62 @@ function OrderUser(props) {
     return (
         <Mypage>
             <div css={S.SContainer}>
-                <h2>주문내역 조회</h2>
-                <table>
-                    <thead>
-                        <tr css={S.SThBox}>
-                            <th>
-                                주문일자<br/>
-                                [주문번호]
-                            </th>
-                            <th>이미지</th>
-                            <th>상품명</th>
-                            <th>주문 총액</th>
-                            <th>주문 처리</th>
-                            <th>주문 상세</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {userOrder?.map(data => {
-                            let totalPrice = 0;
-                            data.getUserOrderProductsRespDtos.map(product => {
-                                totalPrice += product.count * product.productDtl.price
-                            })
-                            return <tr key={data.orderId} css={S.STdBox}>
-                                <td>
-                                    {data.orderDate}<br/>
-                                    [{data.orderId}]
-                                </td>
-                                <td>
-                                    <img css={S.SProductImg} src={data.getUserOrderProductsRespDtos[0].productDtl.productMst.productThumbnailUrl}/>
-                                </td>
-
-                                <td>
-                                    {data.getUserOrderProductsRespDtos[0].productDtl.productMst.productName}<br/>
-                                    {data.getUserOrderProductsRespDtos.length > 1 && ` 외 ${data.getUserOrderProductsRespDtos.length - 1}개의 상품`}
-                                </td>
-                                <td>
-                                    {totalPrice?.toLocaleString("ko-KR")}원
-                                </td>
-                                <td>
-                                    {data.orderStatus === 0 && "배송 준비"}
-                                    {data.orderStatus === 1 && "배송 중"}
-                                    {data.orderStatus === 2 && "배송 완료"}
-                                    {data.orderStatus === 2 && <button onClick={() => handleconfirmationOnClick(data)}>배송 확정</button>}
-                                    {data.orderStatus === 3 && "구매 확정"} 
-                                </td>
-                                <td>
-                                    <button onClick={() => handleNavigateProductDetailClick(data.orderId)}>주문 상세 & 리뷰쓰기</button> 
-                                </td>
+                <div css={S.STopTitle}>
+                    <h2>주문내역 조회</h2>
+                </div>
+                <div css={S.STableBox}>
+                    <table css={S.STable}>
+                        <thead>
+                            <tr css={S.SThBox}>
+                                <th>
+                                    주문일자<br/>
+                                    [주문번호]
+                                </th>
+                                <th>이미지</th>
+                                <th>상품명</th>
+                                <th>주문 총액</th>
+                                <th>주문 처리</th>
+                                <th>주문 상세</th>
                             </tr>
-                        })}
-                    </tbody>
-                </table>
+                        </thead>
+
+                        <tbody>
+                            {userOrder?.map(data => {
+                                let totalPrice = 0;
+                                data.getUserOrderProductsRespDtos.map(product => {
+                                    totalPrice += product.count * product.productDtl.price
+                                })
+                                return <tr key={data.orderId} css={S.STdBox}>
+                                    <td>
+                                        {data.orderDate}<br/>
+                                        [{data.orderId}]
+                                    </td>
+                                    <td>
+                                        <img css={S.SProductImg} src={data.getUserOrderProductsRespDtos[0].productDtl.productMst.productThumbnailUrl}/>
+                                    </td>
+
+                                    <td>
+                                        {data.getUserOrderProductsRespDtos[0].productDtl.productMst.productName}<br/>
+                                        {data.getUserOrderProductsRespDtos.length > 1 && ` 외 ${data.getUserOrderProductsRespDtos.length - 1}개의 상품`}
+                                    </td>
+                                    <td>
+                                        {totalPrice?.toLocaleString("ko-KR")}원
+                                    </td>
+                                    <td>
+                                        {data.orderStatus === 0 && "배송 준비"}
+                                        {data.orderStatus === 1 && "배송 중"}
+                                        {data.orderStatus === 2 && "배송 완료"}
+                                        {data.orderStatus === 2 && <button onClick={() => handleconfirmationOnClick(data)}>배송 확정</button>}
+                                        {data.orderStatus === 3 && "구매 확정"} 
+                                    </td>
+                                    <td>
+                                        <button onClick={() => handleNavigateProductDetailClick(data.orderId)}>주문 상세 & 리뷰쓰기</button> 
+                                    </td>
+                                </tr>
+                            })}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </Mypage>
     );

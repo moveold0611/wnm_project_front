@@ -175,9 +175,16 @@ function BuyInfo(props) {
         });
     }
 
+    const handleCencelOnClick = () => {
+        if(window.confirm("주문을 취소하시겠습니까?")) {
+            navigate("/")
+            return
+        }
+    }
+
     return (
         <RootContainer>
-            <div>
+            <div css={S.SLayout}>
                 <div css={S.SOrderHeader}>
                     <h2>주문 / 결제</h2>
                 </div>
@@ -265,15 +272,15 @@ function BuyInfo(props) {
                 <div css={S.SPriceInfoBox}>
                         <h2>결제 정보</h2>
                         <div css={S.SPriceBox}>
-                            <h3 css={S.STitle}>주문상품</h3>
+                            <h3 css={S.SPriceTitle}>주문상품</h3>
                             <h3 css={S.SPrice}>{priceInfo.buyPricetotal.toLocaleString("ko-KR")}원</h3>
                         </div>
                         <div css={S.SPriceBox}>
-                            <h3 css={S.STitle}>배송비</h3>
+                            <h3 css={S.SPriceTitle}>배송비</h3>
                             <h3 css={S.SPrice}>+ {priceInfo.shippingCost.toLocaleString("ko-KR")}원</h3>
                         </div>
                         <div css={S.SPriceBox}>
-                            <h3 css={S.STitle}>최종금액</h3>
+                            <h3 css={S.SPriceTitle}>최종금액</h3>
                             <h3 css={S.SPrice}>{priceInfo.finalPrice.toLocaleString("ko-KR")}원</h3>
                         </div>
                 </div>
@@ -281,7 +288,7 @@ function BuyInfo(props) {
                 <div css={S.SPayMentBox}>
                         <h2>결제 수단</h2>
                         <div css={S.SPayBox}>
-                            <h3 css={S.STitle}>결제 수단 선택</h3>
+                            <h3>결제 수단 선택</h3>
                             <button css={S.SKakaoPay} onClick={() => handlePaymentSubmit("kakao")}>카카오 결제하기</button>
                             <button css={S.STossPay}onClick={() => handlePaymentSubmit("toss")}>토스 결제하기</button>
                         </div>
@@ -289,7 +296,7 @@ function BuyInfo(props) {
 
                 <div css={S.SCancelBox}>
                         <div css={S.SCancel}>
-                            <button>주문 취소</button>
+                            <button onClick={handleCencelOnClick}>주문 취소</button>
                         </div>
                 </div>
                 

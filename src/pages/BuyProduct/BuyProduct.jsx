@@ -7,6 +7,7 @@ import Select from 'react-select';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getProductMstApi } from '../../apis/api/product';
 import { addToCartApi } from '../../apis/api/cart';
+import RootContainer from '../../components/RootContainer/RootContainer';
 
 function BuyProduct(props) {
     const navigate = useNavigate();
@@ -137,47 +138,54 @@ function BuyProduct(props) {
     }
 
     return (
-        <div>
-            <div css={S.STopContainer} >
-                <div css={S.SThumbnailBox}>
-                    <img css={S.SThumbnailImg} src={product.productThumbnailUrl} />
+        <RootContainer>
+            <div css={S.SLayout}>
+                <div css={S.STopContainer} >
+                    <div>
+                        <img css={S.SThumbnailImg} src={product.productThumbnailUrl} />
+                    </div>
+                    <div css={S.SOrderInfoBox}>
+                        <h2>{product.productName}</h2>
+                        <p dangerouslySetInnerHTML={{__html: product.productDetailText}}></p>
+                        <div css={S.SSelectBox}>
+                            <Select css={S.SSelect} onChange={selectOnChange} options={product.productDtlList?.map(pdt => {
+                                return {
+                                    value: pdt.productDtlId,
+                                    label: `${pdt.size.sizeName === "no" ? product.productName : pdt.size.sizeName}${pdt.tempStock > 0 ? "(수량: " + pdt.tempStock + ")" : "(품절)"}`};
+                            })
+                            }/>
+                        </div>
+                        <ul css={S.SOrderListBox}>
+                            {selectedProducts.map((selectedProduct, index) => 
+                                <li key={index}>
+                                    <div css={S.SListBox}>
+                                        <h5>
+                                            {product.productName}<br/>
+                                            -{selectedProduct.sizeName}
+                                        </h5>
+                                        <input type="number" defaultValue={1} min={1} max={99} onChange={(e) => countOnChange(e.target, index)}/>
+                                        <p>{selectedProduct.price.toLocaleString("ko-KR")}원</p>
+                                        <button onClick={() => handleDeleteProductOnClick(index)}>X</button>
+                                    </div>
+                                </li>
+                            )}
+                        </ul>
+                        <div css={S.SPriceInfo}>
+                            <p>Total</p>
+                            <h3>{selectedProducts.reduce((total, selectedProduct) => {
+                                return total += selectedProduct.price}, 0).toLocaleString("ko-KR")}원</h3>
+                        </div>
+                        <div css={S.SButtonBox}>
+                            <button onClick={buyNowOnClick}>BUY NOW</button>
+                            <button onClick={handleAddToCartOnClick}>ADD TO CART</button>
+                        </div>
+                    </div>
                 </div>
-                <div css={S.SOrderInfoBox}>
-                    <h2>{product.productName}</h2>
-                    <p dangerouslySetInnerHTML={{__html: product.productDetailText}}></p>
-                    <div css={S.SSelectBox}>
-                        <Select css={S.SSelect} onChange={selectOnChange} options={product.productDtlList?.map(pdt => {
-                            return {
-                                value: pdt.productDtlId,
-                                label: `${pdt.size.sizeName === "no" ? product.productName : pdt.size.sizeName}${pdt.tempStock > 0 ? "(수량: " + pdt.tempStock + ")" : "(품절)"}`};
-                        })
-                        }/>
-                    </div>
-                    <ul css={S.SOrderListBox}>
-                        {selectedProducts.map((selectedProduct, index) => 
-                            <li key={index}>
-                                {product.productName}-{selectedProduct.sizeName}
-                                <input type="number" defaultValue={1} min={1} max={99} onChange={(e) => countOnChange(e.target, index)}/>
-                                {selectedProduct.price.toLocaleString("ko-KR")}원
-                                <button onClick={() => handleDeleteProductOnClick(index)}>X</button>
-                            </li>
-                        )}
-                    </ul>
-                    <div css={S.SPriceInfo}>
-                        <p>Total</p>
-                        <h3>{selectedProducts.reduce((total, selectedProduct) => {
-                            return total += selectedProduct.price}, 0).toLocaleString("ko-KR")}원</h3>
-                    </div>
-                    <div css={S.SButtonBox}>
-                        <button onClick={buyNowOnClick}>BUY NOW</button>
-                        <button onClick={handleAddToCartOnClick}>ADD TO CART</button>
-                    </div>
+                <div css={S.SDetailContainer}>
+                    <img css={S.SDDetailImg} src={product.productDetailUrl} alt="" />
                 </div>
             </div>
-            <div css={S.SDetailContainer}>
-                <img css={S.SDDetailImg} src={product.productDetailUrl} alt="" />
-            </div>
-        </div>
+        </RootContainer>
     );
 }
 

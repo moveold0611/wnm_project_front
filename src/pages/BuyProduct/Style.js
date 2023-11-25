@@ -1,5 +1,19 @@
 import { css } from "@emotion/react";
 
+export const SLayout = css`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    margin: 25px;
+    border-right: 2px solid #dbdbdb;
+    border-bottom: 2px solid #dbdbdb;
+    border-radius: 20px;
+    width: 1400px;
+    background-color: #fff;
+`;
+
 export const STopContainer = css`
     display: flex;
     justify-content: center;
@@ -7,18 +21,15 @@ export const STopContainer = css`
 
     margin: 10px auto;
     height: 815px;
-    background-color: #f5f5f5;
-`;
-
-export const SThumbnailBox = css`
-
 `;
 
 export const SThumbnailImg = css`
+    border-radius: 35px;
     width: 755px;
 `
 
 export const SOrderInfoBox = css`
+    margin-top: 50px;
     margin-left: 40px;
     display: flex;
     flex-direction: column;
@@ -28,13 +39,12 @@ export const SOrderInfoBox = css`
         padding-bottom: 10px;
 
         font-size: 30px;
-        font-weight: 500;
     }
 
     & > p {
         margin: 0px;
         padding: 30px 20px 30px 0px;
-        font-size: 15px;
+        font-size: 17.5px;
         white-space: normal;
     }
 
@@ -47,45 +57,68 @@ export const SSelect = css`
 `;
 
 export const SOrderListBox = css`
-    padding: 0px;
+    margin-top: 20px;
 
     & > li {
-        padding: 5px 0px;
+        padding: 10px 0px;
+        width: 450px;
         list-style-type: none;
-        
+    }
+`;
+
+export const SListBox = css`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    & > input {
+        margin: 0px 15px;
+        padding: 5px;
+        height: 25px;
+    }
+
+    & > button {
+        margin-left: 15px;
+        padding: 5px;
+        width: 30px;
+    }
+
+    & > p {
+        width: 100px;
     }
 `;
 
 export const SPriceInfo = css`
-    padding: 40px 0px 20px ;
+    margin-top: 30px;
+
     & > p {
-        margin: 0px ;
-        padding-bottom: 7px;
-
-        font-size: 13px;
-        font-weight: 700;
-
+        margin-bottom: 10px;
+        font-size: 17.5px;
     }
 
     &  > h3 {
-        margin: 0px;
+        font-size: 22.5px;
     }
 `;
 
 export const SButtonBox = css`
     padding-top: 20px;
 
-    & > button {
-        margin: 0px 15px 5px 0px;
-        border: none;
-        border-radius: 10px;
-        width: 215px;
-        height: 46px;
+        & > button {
+        margin: 30px 15px 50px;
+        border-radius: 50px;
+        padding: 15px;
+        width: 200px;
 
-        color: white;
-        
-        background-color: #272727;
+        text-align: center;
+        font-size: 20px;
+        background-color: #333;
+        color: #f9fbff;
 
+        &:hover {
+            color: #f9fbff;
+            background-color: #2b64fb;
+        }
     }
 `;
 

@@ -1,14 +1,24 @@
 import { css } from "@emotion/react";
 
 export const SContainer = css`
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 
-    margin: 15px 0px;
-    width: 90%;
+    margin: 25px auto;
+    width: 95%;
+`;
 
+export const STopTitle = css`
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    
+    margin-bottom: 25px;
+    width: 100%;
+    
     & > h2 {
-        text-align: end;
         font-size: 20px;
     }
 `;
@@ -19,22 +29,20 @@ export const SProfilContainer = css`
     align-items: center;
 
     & > p {
-        font-size: 18px;
-        
+        margin: 10px 10px 10px 25px;
+        font-size: 17.5px;
     }
 `;
 
-export const SimgBox = css`
+export const SImgBox = css`
     display: flex;
-    justify-content: center;
     align-items: center;
-    border-radius: 10px;
-    cursor: pointer;
+    justify-content: center;
 
     & > img {
-        padding: 15px;
-        width: 75px;
-        height: 75px;
+        width: 100px;
+        height: 100px;
+        cursor: pointer;
     }
 `;
 
@@ -47,97 +55,66 @@ export const SUserInfoContiner = css`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    margin: 15px 15px 0px 15px;
+    width: 65%;
 `;
 
 export const SUserInfoBox = css`
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    width: 50%;
+
+    margin: 12.5px;
+    width: 55%;
 
     & > input {
-        margin: 10px 15px 10px 15px;
-        border: 1px solid gray;
-        border-radius: 15px;
-        padding: 10px 10px 10px 15px;
-        height: 22px;
-        font-size: 18px;
-
-        width: 100%;
+        border: 1px solid black;
+        border-radius: 5px;
+        padding: 10px;
+        width: 300px;
     }
 `;
 
 export const STitle = css`
-    padding-left: 20px;
-    width: 115px;
-`;
-
-export const SShippingInfoInputBox = css`
-    display: flex;
-    align-items: center;
-    width: 100%;
-
-    & > input {
-        margin: 10px 15px 10px 5px;
-        border: 1px solid gray;
-        border-radius: 15px;
-        padding: 10px 10px 10px 15px;
-        height: 22px;
-        font-size: 18px;
-
-        width: 100%;
-    }
+    font-size: 20px;
 `;
 
 export const SAddressBox = css`
-    display: flex;
+    display:  flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
-    width: 100%;
+    width: 300px;
+
     & > input {
-        margin: 10px 15px 10px 5px;
-        border: 1px solid gray;
-        border-radius: 15px;
-        padding: 10px 10px 10px 15px;
-        height: 22px;
-        font-size: 18px;
+        margin: 12.5px;
+        border: 1px solid black;
+        border-radius: 5px;
+        padding: 10px;
+        width: 300px;
     }
 `;
 
 export const SAddressNumberBox = css`
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    
-    & > input {
-        margin: 10px 5px 10px 5px;
-        border: 1px solid gray;
-        border-radius: 15px;
-        padding: 10px 10px 10px 15px;
-        height: 22px;
-        font-size: 18px;
 
-        width: 100%;
+    margin-bottom: 12.5px;
+    width: 300px;
+
+    & > input {
+        border-radius: 5px;
+        border: 1px solid black;
+        padding: 10px 0px 10px 10px;
+        width: 200px;
     }
 `; 
 
 export const SAddressButtonBox = css`
-    padding-right: 15px;
-
-    & > button {
-        border: none;
-        border-radius: 15px;
-        width: 100px;
-        height: 44px;
-        background-color: darkgray;
-        cursor: pointer;
-    }
-`;
-
-export const SButtonContainer = css`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    margin: 25px 0px ;
+    margin-left: 15px;
 `;
 
 export const SEditButtonBox = css`
@@ -145,28 +122,29 @@ export const SEditButtonBox = css`
     justify-content: center;
     align-items: center;
 
-    margin: 25px auto;
 `;
 
 export const SEditButton = css`
-    margin: 10px;
-    border: none;
-    border-radius: 10px;
-    padding: 10px;
-    font-size: 15px;
-    color: white;
-    background-color: #0064ff;
-    cursor: pointer;
+    margin-right: 15px;
+    border-radius: 30px;
+    width: 150px;
+
+    color: #f9fbff;
+    background-color: #333;
+
+    &:hover {
+        color: #f9fbff;
+        background-color: #2b64fb;
+    }
 `;
 
 export const SCancelbutton = css`
-    margin: 10px;
-    border: 1px solid black;
-    border-radius: 10px;
-    padding: 10px;
-    font-size: 15px;
+    margin-right: 15px;
+    border-radius: 30px;
+    width: 150px;
+
     color: black;
-    cursor: pointer;
+    background-color: white;
 `;
 
 export const SDeleteButtonBox = css`
@@ -174,14 +152,12 @@ export const SDeleteButtonBox = css`
     justify-content: flex-end;
     align-items: center;
 
+    
+    margin-top: 25px;
+    width: 100%;
+    
     & > button {
-        margin: 10px;
-        border: 1px solid red;
-        border-radius: 10px;
-        padding: 5px;
         width: 100px;
-        font-size: 15px;
-        color: red;
-        cursor: pointer;
+        color: gray;
     }
 `;
