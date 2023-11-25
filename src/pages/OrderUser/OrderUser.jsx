@@ -70,7 +70,7 @@ function OrderUser(props) {
                     <h2>주문내역 조회</h2>
                 </div>
                 <div css={S.STableBox}>
-                    <table css={S.SListTable}>
+                    <table css={S.STable}>
                         <thead>
                             <tr css={S.SThBox}>
                                 <th>
@@ -84,6 +84,7 @@ function OrderUser(props) {
                                 <th>주문 상세</th>
                             </tr>
                         </thead>
+
                         <tbody>
                             {userOrder?.map(data => {
                                 let totalPrice = 0;

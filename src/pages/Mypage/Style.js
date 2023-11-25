@@ -49,7 +49,7 @@ export const SChangeContainer = css`
     display: flex;
     justify-content: center;
 
-    margin: 0px 2px;
+    margin: 0px auto;
     border-bottom: 2px solid #dbdbdb;
     border-radius: 20px;
     width: 100%;

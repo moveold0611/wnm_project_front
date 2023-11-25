@@ -27,7 +27,7 @@ export const reset = css`
     b, u, i, center,
     dl, dt, dd, ol, ul, li,
     fieldset, form, label, legend,
-    table, caption, tbody, tfoot, thead, tr, th, td,
+    caption, tfoot,
     article, aside, canvas, details, embed, 
     figure, figcaption, footer, header, hgroup, 
     menu, nav, output, ruby, section, summary,
