@@ -55,5 +55,5 @@ export const STdBox = css`
 `;
 
 export const SProductImg = css`
-    width: 125px;
+    width: 100px;
 `;

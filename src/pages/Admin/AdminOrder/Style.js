@@ -70,6 +70,7 @@ export const STable = css`
 export const SThBox = css`
     & > th {
         border-radius: 10px;
+        padding: 5px;
         text-align: center;
         background-color: #dbdbdb;
     }

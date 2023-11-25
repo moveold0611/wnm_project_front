@@ -125,7 +125,9 @@ function EditProduct(props) {
     return (
         <Mypage>
             <div css={S.SContainer}>
-                <h2>상품 관리</h2>
+                <div css={S.STopTitle}>
+                    <h2>상품 관리</h2>
+                </div>
                 <div css={S.SSelectBox}>
                     <select option={petType} onChange={handleSearchSelectChange} name='petTypeName'>
                         {petType.map(pt => {
@@ -151,43 +153,44 @@ function EditProduct(props) {
                     <input type='text' value={searchInput} onChange={handleSearchInputChange}/>
                     <button onClick={handleSearchClick}>검색</button>
                 </div>
-
-                <table>
-                    <thead>
-                        <tr css={S.SThBox}>
-                            <th>상품 번호</th>
-                            <th>상품 이미지</th>
-                            <th>상품 명</th>
-                            <th>동물 종류</th>
-                            <th>카테고리</th>
-                            <th>상품 조회</th>
-                            <th>수정</th>
-                            <th>삭제</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {productList.map(product => {
-                            return <tr key={product.productMstId} css={S.STdBox}>
-                                <td>{product.productMstId}</td>
-                                <td>
-                                    <img css={S.SImg} src={product.productThumbnailUrl} alt="" />
-                                </td>
-                                <td>{product.productName}</td>
-                                <td>{product.petTypeName}</td>
-                                <td>{product.productCategoryName}</td>
-                                <td>
-                                    <button css={S.SSelectButton} onClick={()=>handleNavigateJoinProductDetailPageClick(product.productMstId)}>상세 조회</button>
-                                </td>
-                                <td>
-                                    <button css={S.SEditButton} onClick={()=>handleEditProductClick(product.productMstId)}>수정</button>
-                                </td>
-                                <td>
-                                    <button css={S.SDeleteButton} onClick={()=>handleRemoveProductClick(product.productMstId)}>삭제</button>  
-                                </td>
+                <div css={S.STableBox}>
+                    <table css={S.STable}>
+                        <thead>
+                            <tr css={S.SThBox}>
+                                <th>상품 번호</th>
+                                <th>상품 이미지</th>
+                                <th>상품 명</th>
+                                <th>동물 종류</th>
+                                <th>카테고리</th>
+                                <th>상품 조회</th>
+                                <th>수정</th>
+                                <th>삭제</th>
                             </tr>
-                        })}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {productList.map(product => {
+                                return <tr key={product.productMstId} css={S.STdBox}>
+                                    <td>{product.productMstId}</td>
+                                    <td>
+                                        <img css={S.SImg} src={product.productThumbnailUrl} alt="" />
+                                    </td>
+                                    <td>{product.productName}</td>
+                                    <td>{product.petTypeName}</td>
+                                    <td>{product.productCategoryName}</td>
+                                    <td>
+                                        <button css={S.SSelectButton} onClick={()=>handleNavigateJoinProductDetailPageClick(product.productMstId)}>상세 조회</button>
+                                    </td>
+                                    <td>
+                                        <button css={S.SEditButton} onClick={()=>handleEditProductClick(product.productMstId)}>수정</button>
+                                    </td>
+                                    <td>
+                                        <button css={S.SDeleteButton} onClick={()=>handleRemoveProductClick(product.productMstId)}>삭제</button>  
+                                    </td>
+                                </tr>
+                            })}
+                        </tbody>
+                    </table>
+                </div>
                 <div css={S.SPageButtonBox}>
                     <PageNation products={productList} searchData={searchData} setSearchData={setSearchData} />
                 </div>
