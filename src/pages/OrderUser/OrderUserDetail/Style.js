@@ -59,6 +59,8 @@ export const STable = css`
 export const SThBox = css`
     & > th {
         border-radius: 10px;
+        padding: 5px;
+        height: 42px;
         text-align: center;
         background-color: #dbdbdb;
     }
@@ -67,6 +69,7 @@ export const SThBox = css`
 export const STdBox = css`
     & > td {
         border-radius: 10px;
+        padding: 5px;
         text-align: center;
         background-color: #f1f1f1;
 

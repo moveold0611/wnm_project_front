@@ -70,6 +70,7 @@ export const SThtdBox = css`
         border-radius: 10px;
         padding: 10px;
         width: 50%;
+        height: 42px;
         text-align: center;
         background-color: #dbdbdb;
     }

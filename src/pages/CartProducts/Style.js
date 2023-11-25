@@ -1,43 +1,82 @@
 import { css } from "@emotion/react";
 
-export const SContainer = css`
+export const SLayout = css`
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    margin: 25px;
+    border-right: 2px solid #dbdbdb;
+    border-bottom: 2px solid #dbdbdb;
+    border-radius: 20px;
     width: 1400px;
+    background-color: #fff;
+`;
 
+export const SContainer = css`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    margin: 25px auto;
+    width: 95%;
+`;
+
+export const STopTitle = css`
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    
+    margin-bottom: 25px;
+    width: 100%;
+    
     & > h2 {
-        text-align: end;
-    }
-
-    & > table {
-        width: 100%;
-    }
-`
-
-export const SCartThBox = css`
-    & > th {
-        
-        border: 1px solid black;
-        padding: 10px 15px;
-        border-radius: 5px;
-        background-color: darkgray;
+        font-size: 20px;
     }
 `;
 
-export const SCartTdBox = css`
-    & > td {
-        border-bottom: 1px solid black;
-        padding: 10px 15px;
+export const STableBox = css`
+    display: flex;
+    align-items: start;
+    justify-content: center;
+    margin-bottom: 25px;
+
+    width: 100%;
+`;
+
+export const STable = css`
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 5px;
+`;
+
+export const SThBox = css`
+    & > th {
+        border-radius: 10px;
+        padding: 10px;
+        height: 42px;
         text-align: center;
+        background-color: #dbdbdb;
+    }
+`;
+
+export const STdBox = css`
+    & > td {
+        border-radius: 10px;
+        padding: 5px;
+        text-align: center;
+        background-color: #f1f1f1;
+    }
+
+    & > td > img {
+        width: 100px;
     }
 
     & > td > button {
-        border: none;
-        border-radius: 3px;
-        width: 30px;
-        height: 30px;
-        cursor: pointer;
-
+        height: 35px;
+        color: gray;
     }
 `;
 
@@ -45,30 +84,37 @@ export const SProductImg = css`
     width: 150px;
 `;
 
+export const SPriceTableBox = css`
+    display: flex;
+    align-items: start;
+    justify-content: center;
+    margin-bottom: 25px;
+
+    width: 100%;
+`;
+
+
 export const SPriceTable = css`
-    margin-top: 50px;
+    margin: 25px;
+    width: 65%;
+    border-collapse: collapse;
 `;  
 
 export const SPriceThBox = css`
 
     & > th {
-        
-        padding: 10px 15px;
         border: 1px solid black;
-        border-radius: 5px;
-        height: 50px;
-        background-color: #fafafa;
+        padding: 10px;
+        text-align: center;
+        background-color: #f1f1f1;
     }
 `;
 
 export const SPriceTdBox = css`
+
     & > td {
-        border-bottom: 1px solid black;
-        border-right: 1px solid black;
-        border-left: 1px solid black;
-        border-radius: 5px;
-        padding: 10px 15px;
-        height: 75px;
+        border: 1px solid black;
+        padding: 10px;
         text-align: center;
     }
 `;
@@ -78,30 +124,28 @@ export const SButtonBox = css`
     justify-content: center;
     align-items: center;
 
-    margin-bottom: 75px;
+    margin-bottom: 50px;
 `;
 
 export const SShowpingButton = css`
     margin: 25px;
-    border: none;
-    border-radius: 10px;
-    width: 215px;
-    height: 46px;
-
-    color: black;
-    cursor: pointer;
+    border-radius: 15px;
+    width: 200px;
+    height: 42px;
 `;
 
 export const SBuyButton = css`
     margin: 25px;
-    border: none;
-    border-radius: 10px;
-    width: 215px;
-    height: 46px;
-    
-    color: white;
+    border-radius: 15px;
+    width: 200px;
+    height: 42px;
+
+    color: #fff;
     background-color: #272727;
-    cursor: pointer;
+
+    :hover {
+        background-color: #2b64fb;
+    }
 `;
 
 
