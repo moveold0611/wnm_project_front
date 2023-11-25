@@ -1,88 +1,102 @@
 import { css } from '@emotion/react';
 
 export const SContainer = css`
-    justify-content: center;
-    align-items: center;
-
-    margin: 15px 0px;
-    width: 95%;
-
-    & > h2 {
-        text-align: end;
-        font-size: 20px;
-    }
-`;
-
-export const SubContainer = css`
-    justify-content: center;
-    align-items: center;
-
-    border-radius: 20px;
-    width: 100%;
-
-    word-wrap: break-word;
-    background-color: #fbfcff;
-`;
-
-export const SLayout = css`
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 
-    & > h2{
-        padding: 25px 35px 25px 35px;
-        border-top: 2px dotted black;
-        border-bottom: 2px dotted black;
+    margin: 25px auto;
+    width: 95%;
+`;
+
+export const STopTitle = css`
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    
+    margin-bottom: 25px;
+    width: 100%;
+    
+    & > h2 {
+        font-size: 20px;
     }
 `;
 
-export const STopTableBox = css`
-    margin-top: 20px;
-    padding-bottom: 14px;
-    width: 95%;
-    border-bottom: 1px dashed black;
+export const SSubTitleBox = css`
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
 
-    & > tr > th {
-        border: 1px solid black;
-        padding: 10px 15px;
-        width: 500px;
-        font-size: 15px;
-        text-align: center;
+    margin-bottom: 5px;
+    width: 100%;
 
-        background-color: darkgray;
+    & > h3 {
+        margin-left: 20px;
+        font-size: 17.5px;
     }
 
-    & > tr > td {
-        border: 1px solid black;
-        padding: 10px 15px;
-        font-size: 15px;
-        text-align: center;
-
+    & > button {
+        margin-left: 15px;
     }
 `;
 
-export const SBottomTableBox = css`
-    margin-top: 15px;
-    width: 95%;
+export const STableBox = css`
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    margin-bottom: 25px;
 
-    & > tr > th {
-        border: 1px solid black;
-        padding: 10px 15px;
-        width: 500px;
-        font-size: 15px;
+    width: 100%;
+`;
+
+export const SToptable = css`
+    border-collapse: separate;
+    border-spacing: 5px;
+    width: 100%;
+`;
+
+export const SBottomTable = css`
+    border-bottom: 2px dashed #aeaeae;
+    border-collapse: separate;
+    border-spacing: 5px;
+    width: 100%;
+`;
+
+export const SThtdBox = css`
+
+    & > th {
+        border-radius: 10px;
+        padding: 10px;
+        width: 50%;
         text-align: center;
-
-        background-color: darkgray;
+        background-color: #dbdbdb;
     }
 
-    & > tr > td {
-        border: 1px solid black;
-        padding: 10px 15px;
-        font-size: 15px;
+    & > td {
+        border-radius: 10px;
+        padding: 10px;
         text-align: center;
-
+        background-color: #f1f1f1;
     }
+`;
+
+export const SImgContainer = css`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    width: 100%;
+`;
+
+export const SH2 = css`
+    margin: 25px;
+    padding: 0px 200px 25px;
+    border-bottom: 2px dashed #aeaeae;
+
+    font-size: 30px;
 `;
 
 export const SMidBox = css`
@@ -90,36 +104,23 @@ export const SMidBox = css`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    & > h3 {
+        padding: 15px;
+        font-size: 22.5px;
+    }
     
 
     & > p {
-        margin: 0px;
-        padding: 0px 10px 25px 10px;
-        font-size: 13px;
-        font-weight: 600;
+        margin-bottom: 50px;
+        padding: 10px;
+        font-size: 17.5px;
         text-align: center;
-        
     }
 `;
 
-
 export const SButton = css`
-    margin: 30px 0px 75px;
-    border: none;
-    border-radius: 50px;
-    padding: 15px 15px;
+    margin-bottom: 50px;
+    padding: 15px;
     width: 350px;
-
-    text-align: center;
-    font-size: 20px;
-    font-weight: bold;
-    background-color: #333;
-    color: #f9fbff;
-    cursor: pointer;
-
-    &:hover {
-        background-color: #2b64fb;
-        color: #f9fbff;
-        font-weight: bold;
-    }
 `;
