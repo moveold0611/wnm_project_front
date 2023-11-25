@@ -46,9 +46,6 @@ function Mypage({ children }) {
                                     <li>
                                         <h4><Link to="/admin/write/announcement">공지사항</Link></h4>
                                     </li>
-                                    <li>
-                                        <h4><Link to="/admin/notices">FAQ</Link></h4>
-                                    </li>
                                 </ul>
                                 <div css={S.SChangeContainer}>
                                     {children}

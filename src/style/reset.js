@@ -1,10 +1,10 @@
 import { css } from "@emotion/react";
 
 export const reset = css`
-  /* http://meyerweb.com/eric/tools/css/reset/ 
+/* http://meyerweb.com/eric/tools/css/reset/ 
     v2.0 | 20110126
     License: none (public domain)
-  */
+*/
 
     @font-face {
         font-family: 'BMJUA';
@@ -62,5 +62,26 @@ export const reset = css`
     table {
         border-collapse: collapse;
         border-spacing: 0;
+    }
+    html {
+        background-color: #f1f1f1;
+    }
+    input:disabled {
+        background-color: #f1f1f1;
+    }
+    button {
+        border: none;
+        border-bottom: 2px solid #dbdbdb;
+        border-right: 2px solid #dbdbdb;
+        border-radius: 5px;
+        padding: 10px;
+        background-color: #fff;
+        cursor: pointer;
+
+        :hover {
+            border-bottom: none;
+            border-right: none;
+            background-color: #f1f1f1;
+        }
     }
 `;

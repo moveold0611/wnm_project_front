@@ -11,7 +11,6 @@ function Header(props) {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
     const principal = queryClient.getQueryState("getPrincipal");
-    const parsm = useParams();
     const [ isSubMenu, setIsSubMenu ] = useState(false);
     const [ selectedMenu, setSelectedMenu ] = useState(null);
     
@@ -55,7 +54,6 @@ function Header(props) {
     }
 
     const handleSubMenuClick = (menuName, subMenu) => {
-        console.log(menuName)
         const pathMap = {
             Dog: {
                 HomeLiving: '/products/dog/home-living',
@@ -77,12 +75,9 @@ function Header(props) {
         };
         
             const path = pathMap[menuName]?.[subMenu];
-            console.log(path)
             navigate(path);
         };
     
-        console.log(selectedMenu)
-
     return (
         <div css={S.SLayout}>
             <div css={S.STopContainer}>
