@@ -14,6 +14,7 @@ const PageNation = ({products, searchData, setSearchData, }) => {
     const getProductsPagenation = useQuery(["getProductsPageNation"], async () => {
         try {
             const response = getProductsCountApi(searchData);
+            console.log(response)
             return response;
         } catch (error) {
             console.error("Error in getProductsCountApi:", error);

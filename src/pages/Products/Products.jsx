@@ -97,7 +97,7 @@ function Products(props) {
                                     <ul>
                                         <li onClick={handleProductOnclick}>
                                             <img id={product.productMstId} src={product.productThumbnailUrl} alt="" />
-                                            <p>{product.productName}</p>
+                                            <h3>{product.productName}</h3>
                                             <p>
                                                 가격 : {product.minPrice === "" && product.maxPrice === "" ? "품절" : product.minPrice?.slice(4, product.minPrice.lastIndexOf())}
                                             </p>

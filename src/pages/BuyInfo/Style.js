@@ -320,18 +320,9 @@ export const SCancel = css`
     justify-content: center;
     align-items: center;
 
-& > button {
-    width: 250px;
-    height: 50px;
-    font-size: 18px;
-    /* border: none;
-    border-radius: 10px;
-    height: 35px;
-    
-    font-size: 18px;
-    color: white;
-    background-color: black;
-    width: 100%; */
-}
-
+    & > button {
+        width: 250px;
+        height: 50px;
+        font-size: 18px;
+    }
 `;
