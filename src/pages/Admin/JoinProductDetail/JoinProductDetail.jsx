@@ -48,6 +48,7 @@ function JoinProductDetail(props) {
                 </div>
                 <div css={S.STableBox}>
                     <table css={S.SToptable}>
+                        <tbody>
                         <tr css={S.SThtdBox}>
                             <th>상품 추가 일자</th>
                             <td>{getProduct?.data?.data.createDate}</td>
@@ -72,6 +73,7 @@ function JoinProductDetail(props) {
                             <th>상품 마스터 ID</th>
                             <td>{productMstId}</td>
                         </tr>
+                        </tbody>
                     </table>
                 </div>
 
@@ -80,7 +82,8 @@ function JoinProductDetail(props) {
                 </div>
                 <div css={S.STableBox}>
                     {getProduct?.data?.data.productDtlList?.map(dtl => {
-                    return <table key={dtl.productDtl} css={S.SBottomTable}>
+                    return <table key={dtl.productDtlId} css={S.SBottomTable}>
+                        <tbody>
                         <tr css={S.SThtdBox}>
                             <th>상품 상세(사이즈별) ID</th>
                             <td>{dtl.productDtlId}</td>
@@ -101,6 +104,7 @@ function JoinProductDetail(props) {
                             <th>임시 재고(실제 재고 - 주문재고)</th>
                             <td>{dtl.tempStock}</td>
                         </tr>
+                        </tbody>
                     </table>
                     })}
                 </div>

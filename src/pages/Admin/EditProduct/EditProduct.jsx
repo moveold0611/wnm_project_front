@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import * as S from './Style';
 import { getProductsApi, removeProductApi } from '../../../apis/api/product';
 import { useQuery, useQueryClient } from 'react-query';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Mypage from '../../Mypage/Mypage';
 import PageNation from '../../../utils/PageNation/PageNation';
 
@@ -129,6 +129,8 @@ function EditProduct(props) {
                     <h2>상품 관리</h2>
                 </div>
                 <div css={S.SSelectBox}>
+                    <button onClick={() => { navigate("/admin/incoming")}}>입고 관리</button>
+                    <button onClick={() => { navigate("/admin/outgoing")}}>출고 관리</button>
                     <select option={petType} onChange={handleSearchSelectChange} name='petTypeName'>
                         {petType.map(pt => {
                             return <option key={pt.value} label={pt.label} value={pt.value} />
