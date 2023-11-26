@@ -26,61 +26,38 @@ function Announcement(props) {
         }
     })
 
-    const handleAnnouncementClick = (e) => {
-        navigate(`/notice/${e.target.id}`)
-    }
-
-    const handleEditClick = (e) => {
-        navigate(`/admin/edit/announcement/${e.target.id}`)
-    }
-
-    const handleDeleteClick = async (e) => {
-        
-        if(window.confirm("삭제 하시겠습니까?")) {
-                const id = e.target.id;
-            try {
-                const option = {
-                    headers: {
-                        Authorization: localStorage.getItem("accessToken")
-                    }
-                }
-                const response = await deleteAnnouncementApi(id, option);
-                alert("삭제가 완료되었습니다.")
-                return response;
-            } catch (error) {
-                alert(error.message)
-            }   
-        }
+    const handleAnnouncementClick = (announcementId) => {
+        navigate(`/notice/${announcementId}`)
     }
 
     return (
         <RootContainer>
             <div css={S.SLayout}>
-                <div>공지사항</div>
-                <ul css={S.SAnnouncementsBox}>
-                    {!getAnnouncements.isLoading && announcemensList?.map(ann => {
-                        return <li>
-                                    <div css={S.SAnnouncement}>
-                                        <div class='id'>
-                                            {ann?.announcement_id}
-                                        </div>
-                                        <div class='title' id={ann?.announcement_id} onClick={handleAnnouncementClick}>
-                                            {ann?.title}
-                                        </div>
-                                        <div class='content'>
-                                            {ann?.content}
-                                        </div>
-                                        <div class='createDate'>
-                                            {ann?.createDate}
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <button id={ann?.announcement_id} onClick={handleEditClick}>수정</button>
-                                        <button id={ann?.announcement_id} onClick={handleDeleteClick}>삭제</button>
-                                    </div>
-                                </li>
-                    })}
-                </ul>
+                <div css={S.STopTitle}>
+                    <h2>공지사항</h2>
+                </div>
+                <div css={S.STableBox}>
+                    <table css={S.STable}>
+                        <thead>
+                            <tr css={S.SThBox}>
+                                <th>번호</th>
+                                <th>제목</th>
+                                <th>작성일</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {!getAnnouncements.isLoading && announcemensList?.map(ann => {
+                                return (
+                                    <tr key={ann.announcementId} css={S.STdBox} onClick={() => handleAnnouncementClick(ann.announcementId)}>
+                                        <td>{ann?.announcementId}</td>
+                                        <td>{ann?.title}</td>
+                                        <td>{ann?.createDate}</td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </RootContainer>
     );

@@ -25,6 +25,10 @@ export const SSignupGoogleButton = css`
     height: 45px;
     background-color: #fff;
     position: relative;
+    
+    :hover {
+        background-color: #fff;
+    }
 `;
 
 export const SSignupGoogleButtonImg = css`
@@ -36,12 +40,15 @@ export const SSignupGoogleButtonImg = css`
 `;
 
 export const SSignupkakaoButton = css`
+    margin: 40px 0;
     width: 400px;
     height: 45px;
-    background-color: #ffeb00;
     position: relative;
-    border: none;
-    margin: 40px 0;
+    background-color: #ffeb00;
+
+    :hover {
+        background-color: #ffeb00;
+    }
 `;
 
 export const SSignupkakaoButtonImg = css`
@@ -55,9 +62,13 @@ export const SSignupkakaoButtonImg = css`
 export const SSignupnaverButton = css`
     width: 400px;
     height: 45px;
-    background-color: #03C75A;
     position: relative;
-    border: none;
+    background-color: #03C75A;
+
+    :hover {
+        background-color: #03C75A;
+    }
+    
 `;
 
 export const SSignupnaverButtonImg = css`

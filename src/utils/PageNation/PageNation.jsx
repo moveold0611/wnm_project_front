@@ -5,7 +5,7 @@ import * as S from './Style';
 const PageNation = ({ showCount, totalItemCount, propsData, setPropsData }) => {
 
     const [ count, setCount ] = useState(0);
-    const [ currentPage, setCurrentPage ] = useState(propsData.pageIndex);
+    const [ currentPage, setCurrentPage ] = useState(propsData?.pageIndex);
     const [selectedPage, setSelectedPage] = useState(currentPage);
 
     const [totalPages, setTotalPages] = useState([]);
@@ -34,7 +34,7 @@ const PageNation = ({ showCount, totalItemCount, propsData, setPropsData }) => {
         const newSearchData = {...propsData, pageIndex: currentPage};
         setPropsData(newSearchData);
         
-      }, [currentPage , propsData.productCategoryName, propsData.pageIndex]);
+    }, [currentPage , propsData?.productCategoryName, propsData?.pageIndex]);
     
     return (
         <div>

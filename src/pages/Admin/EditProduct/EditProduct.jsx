@@ -200,7 +200,6 @@ function EditProduct(props) {
                     </table>
                 </div>
                 <div css={S.SPageButtonBox}>
-                    <PageNation products={productList} searchData={searchData} setSearchData={setSearchData} />
                 </div>
             </div>
         </Mypage>

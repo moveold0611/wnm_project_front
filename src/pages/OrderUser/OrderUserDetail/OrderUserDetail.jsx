@@ -45,7 +45,7 @@ function OrderUserDetail(props) {
         }
     })
 
-    const condition = getOrderDtl?.data?.data.orderStatus === 2;
+    const condition = getOrderDtl?.data?.data.orderStatus === 2 || 3;
 
 
     const handleUsersOrdersOnClick = () => {
@@ -158,18 +158,6 @@ function OrderUserDetail(props) {
                             </tr>
                         })}
                     </tbody>
-                        
-                        {/* <div css={S.SModalContainer} ref={modalBackground} onClick={e => {
-                            if (e.target === modalBackground.current) {
-                                setModalOpen(false);
-                            }}}>
-                            <div css={S.SModalContent}>
-                                <p>리뷰내용</p>
-                                <button css={S.SModalButton} onClick={() => setModalOpen(false)}>
-                                    리뷰 등록하기
-                                </button>
-                            </div>
-                        </div> */}
                 </table>
             </div>
         </div>

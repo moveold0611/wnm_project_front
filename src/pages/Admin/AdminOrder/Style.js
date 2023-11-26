@@ -80,9 +80,11 @@ export const SThBox = css`
 export const STdBox = css`
     & > td {
         padding: 5px;
+        border-bottom: 2px solid #dbdbdb;
+        border-right: 2px solid #dbdbdb;
         border-radius: 10px;
         text-align: center;
-        background-color: #f1f1f1;
+        background-color: #fffff0;
     }
 `;
 

@@ -64,7 +64,7 @@ export const reset = css`
         border-spacing: 0;
     }
     html {
-        background-color: #f1f1f1;
+        background-color: #fffff0;
     }
     input:disabled {
         background-color: #f1f1f1;

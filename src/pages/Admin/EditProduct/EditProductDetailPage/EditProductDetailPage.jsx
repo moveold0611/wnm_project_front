@@ -168,6 +168,7 @@ function EditProductDetailPage(props) {
 
             await updateProductApi(productMstId, productData, option);
             alert("수정이 완료되었습니다.")
+            window.location.replace("/admin/product/edit")
         }catch(error) {
             console.log(error.response.data)
         }
