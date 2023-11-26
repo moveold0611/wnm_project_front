@@ -20,6 +20,8 @@ function Products(props) {
         {value: "highprice", label: "높은가격순"}
     ]
 
+
+
     const [ searchData, setSearchData ] = useState({
         petTypeName: type,
         productCategoryName: !!category ? category : 'all',
@@ -40,6 +42,7 @@ function Products(props) {
         retry: 0,
         refetchOnWindowFocus: false,
         onSuccess: response => {
+            console.log(response?.data)
             setProducts(response?.data)
         }
     })

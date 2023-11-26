@@ -33,14 +33,15 @@ function EditProductDetailPage(props) {
         pageIndex: 1}
     const [ productData, setProductData ] = useState({});
 
+    
     let productMinimumData = [];
-
     useEffect(() => {
         if(principal?.data?.data.roleName !== "ROLE_ADMIN" || !principal?.data) {
             alert("정상적인 접근이 아닙니다.")
             navigate("/")
         }
     }, [])
+
 
     const getProduct = useQuery(["getProduct"], async () => {
         const response = await getProductsApi(searchData);
@@ -176,7 +177,7 @@ function EditProductDetailPage(props) {
                         </div>
                         <div css={S.SButtonBox}>
                             <input type="file" id="productThumbnailUrl" onChange={handleThumbnailChange} css={S.SFile}/>
-                            <button htmlFor="productThumbnailUrl">메인 이미지 수정 파일 업로드</button>
+                            <label htmlFor="productThumbnailUrl" >메인 이미지 수정 파일 업로드</label>
                         </div>
                         <div>
                             <h1 css={S.SH1}>상품 상세 이미지 수정</h1>
@@ -186,7 +187,7 @@ function EditProductDetailPage(props) {
                         </div>
                         <div css={S.SButtonBox}>
                             <input type="file" id="productDetailUrl" onChange={handleDetailImgChange} css={S.SFile} />
-                            <button htmlFor="productDetailUrl">상세 이미지 수정 파일 업로드</button>
+                            <label htmlFor="productDetailUrl">상세 이미지 수정 파일 업로드</label>
                         </div>
                         <div>
                             <h1 css={S.SH1}>상품 정보 수정</h1>
