@@ -28,7 +28,10 @@ function WriteAnnouncement(props) {
     }
 
     const handleCheckBoxChange = (e) => {
-        console.log(e.target)
+        setAnnouncementData({
+            ...announcementData,
+            isPinned: announcementData.isPinned === 0 ? 1 : 0
+        });
     }
     useEffect(() => {
         if(principal?.data?.data.roleName !== "ROLE_ADMIN" || !principal?.data) {
@@ -45,7 +48,9 @@ function WriteAnnouncement(props) {
                 }
             }
             const response = await writeAnnouncementApi(announcementData, option)
-
+        
+            alert("등록이 완료되었습니다.")
+            navigate("/notice")
             return response;
         } catch (error) {
             alert(error)

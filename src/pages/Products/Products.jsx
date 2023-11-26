@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 /** @jsxImportSource @emotion/react */
 import * as S from '../Products/Style';
-import { getAllProductsApi } from '../../apis/api/product';
+import { getAllProductsApi, getProductsCountApi } from '../../apis/api/product';
 import RootContainer from '../../components/RootContainer/RootContainer';
 import { useNavigate, useParams } from 'react-router-dom';
 import PageNation from '../../utils/PageNation/PageNation';
@@ -10,9 +10,11 @@ import PageNation from '../../utils/PageNation/PageNation';
 function Products(props) {
 
     const navigate = useNavigate();
+    const itemCount = 12;
     const { type, category } = useParams();
     const [ searchValue, setSearchValue ] = useState("");
     const [ products, setProducts ] = useState();
+    const [ count, setCount ] = useState();
 
     const sortOptions = [
         {value: "name", label: "상품명"},
@@ -41,6 +43,23 @@ function Products(props) {
         refetchOnWindowFocus: false,
         onSuccess: response => {
             setProducts(response?.data)
+        }
+    })
+
+    const getProductsPagenation = useQuery(["getProductsPageNation"], async () => {
+        try {
+            const response = getProductsCountApi(searchData);
+            console.log(response)
+            return response;
+        } catch (error) {
+            console.error("Error in getProductsCountApi:", error);
+            throw error;
+        }
+    },
+    {
+        retry: 0,
+        onSuccess: response => {
+            setCount(response.data)
         }
     })
 
@@ -107,7 +126,7 @@ function Products(props) {
                     })}
                 </div>
                 <div>
-                    <PageNation products={products} searchData={searchData} setSearchData={setSearchData} />
+                    <PageNation showCount={itemCount} totalItemCount={count} propsData={searchData} setPropsData={setSearchData} />
                 </div>
             </div>
         </RootContainer>

@@ -19,8 +19,6 @@ function Header(props) {
         { name: 'Customer Service', subMenus: ['Notice', 'FAQ'] },
         { name: 'Cat', subMenus: ['HomeLiving', 'Movement', 'Toy', 'Accessories'] }
     ];
-
-    console.log(parsm)
     
     const handleLogoOnClick = () => {
         navigate("")
@@ -75,7 +73,6 @@ function Header(props) {
         };
         
             const path = pathMap[menuName]?.[subMenu];
-            console.log(path)
             navigate(path);
         };
     

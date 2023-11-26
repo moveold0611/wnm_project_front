@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react';
 import * as S from './Style';
 import { getOrdersForAdmin, updateOrderStatus } from '../../../apis/api/order';
 import { useQuery, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import Mypage from '../../Mypage/Mypage';
-import { async } from 'q';
+import PageNation from '../../../utils/PageNation/PageNation';
 
 function AdminOrder(props) {
+    const showCount = 10;
     const queryClient = useQueryClient();
     const principal = queryClient.getQueryState("getPrincipal");
     const option = {
@@ -17,12 +17,16 @@ function AdminOrder(props) {
         }
     }
     const navigate = useNavigate()
+    const [ orderData, setOrderData ] = useState();
     const [ orderStatus, setOrderStatus ] = useState(0)
     const [ searchData, setSearchData ] = useState({
         searchOption: "all",
         searchValue: "",
-        sortOption: ""
+        sortOption: "",
+        pageIndex: 1
     });
+    const [ orderCount, setOrderCount ] = useState();
+
     const searchOption = [
         {value: "받는사람"},
         {value: "전화번호"},
@@ -61,8 +65,34 @@ function AdminOrder(props) {
         }
     },{
         retry: 0,
-        refetchOnWindowFocus: false
+        refetchOnWindowFocus: false,
+        onSuccess: response => {
+            setOrderData(response?.data)
+        }
     })
+
+
+    const getOrderCount = useQuery(["getOrderCount"], async () => {
+        try {
+            const option = {
+                headers: {
+                    Authorization: localStorage.getItem("accessToken")
+                }
+            }
+            return await getOrderCount(option);
+        } catch (error) {
+            alert(error.response.data)
+        }
+    },{
+        retry: 0,
+        refetchOnWindowFocus: false,
+        onSuccess: response => {
+            setOrderCount(response)
+        }
+    })
+
+    
+    console.log(orderCount)
 
     if(getOrders.isLoading) {
         return <></>
@@ -173,6 +203,9 @@ function AdminOrder(props) {
                         })}
                     </tbody>
                 </table>
+                <div>
+                    <PageNation showCount={showCount} totalItemCount={orderCount} propsData={orderData} setPropsData={setOrderData} />
+                </div>
             </div>
         </Mypage>
     );

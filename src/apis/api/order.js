@@ -1,3 +1,4 @@
+import { async } from "q";
 import instance from "../config/instance"
 
 export const addOrderApi = async (orderData, option) => {
@@ -22,6 +23,11 @@ export const updateOrderStatus = async (orderId, orderStatus, option) => {
 
 export const updateConfirmationApi = async (orderId, option) => {
     const response = await instance.put(`/api/order/${orderId}`, null, option);
+    return response;
+}
+
+export const getOrderCount = async (option) => {
+    const response = await instance.get(`/api/admin/ordercount`, option);
     return response;
 }
 
