@@ -28,7 +28,10 @@ function WriteAnnouncement(props) {
     }
 
     const handleCheckBoxChange = (e) => {
-        console.log(e.target)
+        setAnnouncementData({
+            ...announcementData,
+            isPinned: announcementData.isPinned === 0 ? 1 : 0
+        });
     }
     useEffect(() => {
         if(principal?.data?.data.roleName !== "ROLE_ADMIN" || !principal?.data) {
@@ -45,7 +48,9 @@ function WriteAnnouncement(props) {
                 }
             }
             const response = await writeAnnouncementApi(announcementData, option)
-
+        
+            alert("등록이 완료되었습니다.")
+            navigate("/notice")
             return response;
         } catch (error) {
             alert(error)
@@ -56,15 +61,15 @@ function WriteAnnouncement(props) {
     return (
         <Mypage>
             <div css={S.SContainer}>
-                <div css={S.STopTitle}>
+                <div >
                     <h2>공지사항 작성</h2>
                 </div>
                 <div css={S.SubContainer}>
                     <div css={S.SuSubContainer}>
                         <h1>공지사항 등록</h1>
-                        <div css={S.STitle}>
+                        <div >
                             <input name='title' type="text" placeholder='제목' onChange={handleInputChange} />
-                            <div css={S.SFixBox}>
+                            <div >
                                 <p>고정 여부</p>
                                 <input name='isPinned' type="checkbox" onChange={handleCheckBoxChange} />
                             </div>

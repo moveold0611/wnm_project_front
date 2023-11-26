@@ -2,10 +2,10 @@ import React, { useRef, useState } from 'react';
 /** @jsxImportSource @emotion/react */
 import * as S from './Style';
 import Mypage from '../../Mypage/Mypage';
-import { getUserOrderApi, getUserOrderDetailApi } from '../../../apis/api/order';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import ReviewModal from '../../../components/Review/ReviewModal/ReviewModal';
+import { getUserOrderApi } from '../../../apis/api/order';
 
 
 function OrderUserDetail(props) {
@@ -29,7 +29,7 @@ function OrderUserDetail(props) {
                     Authorization: localStorage.getItem("accessToken")
                 }
             }
-            const response = getUserOrderDetailApi(orderId, option);
+            const response = getUserOrderApi(orderId, option);
             return await response;
         } catch(error) {
             console.log(error)

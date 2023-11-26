@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 /** @jsxImportSource @emotion/react */
 import * as S from './Style';
 import logo from '../../images/Logo/LongLogo_lg.png'
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { TbShoppingBag } from "react-icons/tb";
 import { useQueryClient } from 'react-query';
-
 
 function Header(props) {
     const navigate = useNavigate();
@@ -20,7 +19,6 @@ function Header(props) {
         { name: 'Cat', subMenus: ['HomeLiving', 'Movement', 'Toy', 'Accessories'] }
     ];
 
-    
     const handleLogoOnClick = () => {
         navigate("")
     }
