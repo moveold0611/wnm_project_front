@@ -127,7 +127,7 @@ function Products(props) {
                                             <img id={product.productMstId} src={product.productThumbnailUrl} alt="" />
                                             <h3>{product.productName}</h3>
                                             <p>
-                                                가격 : {product.tempStock === 0 ? "품절" : product.minPrice?.slice(4, product.minPrice.lastIndexOf())}
+                                                가격 : {product.tempStock <= 0 ? "품절" : product.minPrice?.slice(4, product.minPrice.lastIndexOf())}
                                             </p>
                                         </li>
                                     </ul>
