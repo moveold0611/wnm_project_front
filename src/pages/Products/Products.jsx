@@ -41,7 +41,6 @@ function Products(props) {
         refetchOnWindowFocus: false,
         onSuccess: response => {
             setProducts(response?.data)
-            console.log(response?.data)
         }
     })
 
