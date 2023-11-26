@@ -23,7 +23,7 @@ const PageNation = ({ showCount, totalItemCount, propsData, setPropsData }) => {
 
     useEffect(() => {
         setSelectedPage(currentPage);
-      }, [currentPage]);
+    }, [currentPage]);
     
     
     const handlePageClick = (page) => {
@@ -45,11 +45,12 @@ const PageNation = ({ showCount, totalItemCount, propsData, setPropsData }) => {
                 {"<"}
             </button>
             
-            {totalPages.map(page => (
+            {totalPages.map((page, index) => (
                 <button 
                     css={selectedPage === page ? S.selectedPageButton : S.PageButton}
                     name="pageIndex"
-                    onClick={() => handlePageClick(page)}>
+                    onClick={() => handlePageClick(page)}
+                    key={index}>
                     {page}
                 </button>
             ))}

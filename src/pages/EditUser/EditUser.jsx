@@ -173,12 +173,15 @@ function EditUser(props) {
 return (
     <Mypage>
         <div css={S.SContainer}>
-            <h2>회원 정보 수정</h2>
+            <div css={S.STopTitle}>
+                <h2>회원 정보 수정</h2>
+            </div>
             <div css={S.SProfilContainer}>
-                <div css={S.SimgBox} onClick={HandleProfileUploadClick}>
+                <div css={S.SImgBox} onClick={HandleProfileUploadClick}>
                     <img src={userEditData.profileUrl} alt="프로필 이미지" />
                 </div>
-                <p>프로필 변경 시 클릭하여 변경해주세요.</p>
+                <p>프로필 변경 시 <br/>
+                    이미지를 클릭하여 변경해주세요.</p>
                 <input css={S.Sfile} type="file" onChange={HandleProfileChange} ref={profileFileRef} />
             </div>
             <div css={S.SUserInfoContiner}>
@@ -208,7 +211,7 @@ return (
                         disabled={true}/>
                 </div>
                 <div css={S.SUserInfoBox}>
-                <h3 css={S.STitle}>주소</h3>
+                    <h3 css={S.STitle}>주소</h3>
                         <div css={S.SAddressBox}>
                             <div css={S.SAddressNumberBox}>
                                 <input type="text" 
@@ -232,18 +235,19 @@ return (
                                 onChange={HandleUserEditDataOnChange}
                                 ref={addressDetailNameRef}/>
                         </div>
-                </div>
-                </div>
-                    <div css={S.SEditButtonBox}>
-                        <button css={S.SEditButton} onClick={HandleEditUser}>회원정보수정</button>
-                        <button css={S.SCancelbutton} onClick={HandleCancle}>취소</button>
                     </div>
-                    <div css={S.SDeleteButtonBox}>
-                        <button onClick={HandleDeleteUser}>회원탈퇴
+                </div>
+                <div css={S.SEditButtonBox}>
+                    <button css={S.SEditButton} onClick={HandleEditUser}>회원 정보 수정</button>
+                    <button css={S.SCancelbutton} onClick={HandleCancle}>취소</button>
+                </div>
+                <div css={S.SDeleteButtonBox}>
+                    <button onClick={HandleDeleteUser}>
+                        회원 탈퇴
                     </button>
                 </div>
             </div>
-        </Mypage>  
+        </Mypage> 
     );
 }
 export default EditUser;

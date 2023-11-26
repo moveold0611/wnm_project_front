@@ -1,25 +1,24 @@
 import React, { useState } from 'react';
 /** @jsxImportSource @emotion/react */
 import * as S from './Style';
-import logo from '../../images/Logo/Logo.png'
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import logo from '../../images/Logo/LongLogo_lg.png'
+import { Link, useNavigate } from 'react-router-dom';
 import { TbShoppingBag } from "react-icons/tb";
 import { useQueryClient } from 'react-query';
-
 
 function Header(props) {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
     const principal = queryClient.getQueryState("getPrincipal");
-    const parsm = useParams();
     const [ isSubMenu, setIsSubMenu ] = useState(false);
+    const [ selectedMenu, setSelectedMenu ] = useState(null);
     
     const menus = [
         { name: 'Dog', subMenus: ['HomeLiving', 'Movement', 'Fashion', 'Toy', 'Walk'] },
-        { name: 'Customer Service', subMenus: ['Notice', 'FAQ'] },
+        { name: 'Customer Service', subMenus: ['Notice'] },
         { name: 'Cat', subMenus: ['HomeLiving', 'Movement', 'Toy', 'Accessories'] }
     ];
-    
+
     const handleLogoOnClick = () => {
         navigate("")
     }
@@ -33,7 +32,8 @@ function Header(props) {
         navigate(`/product/cart/${principal?.data?.data?.userId}`)
     }
 
-    const handleSubMenuMouseEnter = () => {
+    const handleSubMenuMouseEnter = (menu) => {
+        setSelectedMenu(menu);
         setIsSubMenu(true);
     };
 
@@ -55,7 +55,7 @@ function Header(props) {
         const pathMap = {
             Dog: {
                 HomeLiving: '/products/dog/home-living',
-                Movement: '/products/dog/Movement',
+                Movement: '/products/dog/movement',
                 Fashion: '/products/dog/fashion',
                 Toy: '/products/dog/toy',
                 Walk: '/products/dog/walk',
@@ -68,7 +68,6 @@ function Header(props) {
             },
             CustomerService: {
                 Notice: '/notice',
-                FAQ: '/faq',
             },
         };
         
@@ -78,6 +77,30 @@ function Header(props) {
     
     return (
         <div css={S.SLayout}>
+            <div css={S.STopContainer}>
+                <div css={S.SLogo}>
+                    <img src={logo} onClick={handleLogoOnClick}/>
+                </div>
+                <ul css={S.SMenuBox}>
+                    {menus?.map((menu, index) => (
+                            <li key={index} css={S.SFullMenuBox}
+                                onClick={() => handleMenuClick(menu.name)}
+                                onMouseEnter={(e) => {handleSubMenuMouseEnter(menu)}} 
+                                onMouseLeave={handleSubMenuMouseLeave}>
+                                <h3>{menu.name}</h3>
+                            </li>
+                    ))}
+                    <ul css={() => S.SSubMenuBox(isSubMenu && !!selectedMenu)}
+                        onMouseEnter={(e) => {setIsSubMenu(true)}} 
+                        onMouseLeave={handleSubMenuMouseLeave}>
+                        {selectedMenu?.subMenus?.map((subMenu, subIndex) => (
+                            <li key={subIndex}>
+                                <h3 onClick={() => handleSubMenuClick(selectedMenu.name, subMenu)}>{subMenu}</h3>
+                            </li>
+                        ))}
+                    </ul>
+                </ul>
+            </div>
             <div css={S.SUserRelatedBox}>
                     {!!principal.data 
                         ? (
@@ -119,35 +142,7 @@ function Header(props) {
                         )
                     }
                     
-            </div>
-
-            <div css={S.STopContainer}>
-                <div>
-                    <div css={S.SLogo}>
-                        <img src={logo} onClick={handleLogoOnClick}/>
-                    </div>
                 </div>
-            </div>
-            
-            
-            <div css={S.SBottomContainer}>
-                <ul css={S.SMenuBox} onMouseEnter={handleSubMenuMouseEnter} onMouseLeave={handleSubMenuMouseLeave}>
-                    {menus.map((menu, index) => (
-                        <li key={index}>
-                            <div css={S.SFullMenuBox}>
-                                <h3 onClick={() => handleMenuClick(menu.name)}>{menu.name}</h3>
-                                <ul css={S.SSubMenuBox(isSubMenu)}>
-                                    {menu.subMenus.map((subMenu, subIndex) => (
-                                        <li key={subIndex}>
-                                            <h3 onClick={() => handleSubMenuClick(menu.name, subMenu)}>{subMenu}</h3>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        </li>
-                    ))}
-                    </ul>
-            </div>
 
         </div>
     );

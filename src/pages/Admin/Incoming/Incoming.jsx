@@ -52,7 +52,7 @@ function Incoming(props) {
                 <button onClick={handleGetIncomingClick}>입고 조회</button>
                 <ul>
                     {getData.map(data => {
-                        return <li>입고번호 : {data?.historyId} /
+                        return <li key={data?.historyId}>입고번호 : {data?.historyId} /
                         수량 : {data?.count} /
                         날짜: {data?.createDate}</li>                   
                     })}

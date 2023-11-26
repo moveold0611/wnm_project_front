@@ -92,8 +92,8 @@ function Signup(props) {
             alert("회원가입 완료");
             window.location.replace("/auth/signin");
         }catch(error) {
-                console.error(error);
-                }
+            alert("회원가입 중 오류가 발생하였습니다.")
+        }
     }
 
     const handleCancelOnClick = () => {
@@ -105,7 +105,7 @@ function Signup(props) {
             <div css={S.SContainer}>
                 <div css={S.SUserInfoContiner}>
                     <h1>회원가입</h1>
-                    <div>
+                    <div css={S.SSubTitle}>
                         <h3>회원이 되어 다양한 혜택을 경험해 보세요!</h3>
                     </div>
                     <div css={S.SUserInfoBox}>

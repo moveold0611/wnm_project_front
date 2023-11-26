@@ -18,6 +18,7 @@ function OrderUserDetail(props) {
     const [ selectedProduct, setSelectedProduct ] = useState(null); 
     const modalBackground = useRef();
     
+    
     let price = 0;
 
     const getOrderDtl = useQuery(["getOrderDtl"], async () => {
@@ -42,7 +43,10 @@ function OrderUserDetail(props) {
         })
         setTotalPrice(price)
         }
-    }) 
+    })
+
+    const condition = getOrderDtl?.data?.data.orderStatus === 2;
+
 
     const handleUsersOrdersOnClick = () => {
         navigate(-1)
@@ -55,12 +59,15 @@ function OrderUserDetail(props) {
     return (
         <Mypage>
             <div css={S.SContainer}>
-                <h2>주문 상세 정보</h2>
+                <div css={S.STopTitle}>
+                    <h2>주문 상세 정보</h2>
+                </div>
                 <div css={S.SSubTitleBox}>
                     <h3>주문 정보</h3>
                     <button onClick={handleUsersOrdersOnClick}>주문 정보 리스트</button>
                 </div>
-                <table>
+                <div css={S.STableBox}>
+                <table css={S.STable}>
                     <thead>
                         <tr css={S.SThBox}>
                             <th>
@@ -97,10 +104,12 @@ function OrderUserDetail(props) {
                             </tr>
                     </tbody>
                 </table>
-                <div>
-                    <h3>회원 주문 상품 상세 정보</h3>
-                </div>
-                <table>
+            </div>
+            <div css={S.SSubTitleBox}>
+                <h3>회원 주문 상품 상세 정보</h3>
+            </div>
+            <div css={S.STableBox}>
+                <table css={S.STable}>
                     <thead>
                         <tr css={S.SThBox}>
                             <th>상품 이미지</th>
@@ -133,11 +142,17 @@ function OrderUserDetail(props) {
                                 </td>
                                 <td>
                                     <div css={S.SBtnWrapper}>
-                                        <button onClick={() => {
-                                                setModalOpen(true);
-                                                setSelectedProduct(data);
+                                    <button
+                                        disabled={!condition}
+                                        onClick={() => {
+                                            if (condition) {
+                                            setModalOpen(true);
+                                            setSelectedProduct(data);
                                             }
-                                        }>리뷰쓰기</button>
+                                        }}
+                                        >
+                                        리뷰쓰기
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
@@ -157,6 +172,7 @@ function OrderUserDetail(props) {
                         </div> */}
                 </table>
             </div>
+        </div>
             {modalOpen &&
                 <ReviewModal isOpen={modalOpen} onRequestClose={() => {setModalOpen(false)}} product={selectedProduct}/>
             }

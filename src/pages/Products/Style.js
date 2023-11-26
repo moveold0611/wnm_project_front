@@ -3,76 +3,50 @@ import { css } from "@emotion/react";
 export const SLayout = css`
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
+    align-items: center;
 
-    margin: 50px;
+    margin: 25px;
+    border-right: 2px solid #dbdbdb;
+    border-bottom: 2px solid #dbdbdb;
+    border-radius: 20px;
     width: 1400px;
+    background-color: #fff;
 `;
 
 export const SSubContainer = css`
     display: flex;
     justify-content: flex-end;
     margin: 0px auto;
-    width: 91%;
+    width: 100%;
 `;
 
 export const SSelectBox = css`
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 20px;
+    width: 100%;
 
     & > select {
-        margin: 5px;
+        margin-right: 10px;
+        border-radius: 10px;
         padding: 5px;
-        border-radius: 5px;
+        height: 28.5px;
     }
 
-    & > input { 
-        margin: 5px;
+    & > input {
+        margin-right: 15px;
         border: 1px solid black;
-        border-radius: 5px;
-        padding: 5.25px;
+        border-radius: 10px;
+        padding: 10px;
+        height: 28.5px;
     }
 
     & > button {
-        margin: 5px 1px 5px 5px;
-        border: 1px solid black;
-        border-radius: 5px;
+        margin-right: 65px;
         padding: 5px;
-        width: 50px;
-        cursor: pointer;
-    }
-`;
-
-export const SContainer = css`
-    width: 700px;
-    height: 850px;
-    display: flex;
-    justify-content: center;
-`;
-
-export const SCategoryBox = css`
-    display: flex;
-    justify-content: space-evenly;
-    margin: 0 auto;
-    width: 250px;
-    list-style: none;
-
-    & > li {
-        padding: 10px;
-        flex-direction: column;
-        cursor: pointer;
-    }
-`;
-
-export const SProductCategoryBox = css`
-    display: flex;
-    justify-content: space-evenly;
-    padding: 15px 0px;
-    border-top: 1px solid #dbdbdb;
-    border-bottom: 1px solid #dbdbdb;
-    list-style: none;
-
-    & > img {
-        width: 100%;
+        width: 75px;
     }
 `;
 
@@ -103,7 +77,7 @@ export const SProductBox = css`
     }
 
     & > ul > li {
-        margin: 0 20px 20px 0;
+        margin: 0 20px 0px 20px;
         padding-bottom: 10px;
         width: calc(25% - 50px);
         height: 415px;
@@ -117,8 +91,17 @@ export const SProductBox = css`
         overflow: hidden;
     }
 
-    & p {
+    & h3 {
+        padding: 5px;
         width: 300px;
+        font-size: 15px;
+    }
+
+    & p {
+        margin-top: 10px;
+        padding: 5px;
+        width: 300px;
+
     }
 `;
 

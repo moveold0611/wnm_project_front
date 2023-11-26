@@ -22,6 +22,8 @@ function Products(props) {
         {value: "highprice", label: "높은가격순"}
     ]
 
+
+
     const [ searchData, setSearchData ] = useState({
         petTypeName: type,
         productCategoryName: !!category ? category : 'all',
@@ -42,6 +44,7 @@ function Products(props) {
         retry: 0,
         refetchOnWindowFocus: false,
         onSuccess: response => {
+            console.log(response?.data)
             setProducts(response?.data)
         }
     })
@@ -82,6 +85,12 @@ function Products(props) {
         setSearchValue(e.target.value);
     }
 
+    const handleOnKeyPress = (e) => {
+        if(e.key === 'Enter') {
+            handleSearchButtonClick();
+        }
+    }
+
     const handleSearchButtonClick = () => {
         setSearchData({
             ...searchData,
@@ -106,19 +115,19 @@ function Products(props) {
                                     return <option name='sortOption' key={option.label} value={option.value}>{option.label}</option>
                                 })}
                         </select> 
-                        <input type="text" name='value' onChange={handleSearchValueChange} value={searchValue}/>
+                        <input type="text" name='value' onKeyDown={handleOnKeyPress} onChange={handleSearchValueChange} value={searchValue}/>
                         <button onClick={handleSearchButtonClick}>검색</button>
                     </div>
                 </div>
                 <div css={S.SProductContainer}>
-                    {!getProducts.isLoading && getProducts?.data?.data.map((product, index) => {
+                    {!getProducts.isLoading && getProducts?.data?.data.map((product) => {
                         return  <div css={S.SProductBox} key={product.productMstId} >
                                     <ul>
                                         <li onClick={handleProductOnclick}>
                                             <img id={product.productMstId} src={product.productThumbnailUrl} alt="" />
-                                            <p>{product.productName}</p>
+                                            <h3>{product.productName}</h3>
                                             <p>
-                                                가격 : {product.minPrice === "" && product.maxPrice === "" ? "품절" : product.minPrice?.slice(4, product.minPrice.lastIndexOf())}
+                                                가격 : {product.tempStock === 0 ? "품절" : product.minPrice?.slice(4, product.minPrice.lastIndexOf())}
                                             </p>
                                         </li>
                                     </ul>

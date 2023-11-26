@@ -7,142 +7,131 @@ export const SLayout = css`
 `
 export const SContainer = css`
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    width: 700px;
-    height: 850px;
-    
-    margin-top: 50px;
-`
+    align-items: center;
+
+    margin: 25px auto;
+    width: 95%;
+`;
 
 export const SUserInfoContiner = css`
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
 
-    width: 100%;
+    margin: 15px 15px 0px 15px;
+    width: 55%;
+
+    & > h1 {
+        font-size: 30px;
+        margin-bottom: 25px;
+    }
+`;
+
+export const SSubTitle = css`
+    & > h3 {
+        margin-bottom: 25px;
+        font-size: 20px;
+    }
 `;
 
 export const SUserInfoBox = css`
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    width: 70%;
+
+    margin: 12.5px;
+    width: 55%;
 
     & > input {
-        margin: 10px 15px 10px 15px;
-        border: 1px solid gray;
-        border-radius: 15px;
-        padding: 10px 10px 10px 15px;
-        height: 22px;
-        font-size: 18px;
-
-        width: 100%;
+        border: 1px solid black;
+        border-radius: 5px;
+        padding: 10px;
+        width: 300px;
     }
 `;
 
 export const STitle = css`
-    padding-left: 20px;
-    width: 115px;
-`;
-
-export const SShippingInfoInputBox = css`
-    display: flex;
-    align-items: center;
-    width: 100%;
-
-    & > input {
-        margin: 10px 15px 10px 5px;
-        border: 1px solid gray;
-        border-radius: 15px;
-        padding: 10px 10px 10px 15px;
-        height: 22px;
-        font-size: 18px;
-
-        width: 100%;
-    }
+    font-size: 20px;
 `;
 
 export const SAddressBox = css`
-    display: flex;
+    display:  flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
-    width: 100%;
+    width: 300px;
+
     & > input {
-        margin: 10px 15px 10px 5px;
-        border: 1px solid gray;
-        border-radius: 15px;
-        padding: 10px 10px 10px 15px;
-        height: 22px;
-        font-size: 18px;
+        margin: 12.5px;
+        border: 1px solid black;
+        border-radius: 5px;
+        padding: 10px;
+        width: 300px;
     }
 `;
 
 export const SAddressNumberBox = css`
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    
-    & > input {
-        margin: 10px 5px 10px 5px;
-        border: 1px solid gray;
-        border-radius: 15px;
-        padding: 10px 10px 10px 15px;
-        height: 22px;
-        font-size: 18px;
 
-        width: 100%;
+    margin-bottom: 12.5px;
+    width: 300px;
+
+    & > input {
+        border-radius: 5px;
+        border: 1px solid black;
+        padding: 10px 0px 10px 10px;
+        width: 200px;
     }
 `; 
 
 export const SAddressButtonBox = css`
-    padding-right: 15px;
+    margin-left: 15px;
 
     & > button {
-        border: none;
-        border-radius: 15px;
-        width: 100px;
-        height: 44px;
-        background-color: darkgray;
-        cursor: pointer;
+        
+        :hover {
+        background-color: #ffff;
+        opacity: 60%;
+        }
     }
 `;
 
+
 export const SSignupButton = css`
-    margin: 30px 15px 50px;
-    border: none;
+    margin: 30px 15px;
     border-radius: 50px;
     padding: 15px 15px;
     width: 200px;
 
-    text-align: center;
     font-size: 20px;
-    font-weight: bold;
-    background-color: #333;
     color: #f9fbff;
-    cursor: pointer;
+    background-color: #333;
 
     &:hover {
-        background-color: #2b64fb;
         color: #f9fbff;
-        font-weight: bold;
+        background-color: #2b64fb;
     }
 `;
 
 export const SCencelButton = css`
-    margin: 30px 15px 50px;
-    border: 1px solid red;
+    margin: 30px 15px;
     border-radius: 50px;
     padding: 15px 15px;
     width: 200px;
 
-    text-align: center;
     font-size: 20px;
-    font-weight: bold;
     color: black;
     background-color: white;
-    cursor: pointer;
 
     &:hover {
-        color: red;
-        font-weight: bold;
+        background-color: #ffff;
+        opacity: 60%;
     }
 `;
 

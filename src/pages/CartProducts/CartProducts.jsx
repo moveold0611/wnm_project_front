@@ -134,63 +134,72 @@ function CartProducts(props) {
 
     return (
         <RootContainer>
+            <div css={S.SLayout}>
             <div css={S.SContainer}>
-                <h2>Cart</h2>
-                <table>
-                    <thead>
-                        <tr css={S.SCartThBox}>
-                            <th>선택</th>
-                            <th>이미지</th>
-                            <th>상품명</th>
-                            <th>사이즈</th>
-                            <th>판매가</th>
-                            <th>수량</th>
-                            <th>삭제</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {cartProducts?.map((cartProduct, index) => (
-                            <tr key={index} css={S.SCartTdBox}>
-                                <td>
-                                    <input type="checkBox" onChange={(e) => handleCheckOnChange(cartProduct.cartId, e.target.checked)} />
-                                </td>
-                                <td>
-                                    <img css={S.SProductImg} src={cartProducts?.filter(p => p.productDtlId === cartProduct.productDtlId)[0]?.productDtl?.productMst?.productThumbnailUrl} />
-                                </td>
-                                <td>{cartProduct.productDtl.productMst.productName}</td>
-                                <td>{cartProduct.productDtl.size.sizeName}</td>
-                                <td>{cartProduct.productDtl.price * parseInt(cartProduct.count)}</td>
-                                <td>{cartProduct.count}</td>
-                                <td>
-                                    <button onClick={() => handleDeleteProductOnClick(index)}>X</button>
-                                </td>
+                <div css={S.STopTitle}>
+                    <h2>Cart</h2>
+                </div>
+                <div css={S.STableBox}>
+                    <table css={S.STable}>
+                        <thead>
+                            <tr css={S.SThBox}>
+                                <th>선택</th>
+                                <th>이미지</th>
+                                <th>상품명</th>
+                                <th>사이즈</th>
+                                <th>판매가</th>
+                                <th>수량</th>
+                                <th>삭제</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {cartProducts?.map((cartProduct, index) => (
+                                <tr key={index} css={S.STdBox}>
+                                    <td>
+                                        <input type="checkBox" onChange={(e) => handleCheckOnChange(cartProduct.cartId, e.target.checked)} />
+                                    </td>
+                                    <td>
+                                        <img css={S.SProductImg} src={cartProducts?.filter(p => p.productDtlId === cartProduct.productDtlId)[0]?.productDtl?.productMst?.productThumbnailUrl} />
+                                    </td>
+                                    <td>{cartProduct.productDtl.productMst.productName}</td>
+                                    <td>{cartProduct.productDtl.size.sizeName}</td>
+                                    <td>{cartProduct.productDtl.price * parseInt(cartProduct.count)}</td>
+                                    <td>{cartProduct.count}</td>
+                                    <td>
+                                        <button onClick={() => handleDeleteProductOnClick(index)}>X</button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div css={S.SPriceTableBox}>
+                    <table css={S.SPriceTable}>
+                        <thead>
+                            <tr css={S.SPriceThBox}>
+                                <th>총 상품 금액</th>
+                                <th>총 배송비</th>
+                                <th>선택 상품 <br/> 결제 예정 금액</th>
+                                <th>전체 상품 <br/> 결제 예정 금액</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr css={S.SPriceTdBox}>
+                                <td>{priceInfo.cartPricetotal?.toLocaleString("ko-KR")}원</td>
+                                <td> + {priceInfo.shippingCost?.toLocaleString("ko-KR")}원</td>
+                                <td>{priceInfo.selectPrice?.toLocaleString("ko-KR")}원</td>
+                                <td>{priceInfo.finalPrice?.toLocaleString("ko-KR")}원</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-                <table css={S.SPriceTable}>
-                    <thead>
-                        <tr css={S.SPriceThBox}>
-                            <th>총 상품 금액</th>
-                            <th>총 배송비</th>
-                            <th>선택 상품 <br/> 결제 예정 금액</th>
-                            <th>전체 상품 <br/> 결제 예정 금액</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr css={S.SPriceTdBox}>
-                            <td>{priceInfo.cartPricetotal?.toLocaleString("ko-KR")}원</td>
-                            <td> + {priceInfo.shippingCost?.toLocaleString("ko-KR")}원</td>
-                            <td>{priceInfo.selectPrice?.toLocaleString("ko-KR")}원</td>
-                            <td>{priceInfo.finalPrice?.toLocaleString("ko-KR")}원</td>
-                        </tr>
-                    </tbody>
-                </table>
                 <div css={S.SButtonBox}>
                     <button  css={S.SShowpingButton} onClick={handleShowpingOnClick}>계속 쇼핑</button>
                     <button css={S.SBuyButton} onClick={handleBuyOnClick}>선택 상품 주문</button>
                 </div>
+            </div>
             </div>
         </RootContainer>
     );
