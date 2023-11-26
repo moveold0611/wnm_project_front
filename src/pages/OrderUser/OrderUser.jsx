@@ -110,8 +110,10 @@ function OrderUser(props) {
                                     <td>
                                         {data.orderStatus === 0 && "배송 준비"}
                                         {data.orderStatus === 1 && "배송 중"}
-                                        {data.orderStatus === 2 && "배송 완료"}
-                                        {data.orderStatus === 2 && <button onClick={() => handleconfirmationOnClick(data)}>배송 확정</button>}
+                                        <div css={S.SReviewBox}>
+                                            {data.orderStatus === 2 && "배송 완료"}
+                                            {data.orderStatus === 2 && <button onClick={() => handleconfirmationOnClick(data)}>배송 확정</button>}
+                                        </div>
                                         {data.orderStatus === 3 && "구매 확정"} 
                                     </td>
                                     <td>

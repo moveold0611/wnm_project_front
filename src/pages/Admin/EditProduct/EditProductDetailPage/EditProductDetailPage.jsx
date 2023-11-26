@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
 import { getProductsApi, updateProductApi } from '../../../../apis/api/product';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -33,7 +33,10 @@ function EditProductDetailPage(props) {
         pageIndex: 1}
     const [ productData, setProductData ] = useState({});
 
-    
+
+    const productThumnailImgRef = useRef();
+    const productDetailImgRef = useRef();
+
     let productMinimumData = [];
     useEffect(() => {
         if(principal?.data?.data.roleName !== "ROLE_ADMIN" || !principal?.data) {
@@ -108,6 +111,14 @@ function EditProductDetailPage(props) {
     }
 
 
+    const handleProductDetailImgUploadClick = () => {
+        productDetailImgRef.current.click();
+    }
+
+    const handleProductThumnailImgUploadClick = () => {
+            productThumnailImgRef.current.click();
+    }
+    
     const handleProductDataOnChange = (e) => {
         setProductData({
             ...productData,
@@ -176,8 +187,9 @@ function EditProductDetailPage(props) {
                             <img src={productThumbnailSrc} alt='상품 메인 이미지' onChange={handleProductDataOnChange}/>
                         </div>
                         <div css={S.SButtonBox}>
-                            <input type="file" id="productThumbnailUrl" onChange={handleThumbnailChange} css={S.SFile}/>
-                            <label htmlFor="productThumbnailUrl" >메인 이미지 수정 파일 업로드</label>
+
+                            <input type="file" css={S.SFile} ref={productThumnailImgRef} onChange={handleThumbnailChange}/>
+                            <button onClick={handleProductThumnailImgUploadClick}>메인 이미지 수정 파일 업로드</button>
                         </div>
                         <div>
                             <h1 css={S.SH1}>상품 상세 이미지 수정</h1>
@@ -186,8 +198,9 @@ function EditProductDetailPage(props) {
                             <img src={productDetailImgSrc} alt='상품 상세 이미지' width={'700px'} onChange={handleProductDataOnChange}/>
                         </div>
                         <div css={S.SButtonBox}>
-                            <input type="file" id="productDetailUrl" onChange={handleDetailImgChange} css={S.SFile} />
-                            <label htmlFor="productDetailUrl">상세 이미지 수정 파일 업로드</label>
+
+                            <input type="file" css={S.SFile} onChange={handleDetailImgChange} ref={productDetailImgRef}/>
+                            <button onClick={handleProductDetailImgUploadClick}>상세 이미지 수정 파일 업로드</button>
                         </div>
                         <div>
                             <h1 css={S.SH1}>상품 정보 수정</h1>

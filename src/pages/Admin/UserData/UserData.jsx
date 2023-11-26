@@ -76,6 +76,12 @@ function UserData(props) {
         getUserData.refetch();
     }
 
+    const handleOnKeyPress = (e) => {
+        if(e.key === 'Enter') {
+            handleSearchOnClick();
+        }
+    }
+
     const handleUserDeleteOnClick = async (userId) => {
         try {
             if(window.confirm("선택하신 회원님을 삭제시키겠습니까?")) {
@@ -114,7 +120,7 @@ function UserData(props) {
                         })}
 
                     </select>
-                    <input type="text" name={searchOption} onChange={handleSearchInputOnChange}/>
+                    <input type="text" name={searchOption} onKeyDown={handleOnKeyPress} onChange={handleSearchInputOnChange}/>
                     <button onClick={handleSearchOnClick}>검색</button>
                 </div>
                 <div css={S.STableBox}>

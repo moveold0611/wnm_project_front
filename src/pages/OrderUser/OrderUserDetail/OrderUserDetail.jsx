@@ -18,6 +18,7 @@ function OrderUserDetail(props) {
     const [ selectedProduct, setSelectedProduct ] = useState(null); 
     const modalBackground = useRef();
     
+    
     let price = 0;
 
     const getOrderDtl = useQuery(["getOrderDtl"], async () => {
@@ -42,7 +43,10 @@ function OrderUserDetail(props) {
         })
         setTotalPrice(price)
         }
-    }) 
+    })
+
+    const condition = getOrderDtl?.data?.data.orderStatus === 2;
+
 
     const handleUsersOrdersOnClick = () => {
         navigate(-1)
@@ -138,11 +142,17 @@ function OrderUserDetail(props) {
                                 </td>
                                 <td>
                                     <div css={S.SBtnWrapper}>
-                                        <button onClick={() => {
-                                                setModalOpen(true);
-                                                setSelectedProduct(data);
+                                    <button
+                                        disabled={!condition}
+                                        onClick={() => {
+                                            if (condition) {
+                                            setModalOpen(true);
+                                            setSelectedProduct(data);
                                             }
-                                        }>리뷰쓰기</button>
+                                        }}
+                                        >
+                                        리뷰쓰기
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
