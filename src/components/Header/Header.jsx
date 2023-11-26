@@ -86,14 +86,12 @@ function Header(props) {
                 </div>
                 <ul css={S.SMenuBox}>
                     {menus.map((menu, index) => (
-                        <>
                             <li key={index} css={S.SFullMenuBox}
                                 onClick={() => handleMenuClick(menu.name)}
                                 onMouseEnter={(e) => {handleSubMenuMouseEnter(menu)}} 
                                 onMouseLeave={handleSubMenuMouseLeave}>
                                 <h3>{menu.name}</h3>
                             </li>
-                        </>
                     ))}
                     <ul css={() => S.SSubMenuBox(isSubMenu && !!selectedMenu)}
                         onMouseEnter={(e) => {setIsSubMenu(true)}} 

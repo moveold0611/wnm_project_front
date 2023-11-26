@@ -61,11 +61,12 @@ const PageNation = ({products, searchData, setSearchData, }) => {
                 {"<"}
             </button>
             
-            {totalPages.map(page => (
+            {totalPages.map((page, index) => (
                 <button 
                     css={selectedPage === page ? S.selectedPageButton : S.PageButton}
                     name="pageIndex"
-                    onClick={() => handlePageClick(page)}>
+                    onClick={() => handlePageClick(page)}
+                    key={index}>
                     {page}
                 </button>
             ))}

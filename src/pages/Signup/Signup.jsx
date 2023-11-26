@@ -92,8 +92,8 @@ function Signup(props) {
             alert("회원가입 완료");
             window.location.replace("/auth/signin");
         }catch(error) {
-                console.error(error);
-                }
+            alert("회원가입 중 오류가 발생하였습니다.")
+        }
     }
 
     const handleCancelOnClick = () => {
