@@ -101,6 +101,12 @@ function AdminOrder(props) {
         getOrders.refetch()
     }
 
+    const handleOnKeyPress = (e) => {
+        if(e.key === 'Enter') {
+            handleSearchOrderClick();
+        }
+    }
+
     return (
         <Mypage>
             <div css={S.SContainer}>
@@ -118,7 +124,7 @@ function AdminOrder(props) {
                             return <option key={sort.value} value={sort.value} label={sort.value}></option>
                         })}
                     </select>
-                    <input type="text" name='searchValue' onChange={handleSearchDataChange}/>
+                    <input type="text" name='searchValue' onKeyDown={handleOnKeyPress} onChange={handleSearchDataChange}/>
                     <button onClick={handleSearchOrderClick}>검색</button>
                 </div>
                 <div css={S.STableBox}>

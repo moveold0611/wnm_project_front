@@ -16,7 +16,7 @@ function Header(props) {
     
     const menus = [
         { name: 'Dog', subMenus: ['HomeLiving', 'Movement', 'Fashion', 'Toy', 'Walk'] },
-        { name: 'Customer Service', subMenus: ['Notice', 'FAQ'] },
+        { name: 'Customer Service', subMenus: ['Notice'] },
         { name: 'Cat', subMenus: ['HomeLiving', 'Movement', 'Toy', 'Accessories'] }
     ];
 
@@ -70,7 +70,6 @@ function Header(props) {
             },
             CustomerService: {
                 Notice: '/notice',
-                FAQ: '/faq',
             },
         };
         
@@ -85,7 +84,7 @@ function Header(props) {
                     <img src={logo} onClick={handleLogoOnClick}/>
                 </div>
                 <ul css={S.SMenuBox}>
-                    {menus.map((menu, index) => (
+                    {menus?.map((menu, index) => (
                         <>
                             <li key={index} css={S.SFullMenuBox}
                                 onClick={() => handleMenuClick(menu.name)}
@@ -98,7 +97,7 @@ function Header(props) {
                     <ul css={() => S.SSubMenuBox(isSubMenu && !!selectedMenu)}
                         onMouseEnter={(e) => {setIsSubMenu(true)}} 
                         onMouseLeave={handleSubMenuMouseLeave}>
-                        {selectedMenu?.subMenus.map((subMenu, subIndex) => (
+                        {selectedMenu?.subMenus?.map((subMenu, subIndex) => (
                             <li key={subIndex}>
                                 <h3 onClick={() => handleSubMenuClick(selectedMenu.name, subMenu)}>{subMenu}</h3>
                             </li>

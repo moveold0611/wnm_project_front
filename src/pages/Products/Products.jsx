@@ -63,6 +63,12 @@ function Products(props) {
         setSearchValue(e.target.value);
     }
 
+    const handleOnKeyPress = (e) => {
+        if(e.key === 'Enter') {
+            handleSearchButtonClick();
+        }
+    }
+
     const handleSearchButtonClick = () => {
         setSearchData({
             ...searchData,
@@ -87,7 +93,7 @@ function Products(props) {
                                     return <option name='sortOption' key={option.label} value={option.value}>{option.label}</option>
                                 })}
                         </select> 
-                        <input type="text" name='value' onChange={handleSearchValueChange} value={searchValue}/>
+                        <input type="text" name='value' onKeyDown={handleOnKeyPress} onChange={handleSearchValueChange} value={searchValue}/>
                         <button onClick={handleSearchButtonClick}>검색</button>
                     </div>
                 </div>

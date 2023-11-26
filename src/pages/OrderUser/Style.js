@@ -57,6 +57,16 @@ export const STdBox = css`
     }
 `;
 
+export const SReviewBox = css`
+    display: flex;
+    flex-direction: column;
+
+    & > button {
+        padding: 5px;
+        margin-top: 10px;
+    }
+`;
+
 export const SProductImg = css`
     width: 100px;
 `;
