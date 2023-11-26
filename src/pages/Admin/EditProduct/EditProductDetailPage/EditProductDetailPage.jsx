@@ -33,11 +33,11 @@ function EditProductDetailPage(props) {
         pageIndex: 1}
     const [ productData, setProductData ] = useState({});
 
+
     const productThumnailImgRef = useRef();
     const productDetailImgRef = useRef();
 
     let productMinimumData = [];
-
     useEffect(() => {
         if(principal?.data?.data.roleName !== "ROLE_ADMIN" || !principal?.data) {
             alert("정상적인 접근이 아닙니다.")
@@ -187,6 +187,7 @@ function EditProductDetailPage(props) {
                             <img src={productThumbnailSrc} alt='상품 메인 이미지' onChange={handleProductDataOnChange}/>
                         </div>
                         <div css={S.SButtonBox}>
+
                             <input type="file" css={S.SFile} ref={productThumnailImgRef} onChange={handleThumbnailChange}/>
                             <button onClick={handleProductThumnailImgUploadClick}>메인 이미지 수정 파일 업로드</button>
                         </div>
@@ -197,6 +198,7 @@ function EditProductDetailPage(props) {
                             <img src={productDetailImgSrc} alt='상품 상세 이미지' width={'700px'} onChange={handleProductDataOnChange}/>
                         </div>
                         <div css={S.SButtonBox}>
+
                             <input type="file" css={S.SFile} onChange={handleDetailImgChange} ref={productDetailImgRef}/>
                             <button onClick={handleProductDetailImgUploadClick}>상세 이미지 수정 파일 업로드</button>
                         </div>

@@ -20,6 +20,8 @@ function Products(props) {
         {value: "highprice", label: "높은가격순"}
     ]
 
+
+
     const [ searchData, setSearchData ] = useState({
         petTypeName: type,
         productCategoryName: !!category ? category : 'all',
@@ -40,6 +42,7 @@ function Products(props) {
         retry: 0,
         refetchOnWindowFocus: false,
         onSuccess: response => {
+            console.log(response?.data)
             setProducts(response?.data)
         }
     })
@@ -98,14 +101,14 @@ function Products(props) {
                     </div>
                 </div>
                 <div css={S.SProductContainer}>
-                    {!getProducts.isLoading && getProducts?.data?.data.map((product, index) => {
+                    {!getProducts.isLoading && getProducts?.data?.data.map((product) => {
                         return  <div css={S.SProductBox} key={product.productMstId} >
                                     <ul>
                                         <li onClick={handleProductOnclick}>
                                             <img id={product.productMstId} src={product.productThumbnailUrl} alt="" />
                                             <h3>{product.productName}</h3>
                                             <p>
-                                                가격 : {product.minPrice === "" && product.maxPrice === "" ? "품절" : product.minPrice?.slice(4, product.minPrice.lastIndexOf())}
+                                                가격 : {product.tempStock === 0 ? "품절" : product.minPrice?.slice(4, product.minPrice.lastIndexOf())}
                                             </p>
                                         </li>
                                     </ul>

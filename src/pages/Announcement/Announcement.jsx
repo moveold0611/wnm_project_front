@@ -37,7 +37,7 @@ function Announcement(props) {
                 <ul css={S.SAnnouncementsBox}>
                     <li>1231234</li>
                     {!getAnnouncements.isLoading && announcemensList.map(ann => {
-                        return <li>
+                        return <li key={ann?.announcement_id}>
                                     <div css={S.SAnnouncement}>
                                         <div class='id'>
                                             {ann?.announcement_id}

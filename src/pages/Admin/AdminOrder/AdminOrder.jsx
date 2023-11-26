@@ -41,6 +41,8 @@ function AdminOrder(props) {
         { value: 3, label:"구매확정" }
     ]
 
+    console.log(searchData)
+
     useEffect(() => {
         if(principal?.data?.data.roleName !== "ROLE_ADMIN" || !principal?.data) {
             alert("정상적인 접근이 아닙니다.")
@@ -61,7 +63,8 @@ function AdminOrder(props) {
         }
     },{
         retry: 0,
-        refetchOnWindowFocus: false
+        refetchOnWindowFocus: false,
+        onSuccess: response => console.log(response?.data)
     })
 
     if(getOrders.isLoading) {
