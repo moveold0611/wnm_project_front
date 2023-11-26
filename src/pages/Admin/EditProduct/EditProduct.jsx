@@ -84,6 +84,12 @@ function EditProduct(props) {
         getProducts.refetch();
     }
 
+    const handleOnKeyPress = (e) => {
+        if(e.key === 'Enter') {
+            handleSearchClick();
+        }
+    }
+
     const handleSearchSelectChange = (e) => {
         setSearchData({
             ...searchData,
@@ -150,7 +156,7 @@ function EditProduct(props) {
                         })}
                     </select>
 
-                    <input type='text' value={searchInput} onChange={handleSearchInputChange}/>
+                    <input type='text' value={searchInput} onKeyDown={handleOnKeyPress} onChange={handleSearchInputChange}/>
                     <button onClick={handleSearchClick}>검색</button>
                 </div>
                 <div css={S.STableBox}>
