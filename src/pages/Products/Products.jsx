@@ -7,22 +7,19 @@ import RootContainer from '../../components/RootContainer/RootContainer';
 import { useNavigate, useParams } from 'react-router-dom';
 import PageNation from '../../utils/PageNation/PageNation';
 
-function Products(props) {
+function Products({ location }) {
 
     const navigate = useNavigate();
-    const itemCount = 12;
     const { type, category } = useParams();
     const [ searchValue, setSearchValue ] = useState("");
     const [ products, setProducts ] = useState();
-    const [ count, setCount ] = useState();
+    const [ count, setCount ] = useState(0);
 
     const sortOptions = [
         {value: "name", label: "상품명"},
         {value: "lowprice", label: "낮은가격순"},
         {value: "highprice", label: "높은가격순"}
     ]
-
-
 
     const [ searchData, setSearchData ] = useState({
         petTypeName: type,
@@ -44,15 +41,13 @@ function Products(props) {
         retry: 0,
         refetchOnWindowFocus: false,
         onSuccess: response => {
-            console.log(response?.data)
             setProducts(response?.data)
         }
     })
 
-    const getProductsPagenation = useQuery(["getProductsPageNation"], async () => {
+    const getProductsPagenation = useQuery(["getProductsPageNation", searchData], async () => {
         try {
             const response = getProductsCountApi(searchData);
-            console.log(response)
             return response;
         } catch (error) {
             console.error("Error in getProductsCountApi:", error);
@@ -75,6 +70,18 @@ function Products(props) {
             searchValue: ""
         })
     }, [type, category])
+
+    
+    useEffect(() => {
+        setSearchData({
+            ...searchData,
+            pageIndex: 1
+        })
+    }, [searchData?.searchValue])
+
+    useEffect(() => {
+
+    }, [location]) 
 
     const handleSortOptionChange = (e) => {
         searchData.sortOption = e.target.value
@@ -135,7 +142,7 @@ function Products(props) {
                     })}
                 </div>
                 <div>
-                    <PageNation showCount={itemCount} totalItemCount={count} propsData={searchData} setPropsData={setSearchData} />
+                    <PageNation showCount={12} totalItemCount={count} searchData={searchData} setSearchData={setSearchData} />
                 </div>
             </div>
         </RootContainer>

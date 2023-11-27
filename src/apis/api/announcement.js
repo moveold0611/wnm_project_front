@@ -9,6 +9,10 @@ export const getAnnouncementsApi = async () => {
     const response = await instance.get(`/api/announcement/all`);
     return response;
 }
+export const getAnnouncementsCountApi = async () => {
+    const response = await instance.get(`/api/announcement/count`);
+    return response;
+}
 
 export const getAnnouncementByIdApi = async (announcementId) => {
     const response = await instance.get(`/api/announcement/${announcementId}`);
@@ -16,6 +20,7 @@ export const getAnnouncementByIdApi = async (announcementId) => {
 }
 
 export const editAnnouncementApi = async (announcementId, announcementData, option) => {
+    console.log(announcementId)
     const response = await instance.put(`/api/admin/announcement/${announcementId}`, announcementData, option)
     return response;
 }

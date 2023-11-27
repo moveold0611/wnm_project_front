@@ -3,10 +3,12 @@ import React, { useEffect, useState } from 'react';
 import * as S from './Style';
 import Mypage from '../../Mypage/Mypage';
 import { useQuery, useQueryClient } from 'react-query';
-import { deleteAdminToUserApi, getUsersApi } from '../../../apis/api/user';
+import { deleteAdminToUserApi, getUserCountApi, getUsersApi } from '../../../apis/api/user';
 import { useNavigate } from 'react-router-dom';
+import PageNation from '../../../utils/PageNation/PageNation';
 
 function UserData(props) {
+
     const navigate = useNavigate();
 
     const queryClient = useQueryClient();
@@ -17,8 +19,8 @@ function UserData(props) {
         searchOption: "all",
         searchValue: "",
     })
-
     const [ searchInput, setSearchInput ] = useState('');
+    const [ userCount, setUserCount ] = useState();
 
     const searchOption = [
         {value: "전체"},
@@ -33,7 +35,7 @@ function UserData(props) {
         }
     }, [])
 
-    const getUserData = useQuery(["getUserData"], async () => {
+    const getUserData = useQuery(["getUserData", searchData], async () => {
         try {
             const option = {
                 headers: {
@@ -52,7 +54,25 @@ function UserData(props) {
         }
     });
 
-
+    const getUserCount = useQuery(["getUserCount"], async () => {
+        try {
+            const option = {
+                headers: {
+                    Authorization: localStorage.getItem("accessToken")
+                }
+            }
+            const response = await getUserCountApi(option)
+            return response;
+        } catch (error) {
+            
+        }
+    },{
+        refetchOnWindowFocus: false,
+        retry: 0,
+        onSuccess: response => {
+            setUserCount(response?.data)
+        }
+    })
 
     useEffect(() => {
         setSearchData({
@@ -160,6 +180,7 @@ function UserData(props) {
                         </tbody>
                     </table>
                 </div>
+                <PageNation showCount={10} totalItemCount={userCount} searchData={searchData} setSearchData={setSearchData}/>
             </div>
         </Mypage>
     );

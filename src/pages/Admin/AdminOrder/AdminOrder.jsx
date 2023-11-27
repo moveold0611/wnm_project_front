@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 /** @jsxImportSource @emotion/react */
 import * as S from './Style';
-import { getOrdersForAdmin, updateOrderStatus } from '../../../apis/api/order';
+import { getOrderCountApi, getOrdersForAdmin, updateOrderStatus } from '../../../apis/api/order';
 import { useQuery, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import Mypage from '../../Mypage/Mypage';
 import PageNation from '../../../utils/PageNation/PageNation';
 
 function AdminOrder(props) {
-    const showCount = 10;
     const queryClient = useQueryClient();
     const principal = queryClient.getQueryState("getPrincipal");
     const option = {
@@ -18,6 +17,7 @@ function AdminOrder(props) {
     }
     const navigate = useNavigate()
     const [ orderData, setOrderData ] = useState();
+    const [ orderCount, setOrderCount ] = useState();
     const [ orderStatus, setOrderStatus ] = useState(0)
     const [ searchData, setSearchData ] = useState({
         searchOption: "all",
@@ -25,14 +25,14 @@ function AdminOrder(props) {
         sortOption: "",
         pageIndex: 1
     });
-    const [ orderCount, setOrderCount ] = useState();
 
     const searchOption = [
         {value: "받는사람"},
         {value: "전화번호"},
         {value: "주소"},
         {value: "유저번호"},
-        {value: "주문번호"}
+        {value: "주문번호"},
+        {value: "배송상태"}
     ]
     const sortOption = [
         {value: "일자내림차순"},
@@ -45,8 +45,6 @@ function AdminOrder(props) {
         { value: 3, label:"구매확정" }
     ]
 
-    console.log(searchData)
-
     useEffect(() => {
         if(principal?.data?.data.roleName !== "ROLE_ADMIN" || !principal?.data) {
             alert("정상적인 접근이 아닙니다.")
@@ -54,7 +52,7 @@ function AdminOrder(props) {
         }
     }, [])
 
-    const getOrders = useQuery(["getOrders"], async () => {
+    const getOrders = useQuery(["getOrders", searchData], async () => {
         try {
             const option = {
                 headers: {
@@ -73,15 +71,14 @@ function AdminOrder(props) {
         }
     })
 
-
-    const getOrderCount = useQuery(["getOrderCount"], async () => {
+    const getOrdersCount = useQuery(["getOrdersCount", searchData], async () => {
         try {
             const option = {
                 headers: {
                     Authorization: localStorage.getItem("accessToken")
                 }
             }
-            return await getOrderCount(option);
+            return await getOrderCountApi(searchData, option);
         } catch (error) {
             alert(error.response.data)
         }
@@ -89,16 +86,9 @@ function AdminOrder(props) {
         retry: 0,
         refetchOnWindowFocus: false,
         onSuccess: response => {
-            setOrderCount(response)
+            setOrderCount(response?.data)
         }
     })
-
-    
-    console.log(orderCount)
-
-    if(getOrders.isLoading) {
-        return <></>
-    }
 
     const handleSearchDataChange = (e) => {
         setSearchData({
@@ -215,7 +205,7 @@ function AdminOrder(props) {
                         </tbody>
                     </table>
                 </div>
-                <PageNation showCount={showCount} totalItemCount={orderCount} propsData={orderData} setPropsData={setOrderData} />
+                <PageNation showCount={10} totalItemCount={orderCount} searchData={searchData} setSearchData={setSearchData} />
             </div>
         </Mypage>
     );

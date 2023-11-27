@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from 'react';
 /** @jsxImportSource @emotion/react */
 import * as S from './Style';
-import { getProductsApi, removeProductApi } from '../../../apis/api/product';
+import { getProductsApi, getProductsCountApi, removeProductApi } from '../../../apis/api/product';
 import { useQuery, useQueryClient } from 'react-query';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Mypage from '../../Mypage/Mypage';
 import PageNation from '../../../utils/PageNation/PageNation';
 
 
 function EditProduct(props) {
+
     const queryClient = useQueryClient();
     const principal = queryClient.getQueryState("getPrincipal");
     const navigate = useNavigate();
     const [ productList, setProductList ] = useState([]);
+    const [ productCount, setProductCount ] = useState();
     const [ searchInput, setSearchInput ] = useState('');
     const [ searchData, setSearchData ] = useState({
         petTypeName: "all",
@@ -60,7 +62,7 @@ function EditProduct(props) {
         })
     }, [searchInput])
 
-    const getProducts = useQuery(["getProducts", searchData.pageIndex], async () => {
+    const getProducts = useQuery(["getProducts", searchData?.pageIndex], async () => {
         const response = await getProductsApi(searchData);
         return response;
     },
@@ -70,6 +72,22 @@ function EditProduct(props) {
         onSuccess: response => {
             setProductList(response?.data)}
     });
+
+    const getProductCount = useQuery(["getProductCount"], async () => {
+        try {
+            const response = getProductsCountApi(searchData);
+            return response;
+
+        } catch (error) {
+            alert(error.message)
+        }
+    },{
+        refetchOnWindowFocus: false,
+        retry: 0,
+        onSuccess: response => {
+            setProductCount(response?.data)
+        }
+    }) 
 
     if(getProducts.isLoading) {
         return <></>
@@ -126,7 +144,7 @@ function EditProduct(props) {
     }
 
 
-    
+    console.log("상품 페이지", searchData.productCategoryName)
 
     return (
         <Mypage>
@@ -138,22 +156,22 @@ function EditProduct(props) {
                     <button onClick={() => { navigate("/admin/incoming")}}>입고 관리</button>
                     <button onClick={() => { navigate("/admin/outgoing")}}>출고 관리</button>
                     <select option={petType} onChange={handleSearchSelectChange} name='petTypeName'>
-                        {petType.map(pt => {
+                        {petType?.map(pt => {
                             return <option key={pt.value} label={pt.label} value={pt.value} />
                         })}
                     </select>
                     <select option={category} onChange={handleSearchSelectChange} name='productCategoryName'>
-                        {category.map(ct => {
+                        {category?.map(ct => {
                             return <option key={ct.value} label={ct.label} value={ct.value}/>
                         })}
                     </select>
                     <select option={sortOption} onChange={handleSearchSelectChange} name='sortOption'>
-                        {sortOption.map(so => {
+                        {sortOption?.map(so => {
                             return <option key={so.value}  label={so.label} value={so.value}/>
                         })}
                     </select>
                     <select option={searchOption} onChange={handleSearchSelectChange} name='searchOption'>
-                        {searchOption.map(op => {
+                        {searchOption?.map(op => {
                             return <option key={op.value} label={op.label} value={op.value}/>
                         })}
                     </select>
@@ -176,7 +194,7 @@ function EditProduct(props) {
                             </tr>
                         </thead>
                         <tbody>
-                            {productList.map(product => {
+                            {productList?.map(product => {
                                 return <tr key={product.productMstId} css={S.STdBox}>
                                     <td>{product.productMstId}</td>
                                     <td>
@@ -200,6 +218,7 @@ function EditProduct(props) {
                     </table>
                 </div>
                 <div css={S.SPageButtonBox}>
+                    <PageNation showCount={10} totalItemCount={productCount} searchData={searchData} setSearchData={setSearchData}  />
                 </div>
             </div>
         </Mypage>

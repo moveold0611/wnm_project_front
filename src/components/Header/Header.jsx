@@ -12,7 +12,7 @@ function Header(props) {
     const principal = queryClient.getQueryState("getPrincipal");
     const [ isSubMenu, setIsSubMenu ] = useState(false);
     const [ selectedMenu, setSelectedMenu ] = useState(null);
-    
+
     const menus = [
         { name: 'Dog', subMenus: ['HomeLiving', 'Movement', 'Fashion', 'Toy', 'Walk'] },
         { name: 'CustomerService', subMenus: ['Notice'] },
@@ -49,7 +49,7 @@ function Header(props) {
         }
 
         const path = pathMap[menuName];
-            navigate(path);
+            window.location.replace(path);
     }
 
     const handleSubMenuClick = (menuName, subMenu) => {
