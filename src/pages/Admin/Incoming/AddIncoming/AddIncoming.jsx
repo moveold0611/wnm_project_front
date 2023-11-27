@@ -10,8 +10,8 @@ function AddIncoming(props) {
     const queryClient = useQueryClient();
     const principal = queryClient.getQueryState("getPrincipal");
     const navigate = useNavigate();
-    const [ productDtlId, setProductDtlId ] = useState(); 
-    const [ count, setCount ] = useState(); 
+    const [ productDtlId, setProductDtlId ] = useState(""); 
+    const [ count, setCount ] = useState(""); 
 
     useEffect(() => {
         if(principal?.data?.data.roleName !== "ROLE_ADMIN" || !principal?.data) {
@@ -27,7 +27,7 @@ function AddIncoming(props) {
                     Authorization: localStorage.getItem("accessToken")
                 }
             }
-            const response = await addIncoming(productDtlId, count, option);
+            const response = await addIncoming(parseInt(productDtlId), parseInt(count), option);
         } catch (error) {
             console.log(error.response.data)
         }
@@ -35,9 +35,9 @@ function AddIncoming(props) {
 
     const handleInputChange = (e) => {
         if(e.target.name === "count") {
-            setCount(parseInt(e.target.value))
+            setCount(e.target.value)
         }else {
-            setProductDtlId(parseInt(e.target.value))
+            setProductDtlId(e.target.value)
         }
     }
 

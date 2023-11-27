@@ -1,4 +1,3 @@
-import { async } from "q";
 import instance from "../config/instance"
 
 export const writeAnnouncementApi = async (data, option) => {
@@ -7,11 +6,21 @@ export const writeAnnouncementApi = async (data, option) => {
 }
 
 export const getAnnouncementsApi = async () => {
-    const response = await instance.get(`/api/allannouncement`);
+    const response = await instance.get(`/api/announcement/all`);
     return response;
 }
 
 export const getAnnouncementByIdApi = async (announcementId) => {
     const response = await instance.get(`/api/announcement/${announcementId}`);
+    return response;
+}
+
+export const editAnnouncementApi = async (announcementId, announcementData, option) => {
+    const response = await instance.put(`/api/admin/announcement/${announcementId}`, announcementData, option)
+    return response;
+}
+
+export const deleteAnnouncementApi = async (announcementId, option) => {
+    const response = await instance.delete(`/api/admin/announcement/${announcementId}`, option)
     return response;
 }

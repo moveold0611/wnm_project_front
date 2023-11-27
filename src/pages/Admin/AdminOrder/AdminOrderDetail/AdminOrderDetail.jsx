@@ -85,116 +85,124 @@ function AdminOrderDetail(props) {
     return (
         <Mypage>
             <div css={S.SContainer}>
-                <h2>회원 주문 상세 정보</h2>
+                <div css={S.STopTitle}>
+                    <h2>회원 주문 상세 정보</h2>
+                </div>
                 <div css={S.SSubTitleBox}>
                     <h3>회원 주문 정보</h3>
                     <button onClick={handleUsersOrdersOnClick}>회원 주문 정보 리스트</button>
                 </div>
-                <table>
-                    <thead>
-                        <tr css={S.SThBox}>
-                            <th>
-                                주문 일자<br/>
-                                [주문번호]
-                            </th>
-                            <th>주문자 번호</th>
-                            <th>받는 사람</th>
-                            <th>휴대전화</th>
-                            <th>주소</th>
-                            <th>배송 상태</th>
-                            <th>배송 상태 설정</th>
-                            <th>총 결제 금액</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                            <tr key={getProduct?.data?.data[0].orderId} css={S.STdBox}>
-                                <td>
-                                    {getProduct?.data?.data[0].orderDate}<br/>
-                                    [{getProduct?.data?.data[0].orderId}]
-                                </td>
-                                <td>{getProduct?.data?.data[0].userId}</td>
-                                <td>{getProduct?.data?.data[0].shippingName}</td>
-                                <td>{getProduct?.data?.data[0].shippingPhone}</td>
-                                <td>
-                                    우편번호 :[{getProduct?.data?.data[0].shippingAddressNumber}]<br/>
-                                    {getProduct?.data?.data[0].shippingAddressName}<br/>
-                                    {getProduct?.data?.data[0].shippingAddressDetailName}
-                                </td>
-                                <td>
-                                    {getProduct?.data?.data[0].orderStatus === 0 && "배송 준비"}
-                                    {getProduct?.data?.data[0].orderStatus === 1 && "배송 중"}
-                                    {getProduct?.data?.data[0].orderStatus === 2 && "배송 완료"}
-                                    {getProduct?.data?.data[0].orderStatus === 3 && "구매 확정"}
-                                </td>
-                                <td>
-                                    <div css={S.SSettingBox}>
-                                        <select option={status} onChange={handleOrderStatusChange}>
-                                            {status.map(st => {
-                                                return <option key={st.value} value={st.value} label={st.label}></option>
-                                            })}
-                                        </select>
-                                        <button onClick={handleUpdateOrderStatusClick}>배송상태변경</button>
-                                    </div>
-                                </td>
-                                <td>
-                                    {totalPrice.toLocaleString("ko-KR")}원
-                                </td>
+                <div css={S.STableBox}>
+                    <table css={S.STable}>
+                        <thead>
+                            <tr css={S.SThBox}>
+                                <th>
+                                    주문 일자<br/>
+                                    [주문번호]
+                                </th>
+                                <th>주문자 번호</th>
+                                <th>받는 사람</th>
+                                <th>휴대전화</th>
+                                <th>주소</th>
+                                <th>배송 상태</th>
+                                <th>배송 상태 설정</th>
+                                <th>총 결제 금액</th>
                             </tr>
-                    </tbody>
-                </table>
-                <div>
+                        </thead>
+                        <tbody>
+                                <tr key={getProduct?.data?.data[0].orderId} css={S.STdBox}>
+                                    <td>
+                                        {getProduct?.data?.data[0].orderDate}<br/>
+                                        [{getProduct?.data?.data[0].orderId}]
+                                    </td>
+                                    <td>{getProduct?.data?.data[0].userId}</td>
+                                    <td>{getProduct?.data?.data[0].shippingName}</td>
+                                    <td>{getProduct?.data?.data[0].shippingPhone}</td>
+                                    <td>
+                                        우편번호 :[{getProduct?.data?.data[0].shippingAddressNumber}]<br/>
+                                        {getProduct?.data?.data[0].shippingAddressName}<br/>
+                                        {getProduct?.data?.data[0].shippingAddressDetailName}
+                                    </td>
+                                    <td>
+                                        {getProduct?.data?.data[0].orderStatus === 0 && "배송 준비"}
+                                        {getProduct?.data?.data[0].orderStatus === 1 && "배송 중"}
+                                        {getProduct?.data?.data[0].orderStatus === 2 && "배송 완료"}
+                                        {getProduct?.data?.data[0].orderStatus === 3 && "구매 확정"}
+                                    </td>
+                                    <td>
+                                        <div css={S.SSettingBox}>
+                                            <select option={status} onChange={handleOrderStatusChange}>
+                                                {status.map(st => {
+                                                    return <option key={st.value} value={st.value} label={st.label}></option>
+                                                })}
+                                            </select>
+                                            <button onClick={handleUpdateOrderStatusClick}>배송상태변경</button>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {totalPrice.toLocaleString("ko-KR")}원
+                                    </td>
+                                </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div css={S.SSubTitleBox}>
                     <h3>회원 주문 상세 정보</h3>
                 </div>
-                <table>
-                    <thead>
-                        <tr css={S.SThBox}>
-                            <th>개별 주문 번호</th>
-                            <th>상품 번호</th>
-                            <th>상품 이미지</th>
-                            <th>상품 명</th>
-                            <th>
-                                사이즈 명<br/>
-                                [사이즈 번호]
-                            </th>
-                            <th>주문 수량</th>
-                            <th>
-                                상품 가격<br/>
-                                [총 금액]
-                            </th>
-                            <th>
-                                상품 재고<br/>
-                                (실제 재고)
-                            </th>
-                            <th>
-                                상품 재고<br/>
-                                (임시 재고)
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {getProduct?.data?.data[0].getUserOrderProductsRespDtos.map(data => {
-                            return <tr key={data.orderProductsId} css={S.STdBox}>
-                                <td>{data.orderProductsId}</td>
-                                <td>{data.productDtl.productDtlId}</td>
-                                <td>
-                                    <img css={S.SImg}src={data.productDtl.productMst.productThumbnailUrl} alt="" />
-                                </td>
-                                <td>{data.productDtl.productMst.productName}</td>
-                                <td>
-                                    {data.productDtl.size.sizeName}<br/>
-                                    [{data.productDtl.size.sizeId}]
-                                </td>
-                                <td>{data.count}</td>
-                                <td>
-                                    {data.productDtl.price.toLocaleString("ko-KR")}원<br/>
-                                    [{(data.productDtl.price * data.count).toLocaleString("ko-KR")}원]
-                                </td>
-                                <td>{data.productDtl.actualStock}</td>
-                                <td>{data.productDtl.tempStock}</td>
+
+                <div css={S.STableBox}>
+                    <table css={S.STable}>
+                        <thead>
+                            <tr css={S.SThBox}>
+                                <th>개별 주문 번호</th>
+                                <th>상품 번호</th>
+                                <th>상품 이미지</th>
+                                <th>상품 명</th>
+                                <th>
+                                    사이즈 명<br/>
+                                    [사이즈 번호]
+                                </th>
+                                <th>주문 수량</th>
+                                <th>
+                                    상품 가격<br/>
+                                    [총 금액]
+                                </th>
+                                <th>
+                                    상품 재고<br/>
+                                    (실제 재고)
+                                </th>
+                                <th>
+                                    상품 재고<br/>
+                                    (임시 재고)
+                                </th>
                             </tr>
-                        })}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {getProduct?.data?.data[0].getUserOrderProductsRespDtos.map(data => {
+                                return <tr key={data.orderProductsId} css={S.STdBox}>
+                                    <td>{data.orderProductsId}</td>
+                                    <td>{data.productDtl.productDtlId}</td>
+                                    <td>
+                                        <img css={S.SImg}src={data.productDtl.productMst.productThumbnailUrl} alt="" />
+                                    </td>
+                                    <td>{data.productDtl.productMst.productName}</td>
+                                    <td>
+                                        {data.productDtl.size.sizeName}<br/>
+                                        [{data.productDtl.size.sizeId}]
+                                    </td>
+                                    <td>{data.count}</td>
+                                    <td>
+                                        {data.productDtl.price.toLocaleString("ko-KR")}원<br/>
+                                        [{(data.productDtl.price * data.count).toLocaleString("ko-KR")}원]
+                                    </td>
+                                    <td>{data.productDtl.actualStock}</td>
+                                    <td>{data.productDtl.tempStock}</td>
+                                </tr>
+                            })}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </Mypage>
     );

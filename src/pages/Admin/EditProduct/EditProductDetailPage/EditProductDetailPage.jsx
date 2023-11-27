@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
 import { getProductsApi, updateProductApi } from '../../../../apis/api/product';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -33,14 +33,18 @@ function EditProductDetailPage(props) {
         pageIndex: 1}
     const [ productData, setProductData ] = useState({});
 
-    let productMinimumData = [];
 
+    const productThumnailImgRef = useRef();
+    const productDetailImgRef = useRef();
+
+    let productMinimumData = [];
     useEffect(() => {
         if(principal?.data?.data.roleName !== "ROLE_ADMIN" || !principal?.data) {
             alert("정상적인 접근이 아닙니다.")
             navigate("/")
         }
     }, [])
+
 
     const getProduct = useQuery(["getProduct"], async () => {
         const response = await getProductsApi(searchData);
@@ -65,7 +69,6 @@ function EditProductDetailPage(props) {
                 XL: response?.data[0].XL,
                 XXL: response?.data[0].XXL,
             })
-            console.log(response?.data[0])
 
             for(let j = 0; j < response?.data.length; j++) {
                 const numbers = [parseInt(response?.data[j].no), parseInt(response?.data[j].XS), parseInt(response?.data[j].S), parseInt(response?.data[j].M), parseInt(response?.data[j].L), parseInt(response?.data[j].XL), parseInt(response?.data[j].XXL)]
@@ -99,15 +102,23 @@ function EditProductDetailPage(props) {
                     XXL: response?.data[j].XXL,
                 })
 
-                console.log(productMinimumData)
             }
     }
     })
+
     if(getProduct.isLoading) {
         return <></>
     }
 
 
+    const handleProductDetailImgUploadClick = () => {
+        productDetailImgRef.current.click();
+    }
+
+    const handleProductThumnailImgUploadClick = () => {
+            productThumnailImgRef.current.click();
+    }
+    
     const handleProductDataOnChange = (e) => {
         setProductData({
             ...productData,
@@ -157,73 +168,122 @@ function EditProductDetailPage(props) {
 
             await updateProductApi(productMstId, productData, option);
             alert("수정이 완료되었습니다.")
+            window.location.replace("/admin/product/edit")
         }catch(error) {
             console.log(error.response.data)
         }
     }
 
-console.log(productData)
-
     return (
         <Mypage>
             <div css={S.SContainer}>
-                <h2>상품 정보 수정</h2>
+                <div css={S.STopTitle}>
+                    <h2>상품 정보 수정</h2>
+                </div>
                     <div css={S.SubContainer}>
-
-                    <div css={S.SImg}>
-                        <div><h1 css={S.SH1}>상품 메인 이미지 수정</h1></div>
                         <div>
-                            <img src={productThumbnailSrc} alt='썸네일 이미지' width={'700px'} onChange={handleProductDataOnChange}/>
+                            <h1 css={S.SH1}>상품 메인 이미지 수정</h1>
+                        </div>
+                        <div css={S.SImgBox}> 
+                            <img src={productThumbnailSrc} alt='상품 메인 이미지' onChange={handleProductDataOnChange}/>
+                        </div>
+                        <div css={S.SButtonBox}>
+
+                            <input type="file" css={S.SFile} ref={productThumnailImgRef} onChange={handleThumbnailChange}/>
+                            <button onClick={handleProductThumnailImgUploadClick}>메인 이미지 수정 파일 업로드</button>
                         </div>
                         <div>
-                            <input type="file" id="productThumbnailUrl" onChange={handleThumbnailChange} css={S.SFileSelect} />
-                            <label htmlFor="productThumbnailUrl" css={S.SLabelUpload}>메인 이미지 수정 파일 업로드</label>
+                            <h1 css={S.SH1}>상품 상세 이미지 수정</h1>
+                        </div>
+                        <div css={S.SImgBox}>
+                            <img src={productDetailImgSrc} alt='상품 상세 이미지' width={'700px'} onChange={handleProductDataOnChange}/>
+                        </div>
+                        <div css={S.SButtonBox}>
+
+                            <input type="file" css={S.SFile} onChange={handleDetailImgChange} ref={productDetailImgRef}/>
+                            <button onClick={handleProductDetailImgUploadClick}>상세 이미지 수정 파일 업로드</button>
+                        </div>
+                        <div>
+                            <h1 css={S.SH1}>상품 정보 수정</h1>
                         </div>
 
-
-
-                            <div><h1 css={S.SH1}>상품 상세 이미지 수정</h1></div>
-                            <div>
-                                <img src={productDetailImgSrc} alt='상품 디테일 이미지' width={'700px'} onChange={handleProductDataOnChange}/>
+                        <div css={S.SInformation}>
+                            <div css={S.SInfoNameInput}>
+                                <h2>상품명</h2>
+                                <input type="text" 
+                                    name='productName' 
+                                    defaultValue={getProduct?.data?.data[0]?.productName} 
+                                    onChange={handleProductDataOnChange}/>
                             </div>
-                            <div>
-                                <input type="file" id="productDetailUrl" onChange={handleDetailImgChange} css={S.SFileSelect} />
-                                <label htmlFor="productDetailUrl" css={S.SLabelUpload}>상세이미지 수정 파일 업로드</label>
+                            <div css={S.SInfoTextInput}>
+                                <h2>상품 설명</h2>
+                                <textarea type="text" 
+                                    name='productDetailText' 
+                                    defaultValue={getProduct?.data?.data[0]?.productDetailText} 
+                                    onChange={handleProductDataOnChange}/>
                             </div>
-
-
-
-                        <div><h1 css={S.SH1}>상품 정보 수정</h1></div>
-                    </div>
-                    <div css={S.SInformation}>
-                        <div css={S.SInfoNameInput}>
-                            <h2>상품명</h2>
-                            <input type="text" name='productName' defaultValue={getProduct?.data?.data[0]?.productName} onChange={handleProductDataOnChange}/>
+                            <div css={S.SInfoSizeInput}>
+                                <h2>사이즈별 가격</h2> 
+                                <ul>
+                                {productData.no === "" ?
+                                    <>
+                                        <li>
+                                            <label>XS</label>
+                                            <input value={productData.XS} 
+                                                    type='text' 
+                                                    name='XS' 
+                                                    onChange={handleProductDataOnChange}/>
+                                        </li>
+                                        <li>
+                                            <label>S</label>
+                                            <input value={productData.S} 
+                                                    type='text' 
+                                                    name='S' 
+                                                    onChange={handleProductDataOnChange}/>
+                                        </li>
+                                        <li>
+                                            <label>M</label>
+                                            <input value={productData.M} 
+                                                    type='text' 
+                                                    name='M' 
+                                                    onChange={handleProductDataOnChange}/>
+                                        </li>
+                                        <li>
+                                            <label>L</label>
+                                            <input value={productData.L} 
+                                                    type='text' 
+                                                    name='L' 
+                                                    onChange={handleProductDataOnChange}/>
+                                        </li>
+                                        <li>
+                                            <label>XL</label>
+                                            <input value={productData.XL} 
+                                                    type='text' 
+                                                    name='XL' 
+                                                    onChange={handleProductDataOnChange}/>
+                                        </li>
+                                        <li>
+                                            <label>XXL</label>
+                                            <input value={productData.XXL} 
+                                                    type='text' 
+                                                    name='XXL' 
+                                                    onChange={handleProductDataOnChange}/>
+                                        </li>
+                                    </> :
+                                    <>
+                                        <li>
+                                            <label>NO SIZE</label>
+                                            <input value={productData.no} 
+                                                    type='text' 
+                                                    name='no' 
+                                                    onChange={handleProductDataOnChange}/>
+                                        </li>
+                                    </>}
+                                </ul>
+                            </div>
                         </div>
-                        <div css={S.SInfoTextInput}>
-                            <h2>상품 설명</h2>
-                            <textarea type="text" name='productDetailText' defaultValue={getProduct?.data?.data[0]?.productDetailText} onChange={handleProductDataOnChange}/>
-                        </div>
-                        <div css={S.SInfoSizeInput}>
-                            <h2>사이즈별 가격</h2> 
-                            <ul>
-                            {productData.no === "" ?
-                                <>
-                                    <li><label>XS</label><input value={productData.XS} type='text' name='XS' onChange={handleProductDataOnChange}/></li>
-                                    <li><label>S</label><input value={productData.S} type='text' name='S' onChange={handleProductDataOnChange}/></li>
-                                    <li><label>M</label><input value={productData.M} type='text' name='M' onChange={handleProductDataOnChange}/></li>
-                                    <li><label>L</label><input value={productData.L} type='text' name='L' onChange={handleProductDataOnChange}/></li>
-                                    <li><label>XL</label><input value={productData.XL} type='text' name='XL' onChange={handleProductDataOnChange}/></li>
-                                    <li><label>XXL</label><input value={productData.XXL} type='text' name='XXL' onChange={handleProductDataOnChange}/></li>
-                                </> :
-                                <>
-                                    <li>NO SIZE <input value={productData.no} type='text' name='no' onChange={handleProductDataOnChange}/></li>
-                                </>}
-                            </ul>
-                        </div>
-                    </div>
-                    <div css={S.SSubmit}>
-                        <button onClick={handleUpdateSubmit} css={S.SLabelUpload}>등록하기</button>
+                    <div >
+                        <button css={S.SSubmit}onClick={handleUpdateSubmit} >등록하기</button>
                     </div>
                 </div>
             </div>

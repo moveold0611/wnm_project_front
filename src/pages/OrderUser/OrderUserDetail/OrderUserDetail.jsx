@@ -2,12 +2,11 @@ import React, { useRef, useState } from 'react';
 /** @jsxImportSource @emotion/react */
 import * as S from './Style';
 import Mypage from '../../Mypage/Mypage';
-import { getUserOrderApi, getUserOrderDetailApi } from '../../../apis/api/order';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import ReviewModal from '../../../components/Review/ReviewModal/ReviewModal';
 import { getReviewByUserApi } from '../../../apis/api/review';
-
+import { getUserOrderApi, getUserOrderDetailApi } from '../../../apis/api/order';
 
 function OrderUserDetail(props) {
 
@@ -21,10 +20,10 @@ function OrderUserDetail(props) {
     const [getReview, setGetReivew ] = useState([]);
     const modalBackground = useRef();
     
+    
     let price = 0;
 
     const getOrderDtl = useQuery(["getOrderDtl"], async () => {
-        console.log(orderId)
         try {
             const option = {
                 headers: {
@@ -45,7 +44,10 @@ function OrderUserDetail(props) {
         })
         setTotalPrice(price)
         }
-    }) 
+    })
+
+    const condition = getOrderDtl?.data?.data.orderStatus === 2 || getOrderDtl?.data?.data.orderStatus === 3;
+
 
     const getReviewbyUser = useQuery(["getReviewbyUser", userId], async () => {
         try {
@@ -78,12 +80,15 @@ function OrderUserDetail(props) {
     return (
         <Mypage>
             <div css={S.SContainer}>
-                <h2>주문 상세 정보</h2>
+                <div css={S.STopTitle}>
+                    <h2>주문 상세 정보</h2>
+                </div>
                 <div css={S.SSubTitleBox}>
                     <h3>주문 정보</h3>
                     <button onClick={handleUsersOrdersOnClick}>주문 정보 리스트</button>
                 </div>
-                <table>
+                <div css={S.STableBox}>
+                <table css={S.STable}>
                     <thead>
                         <tr css={S.SThBox}>
                             <th>
@@ -120,10 +125,12 @@ function OrderUserDetail(props) {
                             </tr>
                     </tbody>
                 </table>
-                <div>
-                    <h3>회원 주문 상품 상세 정보</h3>
-                </div>
-                <table>
+            </div>
+            <div css={S.SSubTitleBox}>
+                <h3>회원 주문 상품 상세 정보</h3>
+            </div>
+            <div css={S.STableBox}>
+                <table css={S.STable}>
                     <thead>
                         <tr css={S.SThBox}>
                             <th>상품 이미지</th>
@@ -156,13 +163,16 @@ function OrderUserDetail(props) {
                                 </td>
                                 <td>
                                     <div css={S.SBtnWrapper}>
-                                        <button 
-                                            onClick={() => {
-                                                    setModalOpen(true);
-                                                    setSelectedProduct(data);
-                                            }}
-                                            >
-                                            리뷰쓰기
+                                    <button
+                                        disabled={!condition}
+                                        onClick={() => {
+                                            if (condition) {
+                                            setModalOpen(true);
+                                            setSelectedProduct(data);
+                                            }
+                                        }}
+                                        >
+                                        리뷰쓰기
                                         </button>
                                     </div>
                                 </td>
@@ -171,6 +181,7 @@ function OrderUserDetail(props) {
                     </tbody>
                 </table>
             </div>
+        </div>
             {modalOpen &&
                 <ReviewModal isOpen={modalOpen} onRequestClose={() => {setModalOpen(false)}} product={selectedProduct} userId={userId}/>
             }

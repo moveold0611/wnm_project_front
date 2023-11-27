@@ -1,36 +1,21 @@
 import { useEffect, useState } from "react";
 /** @jsxImportSource @emotion/react */
 import * as S from './Style';
-import { useQuery } from "react-query";
-import { getProductsCountApi } from "../../apis/api/product";
 
-const PageNation = ({products, searchData, setSearchData, }) => {
+const PageNation = ({ showCount, totalItemCount, propsData, setPropsData }) => {
 
-    const itemCount = 12;
     const [ count, setCount ] = useState(0);
-    const [ currentPage, setCurrentPage ] = useState(searchData.pageIndex);
+    const [ currentPage, setCurrentPage ] = useState(propsData?.pageIndex);
     const [selectedPage, setSelectedPage] = useState(currentPage);
 
-    const getProductsPagenation = useQuery(["getProductsPageNation"], async () => {
-        try {
-            const response = getProductsCountApi(searchData);
-            console.log(response)
-            return response;
-        } catch (error) {
-            console.error("Error in getProductsCountApi:", error);
-            throw error;
-        }
-    },
-    {
-        retry: 0,
-        onSuccess: response => {
-            setCount(response.data)
-        }
-    })  
     const [totalPages, setTotalPages] = useState([]);
     
-    const totalPage = Math.ceil(count / itemCount);
+    const totalPage = Math.ceil(count / showCount);
     const ttPage = Array.from({ length: totalPage }, (_, index) => index + 1);
+
+    useEffect(() => {
+        setCount(totalItemCount)   
+    }, [totalItemCount])
     
     useEffect(() => {
         setTotalPages(ttPage);
@@ -38,7 +23,7 @@ const PageNation = ({products, searchData, setSearchData, }) => {
 
     useEffect(() => {
         setSelectedPage(currentPage);
-      }, [currentPage]);
+    }, [currentPage]);
     
     
     const handlePageClick = (page) => {
@@ -46,32 +31,32 @@ const PageNation = ({products, searchData, setSearchData, }) => {
     }
 
     useEffect(() => {
-        const newSearchData = {...searchData, pageIndex: currentPage};
-        setSearchData(newSearchData);
+        const newSearchData = {...propsData, pageIndex: currentPage};
+        setPropsData(newSearchData);
         
-        getProductsPagenation.refetch();
-      }, [currentPage , searchData.productCategoryName, searchData.pageIndex]);
+    }, [currentPage , propsData?.productCategoryName, propsData?.pageIndex]);
     
     return (
         <div>
             <button
-            onClick={() => handlePageClick(searchData.pageIndex - 1)}
+            onClick={() => handlePageClick(propsData.pageIndex - 1)}
             disabled={currentPage === 1}
             >
                 {"<"}
             </button>
             
-            {totalPages.map(page => (
+            {totalPages.map((page, index) => (
                 <button 
                     css={selectedPage === page ? S.selectedPageButton : S.PageButton}
                     name="pageIndex"
-                    onClick={() => handlePageClick(page)}>
+                    onClick={() => handlePageClick(page)}
+                    key={index}>
                     {page}
                 </button>
             ))}
             
             <button
-            onClick={() => handlePageClick(searchData.pageIndex + 1)}
+            onClick={() => handlePageClick(propsData.pageIndex + 1)}
             disabled={currentPage === totalPages.length}
             >
                 {">"}

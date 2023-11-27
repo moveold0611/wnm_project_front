@@ -1,69 +1,78 @@
 import { css } from "@emotion/react";
 
 export const SContainer = css`
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 
-    margin: 15px 0px;
+    margin: 25px auto;
     width: 95%;
+`;
 
+export const STopTitle = css`
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    
+    margin-bottom: 25px;
+    width: 100%;
+    
     & > h2 {
-        text-align: end;
         font-size: 20px;
-    }
-
-    & > table {
-        width: 100%;
     }
 `;
 
 export const SSubTitleBox = css`
     display: flex;
+    justify-content: flex-start;
     align-items: center;
 
+    margin-bottom: 5px;
+    width: 100%;
+
+    & > h3 {
+        margin-left: 20px;
+        font-size: 17.5px;
+    }
+
     & > button {
-        margin: 5px;
-        border: 1px solid black;
-        border-radius: 5px;
-        padding: 5px;
-        width: 135px;
+        margin-left: 15px;
     }
 `;
 
+export const STableBox = css`
+    display: flex;
+    align-items: start;
+    justify-content: center;
+    margin-bottom: 25px;
+
+    width: 100%;
+`;
+
+export const STable = css`
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 5px;
+`;
+
+
 export const SThBox = css`
     & > th {
-        border: 1px solid black;
-        padding: 5px 5px;
-        border-radius: 5px;
-        background-color: darkgray;
-        font-size: 15px;
-        font-weight: 700;
+        border-radius: 10px;
+        padding: 5px;
+        text-align: center;
+        background-color: #dbdbdb;
     }
 `;
 
 export const STdBox = css`
     & > td {
-        border-bottom: 1px solid black;
-        padding: 10px 15px;
-        font-size: 15px;
-        text-align: center;
-        
-    }
-
-    & > td > button {
-        border: 1px solid black;
         border-radius: 10px;
         padding: 5px;
-        width: 65px;
-        
-        color: black;
-        background-color: #efefef;
-        cursor: pointer;
+        text-align: center;
+        background-color: #f1f1f1;
 
-        :hover {
-            transition: 0.3s ease;
-            background-color: #fafafa;
-        }
     }
 `;
 
@@ -74,23 +83,23 @@ export const SSettingBox = css`
     align-items: center;
 
     & > select {
-        border: 1px solid black;
-        border-radius: 10px;
+        border-radius: 5px;
         padding: 5px;
-        width: 85px;
+        width: 100px;
+        height: 28.5px;
     }
 
     & > button {
-        margin: 5px auto;
-        border: 1px solid black;
-        border-radius: 10px;
-        padding: 5.5px;
-        width: 85px;
-        cursor: pointer;
+        margin-top: 10px;
+        padding: 5px;
+        width: 100px;
+
+        background-color: #333;
+        color: #f9fbff;
 
         :hover {
-            transition: 0.3s ease;
-            background-color: #fafafa;
+            color: #f9fbff;
+            background-color: #2b64fb;
         }
     }
 `;

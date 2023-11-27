@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import * as S from './Style';
 import RootContainer from '../../components/RootContainer/RootContainer';
 import { useQuery } from 'react-query';
-import { getAnnouncementsApi } from '../../apis/api/announcement';
+import { deleteAnnouncementApi, getAnnouncementsApi } from '../../apis/api/announcement';
 import { useNavigate } from 'react-router';
 
 function Announcement(props) {
@@ -26,35 +26,38 @@ function Announcement(props) {
         }
     })
 
-    const handleAnnouncementClick = (e) => {
-        navigate(`/notice/${e.target.id}`)
+    const handleAnnouncementClick = (announcementId) => {
+        navigate(`/notice/${announcementId}`)
     }
 
     return (
         <RootContainer>
             <div css={S.SLayout}>
-                <div>공지사항</div>
-                <ul css={S.SAnnouncementsBox}>
-                    <li>1231234</li>
-                    {!getAnnouncements.isLoading && announcemensList.map(ann => {
-                        return <li>
-                                    <div css={S.SAnnouncement}>
-                                        <div class='id'>
-                                            {ann?.announcement_id}
-                                        </div>
-                                        <div class='title' id={ann?.announcement_id} onClick={handleAnnouncementClick}>
-                                            {ann?.title}
-                                        </div>
-                                        <div class='content'>
-                                            {ann?.content}
-                                        </div>
-                                        <div class='createDate'>
-                                            {ann?.createDate}
-                                        </div>
-                                    </div>
-                                </li>
-                    })}
-                </ul>
+                <div css={S.STopTitle}>
+                    <h2>공지사항</h2>
+                </div>
+                <div css={S.STableBox}>
+                    <table css={S.STable}>
+                        <thead>
+                            <tr css={S.SThBox}>
+                                <th>번호</th>
+                                <th>제목</th>
+                                <th>작성일</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {!getAnnouncements.isLoading && announcemensList?.map(ann => {
+                                return (
+                                    <tr key={ann.announcementId} css={S.STdBox} onClick={() => handleAnnouncementClick(ann.announcementId)}>
+                                        <td>{ann?.announcementId}</td>
+                                        <td>{ann?.title}</td>
+                                        <td>{ann?.createDate}</td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </RootContainer>
     );
