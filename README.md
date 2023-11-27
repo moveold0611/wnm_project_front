@@ -12,10 +12,10 @@
 
 ![jquery](https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white)
 
-
+### 주요 기능 및 예제
+프로젝트의 주요 기능 및 사용 예제를 제공합니다.
 
 In the project directory, you can run:
-
 ### `npm start`
 
 Runs the app in the development mode.\
