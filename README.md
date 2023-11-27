@@ -1,4 +1,4 @@
-<img src="https://capsule-render.vercel.app/api?type=shark&color=#000000&height=20&section=header&text=텍스트&fontSize=15" />
+<img src="https://capsule-render.vercel.app/api?type=rect&color=#000000&height=20&section=header&text=텍스트&fontSize=15" />
 # Woof & Meow
 
 ![java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
