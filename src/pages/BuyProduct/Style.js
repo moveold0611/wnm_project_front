@@ -103,3 +103,56 @@ export const SReviewContainer = css`
     border: 1px solid black;
     width: 100%;
 `;
+
+export const SReviewList = css`
+    width: 85vw;
+    height: 100%;
+    border: 1px solid #dbdbdb;
+    border-radius: 50px;
+    padding: 30px;
+    background-color: #fff;
+    margin:0 auto 5px;
+`;
+
+export const SreviewHeader = css`
+    position: relative;
+`;
+
+export const SReviewImg = css`
+    width: 200px;
+`;
+
+export const SNickname = css`
+    position: absolute;
+    top: 18px;
+    left: 90px;
+    font-size: 18px;
+`;
+
+export const SProductName = css`
+    color: #6f6f6f;
+    position: absolute;
+    top: 45px;
+    left: 90px;
+`;
+
+export const SSizeName = css`
+    color: #6f6f6f;
+    position: absolute;
+    top: 45px;
+    left: 280px;
+    
+`;
+
+export const SReivewDate = css`
+    color: #6f6f6f;
+    position: absolute;
+    top: 10px;
+    right: 0px;
+    
+`;
+
+export const SReviewContent = css`
+    height: 100%;
+    width: 100%;
+`;

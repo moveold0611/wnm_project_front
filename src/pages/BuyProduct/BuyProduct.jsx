@@ -30,7 +30,7 @@ function BuyProduct(props) {
     }, {
         refetchOnWindowFocus: false,
         onSuccess: response => {
-            setProduct(response?.data)
+            setProduct(response.data)
         }
     })
 
@@ -156,7 +156,6 @@ function BuyProduct(props) {
             console.log(error)
         }
     }
-    console.log("pro",product)
 
     return (
         <div>
@@ -199,20 +198,28 @@ function BuyProduct(props) {
             <div css={S.SDetailContainer}>
                 <img css={S.SDDetailImg} src={product.productDetailUrl} alt="" />
             </div>
-                {/* <ul>
+            <div>
+                <h1>구매후기</h1>
+                <ul>
                     {productReview.map(rev => {
-                            <li>
-                                <img src={rev.profileUrl} alt="" />
-                                {rev.nickname}
-                                {rev.sizeName}
-                                <img src={rev.reviewImgUrl} alt="" />
-                                {rev.reviewContent}
-                                {rev.reviewDate}
+                        return <li>
+                            <div css={S.SReviewList}>
+                                <div css={S.SreviewHeader}>
+                                    <img src={rev.profileUrl} alt="" width={'80px'}/>
+                                    <div css={S.SNickname}>{rev.nickname}</div>
+                                    <div css={S.SProductName}>{product.productName} /</div>
+                                    <div css={S.SSizeName}> {rev.sizeName}</div>
+                                    <div css={S.SReivewDate}>{rev.reviewDate}</div>
+                                </div>
+                                <div><img src={rev.reviewImgUrl} alt="" css={S.SReviewImg}/></div>
+                                <div css={S.SReviewContent}>{rev.reviewContent}</div>
+                            </div>
                         </li>
                     })}
-                </ul> */}
+                </ul>
+            </div>
         </div>
-    );///
+    );
 }
 
 export default BuyProduct;
