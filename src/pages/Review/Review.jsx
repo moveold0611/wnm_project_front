@@ -41,8 +41,6 @@ function Review() {
         }
     })
 
-    console.log("get" ,getReview)
-
     const handleOpenFileClick = () => {
         fileRef.current.click();
     }
@@ -60,12 +58,14 @@ function Review() {
         reader.readAsDataURL(e.target.files[0]);
     }
     
+
     const handleContentChange = (e) => {
         setEditedReview({
             ...editedReview,
             reviewContent: e.target.value
         });
     };
+
 
     const handleEditClick = async (e) => {
         try {
@@ -105,12 +105,12 @@ function Review() {
         }
     };
 
+
     return (
         <Mypage>
             <div css={S.SModalContainer}>
-                
                 {getReview?.map(rdata => {
-                    return <div>
+                    return <div key={rdata.reviewId}>
                             <h2>리뷰 상세 페이지</h2>
                         <div css={S.SModalHeader}>
                             <div css={S.SModalHeaderImg}>
