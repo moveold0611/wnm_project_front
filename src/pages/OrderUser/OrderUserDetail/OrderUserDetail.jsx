@@ -5,7 +5,7 @@ import Mypage from '../../Mypage/Mypage';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import ReviewModal from '../../../components/Review/ReviewModal/ReviewModal';
-import { getUserOrderApi } from '../../../apis/api/order';
+import { getUserOrderApi, getUserOrderDetailApi } from '../../../apis/api/order';
 
 
 function OrderUserDetail(props) {
@@ -22,14 +22,13 @@ function OrderUserDetail(props) {
     let price = 0;
 
     const getOrderDtl = useQuery(["getOrderDtl"], async () => {
-        console.log(orderId)
         try {
             const option = {
                 headers: {
                     Authorization: localStorage.getItem("accessToken")
                 }
             }
-            const response = getUserOrderApi(orderId, option);
+            const response = getUserOrderDetailApi(orderId, option);
             return await response;
         } catch(error) {
             console.log(error)
@@ -45,7 +44,7 @@ function OrderUserDetail(props) {
         }
     })
 
-    const condition = getOrderDtl?.data?.data.orderStatus === 2 || 3;
+    const condition = getOrderDtl?.data?.data.orderStatus === 2 || getOrderDtl?.data?.data.orderStatus === 3;
 
 
     const handleUsersOrdersOnClick = () => {

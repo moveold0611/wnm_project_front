@@ -84,7 +84,7 @@ export const STdBox = css`
         border-right: 2px solid #dbdbdb;
         border-radius: 10px;
         text-align: center;
-        background-color: #fffff0;
+        background-color: #f1f1f1;
     }
 `;
 

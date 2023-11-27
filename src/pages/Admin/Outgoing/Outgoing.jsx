@@ -50,7 +50,7 @@ function Outgoing(props) {
                 }
             }
             const response = await addOutgoing(parseInt(productDtlId), parseInt(count), option);
-
+            alert("상품이 출고되었습니다.")
         } catch (error) {
             console.log(error.response.data)
         }
