@@ -61,15 +61,15 @@ function WriteAnnouncement(props) {
     return (
         <Mypage>
             <div css={S.SContainer}>
-                <div >
+                <div css={S.STopTitle}>
                     <h2>공지사항 작성</h2>
                 </div>
                 <div css={S.SubContainer}>
                     <div css={S.SuSubContainer}>
                         <h1>공지사항 등록</h1>
-                        <div >
+                        <div css={S.STitle}>
                             <input name='title' type="text" placeholder='제목' onChange={handleInputChange} />
-                            <div >
+                            <div css={S.SFixBox}>
                                 <p>고정 여부</p>
                                 <input name='isPinned' type="checkbox" onChange={handleCheckBoxChange} />
                             </div>

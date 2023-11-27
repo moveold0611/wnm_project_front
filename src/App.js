@@ -27,7 +27,7 @@ import JoinProductDetail from "./pages/Admin/JoinProductDetail/JoinProductDetail
 import AdminOrder from "./pages/Admin/AdminOrder/AdminOrder";
 import AdminOrderDetail from "./pages/Admin/AdminOrder/AdminOrderDetail/AdminOrderDetail";
 import OrderUserDetail from "./pages/OrderUser/OrderUserDetail/OrderUserDetail";
-import { Global, css } from "@emotion/react";
+import { Global } from "@emotion/react";
 import UserData from "./pages/Admin/UserData/UserData";
 
 import Announcement from "./pages/Announcement/Announcement";
