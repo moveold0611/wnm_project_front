@@ -1,4 +1,4 @@
-# Getting Started with Create React App
+# Woof & Meow
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
