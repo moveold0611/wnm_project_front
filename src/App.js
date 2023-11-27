@@ -33,6 +33,7 @@ import WriteAnnouncement from "./pages/Admin/WriteAnnouncement/WriteAnnouncement
 import Announcement from "./pages/Announcement/Announcement";
 import AnnouncementDetail from "./pages/Announcement/AnnouncementDetail/AnnouncementDetail";
 import { reset } from "./style/reset";
+import Review from "./pages/Review/Review";
 
 function App() {
 
@@ -81,6 +82,7 @@ function App() {
         <Route path="/product/cart/:userId" element={ <CartProducts/> } />
         <Route path="/notice" element={<Announcement />} />
         <Route path="/notice/:announcementId" element={ <AnnouncementDetail />} />
+        <Route path="/mypage/:userId/review" element={ <Review /> } />
         
         {/* 주소입력시 막기 */}
         <Route path="/admin/product" element={ <ProductRegist/> } />

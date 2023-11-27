@@ -7,12 +7,14 @@ import Select from 'react-select';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getProductMstApi } from '../../apis/api/product';
 import { addToCartApi } from '../../apis/api/cart';
+import { getReviewByProductApi } from '../../apis/api/review';
 
 function BuyProduct(props) {
     const navigate = useNavigate();
 
     const { productId } = useParams();
     const [ product, setProduct ] = useState({});
+    const [ productReview, setProductReview ] = useState([]);
     const [ selectedProducts, setSelectedProducts ] = useState([]);
     const queryClient = useQueryClient();
     const principal = queryClient.getQueryState("getPrincipal");
@@ -28,7 +30,26 @@ function BuyProduct(props) {
     }, {
         refetchOnWindowFocus: false,
         onSuccess: response => {
-            setProduct(response.data)
+            setProduct(response?.data)
+        }
+    })
+
+        const getReviewByProduct = useQuery(["getReviewByProduct"], async () => {
+        try {
+            const option = {
+                headers: {
+                    Authorization: localStorage.getItem("accessToken")
+                }
+            }
+            const response = await getReviewByProductApi(productId, option);
+            return response;
+        } catch (error) {
+            console.log(error)
+        }
+    }, {
+        refetchOnWindowFocus: false,
+        onSuccess: response => {
+            setProductReview(response?.data)
         }
     })
 
@@ -135,6 +156,7 @@ function BuyProduct(props) {
             console.log(error)
         }
     }
+    console.log("pro",product)
 
     return (
         <div>
@@ -177,8 +199,20 @@ function BuyProduct(props) {
             <div css={S.SDetailContainer}>
                 <img css={S.SDDetailImg} src={product.productDetailUrl} alt="" />
             </div>
+                {/* <ul>
+                    {productReview.map(rev => {
+                            <li>
+                                <img src={rev.profileUrl} alt="" />
+                                {rev.nickname}
+                                {rev.sizeName}
+                                <img src={rev.reviewImgUrl} alt="" />
+                                {rev.reviewContent}
+                                {rev.reviewDate}
+                        </li>
+                    })}
+                </ul> */}
         </div>
-    );
+    );///
 }
 
 export default BuyProduct;
