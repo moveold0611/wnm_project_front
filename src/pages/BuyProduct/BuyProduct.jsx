@@ -229,7 +229,6 @@ function BuyProduct(props) {
                     })}
                 </ul>
             </div>
-        </div>
         </RootContainer>
     );
 }
