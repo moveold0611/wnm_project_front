@@ -7,6 +7,7 @@ import Select from 'react-select';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getProductMstApi } from '../../apis/api/product';
 import { addToCartApi } from '../../apis/api/cart';
+import { getReviewByProductApi } from '../../apis/api/review';
 import RootContainer from '../../components/RootContainer/RootContainer';
 
 function BuyProduct(props) {
@@ -14,6 +15,7 @@ function BuyProduct(props) {
 
     const { productId } = useParams();
     const [ product, setProduct ] = useState({});
+    const [ productReview, setProductReview ] = useState([]);
     const [ selectedProducts, setSelectedProducts ] = useState([]);
     const queryClient = useQueryClient();
     const principal = queryClient.getQueryState("getPrincipal");
@@ -30,6 +32,25 @@ function BuyProduct(props) {
         refetchOnWindowFocus: false,
         onSuccess: response => {
             setProduct(response.data)
+        }
+    })
+
+        const getReviewByProduct = useQuery(["getReviewByProduct"], async () => {
+        try {
+            const option = {
+                headers: {
+                    Authorization: localStorage.getItem("accessToken")
+                }
+            }
+            const response = await getReviewByProductApi(productId, option);
+            return response;
+        } catch (error) {
+            console.log(error)
+        }
+    }, {
+        refetchOnWindowFocus: false,
+        onSuccess: response => {
+            setProductReview(response?.data)
         }
     })
 
@@ -184,6 +205,29 @@ function BuyProduct(props) {
                 <div css={S.SDetailContainer}>
                     <img css={S.SDDetailImg} src={product.productDetailUrl} alt="" />
                 </div>
+            </div>
+            <div css={S.SDetailContainer}>
+                <img css={S.SDDetailImg} src={product.productDetailUrl} alt="" />
+            </div>
+            <div>
+                <h1>구매후기</h1>
+                <ul>
+                    {productReview.map(rev => {
+                        return <li>
+                            <div css={S.SReviewList}>
+                                <div css={S.SreviewHeader}>
+                                    <img src={rev.profileUrl} alt="" width={'80px'}/>
+                                    <div css={S.SNickname}>{rev.nickname}</div>
+                                    <div css={S.SProductName}>{product.productName} /</div>
+                                    <div css={S.SSizeName}> {rev.sizeName}</div>
+                                    <div css={S.SReivewDate}>{rev.reviewDate}</div>
+                                </div>
+                                <div><img src={rev.reviewImgUrl} alt="" css={S.SReviewImg}/></div>
+                                <div css={S.SReviewContent}>{rev.reviewContent}</div>
+                            </div>
+                        </li>
+                    })}
+                </ul>
             </div>
         </RootContainer>
     );

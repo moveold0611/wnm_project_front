@@ -5,8 +5,8 @@ import Mypage from '../../Mypage/Mypage';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import ReviewModal from '../../../components/Review/ReviewModal/ReviewModal';
-import { getUserOrderApi } from '../../../apis/api/order';
-
+import { getReviewByUserApi } from '../../../apis/api/review';
+import { getUserOrderApi, getUserOrderDetailApi } from '../../../apis/api/order';
 
 function OrderUserDetail(props) {
 
@@ -15,21 +15,22 @@ function OrderUserDetail(props) {
     const orderId = params.orderId
     const [ totalPrice, setTotalPrice ] = useState(0);
     const [ modalOpen, setModalOpen ] = useState(false);
-    const [ selectedProduct, setSelectedProduct ] = useState(null); 
+    const [ selectedProduct, setSelectedProduct ] = useState(null);
+    const [ userId, setUserId ] = useState();
+    const [getReview, setGetReivew ] = useState([]);
     const modalBackground = useRef();
     
     
     let price = 0;
 
     const getOrderDtl = useQuery(["getOrderDtl"], async () => {
-        console.log(orderId)
         try {
             const option = {
                 headers: {
                     Authorization: localStorage.getItem("accessToken")
                 }
             }
-            const response = getUserOrderApi(orderId, option);
+            const response = getUserOrderDetailApi(orderId, option);
             return await response;
         } catch(error) {
             console.log(error)
@@ -37,7 +38,7 @@ function OrderUserDetail(props) {
     },{
         refetchOnWindowFocus: false,
         onSuccess: response => {
-            console.log(response?.data)
+            setUserId(response?.data?.userId)
             response?.data.orderProducts.forEach(elemnt => {
             price += elemnt.productDtl.price * elemnt.count
         })
@@ -45,8 +46,28 @@ function OrderUserDetail(props) {
         }
     })
 
-    const condition = getOrderDtl?.data?.data.orderStatus === 2;
+    const condition = getOrderDtl?.data?.data.orderStatus === 2 || getOrderDtl?.data?.data.orderStatus === 3;
 
+
+    const getReviewbyUser = useQuery(["getReviewbyUser", userId], async () => {
+        try {
+            const option = {
+                headers: {
+                    Authorization: localStorage.getItem("accessToken")
+                }
+            }
+            const response = getReviewByUserApi(userId, option);
+            return await response;
+        } catch(error) {
+            console.log(error)
+        }
+    }, {
+        retry: 0,
+        refetchOnWindowFocus: false,
+        onSuccess: data => {
+            setGetReivew(data?.data)
+        }
+    })
 
     const handleUsersOrdersOnClick = () => {
         navigate(-1)
@@ -158,23 +179,11 @@ function OrderUserDetail(props) {
                             </tr>
                         })}
                     </tbody>
-                        
-                        {/* <div css={S.SModalContainer} ref={modalBackground} onClick={e => {
-                            if (e.target === modalBackground.current) {
-                                setModalOpen(false);
-                            }}}>
-                            <div css={S.SModalContent}>
-                                <p>리뷰내용</p>
-                                <button css={S.SModalButton} onClick={() => setModalOpen(false)}>
-                                    리뷰 등록하기
-                                </button>
-                            </div>
-                        </div> */}
                 </table>
             </div>
         </div>
             {modalOpen &&
-                <ReviewModal isOpen={modalOpen} onRequestClose={() => {setModalOpen(false)}} product={selectedProduct}/>
+                <ReviewModal isOpen={modalOpen} onRequestClose={() => {setModalOpen(false)}} product={selectedProduct} userId={userId}/>
             }
         </Mypage>
     );

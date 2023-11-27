@@ -15,7 +15,7 @@ function Header(props) {
 
     const menus = [
         { name: 'Dog', subMenus: ['HomeLiving', 'Movement', 'Fashion', 'Toy', 'Walk'] },
-        { name: 'Customer Service', subMenus: ['Notice'] },
+        { name: 'CustomerService', subMenus: ['Notice'] },
         { name: 'Cat', subMenus: ['HomeLiving', 'Movement', 'Toy', 'Accessories'] }
     ];
 
@@ -44,7 +44,8 @@ function Header(props) {
     const handleMenuClick = (menuName) => {
         const pathMap = {
             Dog: '/products/dog',
-            Cat: '/products/cat'
+            Cat: '/products/cat',
+            CustomerService: ''
         }
 
         const path = pathMap[menuName];

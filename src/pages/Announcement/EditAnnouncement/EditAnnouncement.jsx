@@ -40,8 +40,6 @@ function EditAnnouncement(props) {
         fetchData();
     }, [announcementId])
 
-   
-
     const handleCheckBoxChange = () => {
         setAnnouncementData({
             ...announcementData,
@@ -86,16 +84,22 @@ function EditAnnouncement(props) {
 
 
     return (
+        
         <Mypage>
             <div css={S.SContainer}>
-                <h2>공지사항 수정</h2>
-                <div>
-                    고정 여부 <input name='isPinned' type="checkbox" onChange={handleCheckBoxChange} checked={announcementData?.isPinned === 1} />
+                <div css={S.STopTitle}>
+                    <h2>공지사항 수정</h2>
                 </div>
                 <div css={S.SubContainer}>
-                    <div css={S.SuSubContainer}>
+                    <div css={S.SuSubContainer}> 
                         <h1>공지사항 수정</h1>
-                        <input name='title' type="text" placeholder='제목' onChange={handleInputChange} defaultValue={announcementData?.title} />
+                        <div css={S.STitle}>
+                            <input name='title' type="text" placeholder='제목' onChange={handleInputChange} defaultValue={announcementData?.title} />
+                            <div div css={S.SFixBox}>
+                                <p>고정 여부</p>
+                                <input name='isPinned' type="checkbox" onChange={handleCheckBoxChange} checked={announcementData?.isPinned === 1} />
+                            </div>
+                        </div>
                         <textarea name="content" id="" cols="30" rows="30" placeholder='내용' onChange={handleInputChange} defaultValue={announcementData?.content}></textarea>
                         <button onClick={handleEditClick}>수정 하기</button>
                     </div>

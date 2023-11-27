@@ -4,8 +4,6 @@ import * as S from './Style';
 
 const PageNation = ({ showCount, totalItemCount, searchData, setSearchData }) => {
 
-    console.log(searchData.productCategoryName)
-
     const [ totalCount, setTotalCount ] = useState(0);
     const [ currentPage, setCurrentPage ] = useState(searchData?.pageIndex);
     const [ selectedPage, setSelectedPage ] = useState(currentPage);
@@ -26,22 +24,18 @@ const PageNation = ({ showCount, totalItemCount, searchData, setSearchData }) =>
     }
     
     useEffect(() => {
-        console.log("1")
         setTotalCount(totalItemCount)   
     }, [totalItemCount])
     
     useEffect(() => {
-        console.log("2")
         setTotalPages(totalPageIndex);
     }, [searchData.productCategoryName]);
     
     useEffect(() => {
-        console.log("3")
         setSelectedPage(currentPage);
     }, [currentPage]);
     
     useEffect(() => {
-        console.log("4")
         if(searchData.searchValue !== "") {
             setCurrentPage(totalPages[0]);
         } else {
@@ -54,14 +48,11 @@ const PageNation = ({ showCount, totalItemCount, searchData, setSearchData }) =>
     }
     
     useEffect(() => {
-        console.log("5")
         const newSearchData = {...searchData, pageIndex: currentPage};
         setSearchData(newSearchData);
-        
     }, [currentPage]);
     
     useEffect(() => {
-        console.log("6")
         const newSearchData = {...searchData, pageIndex: 1};
         setSearchData(newSearchData);
         setCurrentPage(1)

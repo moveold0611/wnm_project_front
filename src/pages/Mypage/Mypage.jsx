@@ -62,7 +62,7 @@ function Mypage({ children }) {
                                         <h4><Link to={`/useredit/${principal?.data?.data.userId}`}>회원정보</Link></h4>
                                     </li>
                                     <li>
-                                        <h4><Link to="/review">리뷰</Link></h4>
+                                        <h4><Link to={`/mypage/${principal?.data?.data.userId}/review`}>리뷰</Link></h4>
                                     </li>
                                 </ul>
                                 <div css={S.SChangeContainer}>

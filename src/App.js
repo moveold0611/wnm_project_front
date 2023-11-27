@@ -27,12 +27,13 @@ import JoinProductDetail from "./pages/Admin/JoinProductDetail/JoinProductDetail
 import AdminOrder from "./pages/Admin/AdminOrder/AdminOrder";
 import AdminOrderDetail from "./pages/Admin/AdminOrder/AdminOrderDetail/AdminOrderDetail";
 import OrderUserDetail from "./pages/OrderUser/OrderUserDetail/OrderUserDetail";
-import { Global, css } from "@emotion/react";
+import { Global } from "@emotion/react";
 import UserData from "./pages/Admin/UserData/UserData";
 
 import Announcement from "./pages/Announcement/Announcement";
 import AnnouncementDetail from "./pages/Announcement/AnnouncementDetail/AnnouncementDetail";
 import { reset } from "./style/reset";
+import Review from "./pages/Review/Review";
 import EditAnnouncement from "./pages/Announcement/EditAnnouncement/EditAnnouncement";
 import WriteAnnouncement from "./pages/Announcement/WriteAnnouncement/WriteAnnouncement";
 
@@ -83,6 +84,7 @@ function App() {
         <Route path="/product/cart/:userId" element={ <CartProducts/> } />
         <Route path="/notice" element={<Announcement />} />
         <Route path="/notice/:announcementId" element={ <AnnouncementDetail />} />
+        <Route path="/mypage/:userId/review" element={ <Review /> } />
         
         {/* 주소입력시 막기 */}
         <Route path="/admin/product" element={ <ProductRegist/> } />
