@@ -3,13 +3,22 @@ import React, { useEffect, useState } from 'react';
 import * as S from './Style';
 import RootContainer from '../../components/RootContainer/RootContainer';
 import { useQuery } from 'react-query';
-import { deleteAnnouncementApi, getAnnouncementsApi } from '../../apis/api/announcement';
+import { deleteAnnouncementApi, getAnnouncementsApi, getAnnouncementsCountApi } from '../../apis/api/announcement';
 import { useNavigate } from 'react-router';
+import PageNation from '../../utils/PageNation/PageNation';
 
 function Announcement(props) {
-
     const navigate = useNavigate();
-    const [ announcemensList, setAnnouncemensList ] = useState([]);
+    const [ announcementsList, setAnnouncementsList ] = useState([]);
+    const [ announcementsCount, setAnnouncementsCount ] = useState([]);
+    const [ searchData, setSearchData ] = useState({
+        petTypeName: "all",
+        productCategoryName: "all",
+        searchOption: 'all',
+        searchValue: '',
+        sortOption: 'number',
+        pageIndex: 1});
+        
 
     const getAnnouncements = useQuery(["getAnnouncements"], async () => {
         try {
@@ -22,7 +31,22 @@ function Announcement(props) {
     },{
         retry: 0,
         onSuccess: response => {
-            setAnnouncemensList(response?.data);
+            setAnnouncementsList(response?.data);
+        }
+    })
+
+    const getAnnouncementsCount = useQuery(["getAnnouncementsCount"], async () => {
+        try {
+            const response = await getAnnouncementsCountApi();
+            console.log(response?.data);
+            return  response;
+        } catch (error) {
+            console.log(error)
+        }   
+    },{
+        retry: 0,
+        onSuccess: response => {
+            setAnnouncementsCount(response?.data);
         }
     })
 
@@ -58,13 +82,13 @@ function Announcement(props) {
             <div css={S.SLayout}>
                 <div>공지사항</div>
                 <ul css={S.SAnnouncementsBox}>
-                    {!getAnnouncements.isLoading && announcemensList?.map(ann => {
+                    {!getAnnouncements.isLoading && announcementsList?.map(ann => {
                         return <li>
                                     <div css={S.SAnnouncement}>
                                         <div class='id'>
-                                            {ann?.announcement_id}
+                                            {ann?.announcementId}
                                         </div>
-                                        <div class='title' id={ann?.announcement_id} onClick={handleAnnouncementClick}>
+                                        <div class='title' id={ann?.announcementId} onClick={handleAnnouncementClick}>
                                             {ann?.title}
                                         </div>
                                         <div class='content'>
@@ -75,12 +99,15 @@ function Announcement(props) {
                                         </div>
                                     </div>
                                     <div>
-                                        <button id={ann?.announcement_id} onClick={handleEditClick}>수정</button>
-                                        <button id={ann?.announcement_id} onClick={handleDeleteClick}>삭제</button>
+                                        <button id={ann?.announcementId} onClick={handleEditClick}>수정</button>
+                                        <button id={ann?.announcementId} onClick={handleDeleteClick}>삭제</button>
                                     </div>
                                 </li>
                     })}
                 </ul>
+                <div>
+                    <PageNation showCount={10} totalItemCount={announcementsCount} searchData={searchData} setSearchData={setSearchData} />
+                </div>
             </div>
         </RootContainer>
     );

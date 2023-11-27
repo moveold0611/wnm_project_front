@@ -10,6 +10,11 @@ export const getUsersApi = async (searchData, option) => {
     return response;
 }
 
+export const getUserCountApi = async (option) => {
+    const response = await instance.get("/api/admin/user/count", option);
+    return response;
+} 
+
 export const updateUserApi = async (userId, userEditData, option) => {
     const response = await instance.put(`/api/user/${userId}`,userEditData, option)
     return response;

@@ -73,6 +73,7 @@ function EditAnnouncement(props) {
                     Authorization: localStorage.getItem("accessToken")
                 }
             }
+            console.log(announcementId)
             const response = await editAnnouncementApi(announcementId, announcementData, option);
             alert("수정이 완료되었습니다.");
             navigate("/notice");
