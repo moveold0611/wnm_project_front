@@ -3,7 +3,7 @@ import { css } from '@emotion/react';
 export const SLayout = css`
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px solid #dbdbdb;
+    border-bottom: 2px solid #dbdbdb;
     border-radius: 30px;
     padding: 0px 20px;
     background-color: #fff;
@@ -114,7 +114,7 @@ export const SSubMenuBox = (isSubMenu) => css`
     top: 25px;
     left: 50px;
 
-    border-bottom: 1px solid #dbdbdb;
+    border-bottom: 2px solid #dbdbdb;
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
     padding: 10px;

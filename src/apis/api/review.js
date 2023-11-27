@@ -1,26 +1,26 @@
 import instance from "../config/instance"
 
-export const getReviewByProductApi = async (productMstId) => {
-    const response = await instance.get(`/api/reviews/product/${productMstId}`);
+export const getReviewByProductApi = async (productMstId, option) => {
+    const response = await instance.get(`/api/reviews/product/${productMstId}`, option);
     return response;
 }
 
-export const getReviewByUserApi = async (userId) => {
-    const response = await instance.get(`/api/reviews/user/${userId}`);
+export const getReviewByUserApi = async (userId, option) => {
+    const response = await instance.get(`/api/reviews/user/${userId}`, option);
     return response;
 }
 
-export const addReviewApi = async (productMstId) => {
-    const response = await instance.post(`/api/review/{productMstId}`);
+export const addReviewApi = async (review, option) => {
+    const response = await instance.post(`/api/review`, review, option);
     return response;
 }
 
-export const updateReviewApi = async (reviewId) => {
-    const response = await instance.put(`/api/review/{reviewId}`);
+export const updateReviewApi = async (reviewId, editReview, option) => {
+    const response = await instance.put(`/api/review/${reviewId}`, editReview, option);
     return response;
 }
 
-export const removeReviewApi = async (reviewId) => {
-    const response = await instance.delete(`/api/review/{reviewId}`);
+export const removeReviewApi = async (reviewId, option) => {
+    const response = await instance.delete(`/api/review/${reviewId}`, option);
     return response;
 }
