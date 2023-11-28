@@ -199,11 +199,20 @@ function AdminOrder(props) {
 
 
     const handlePageClick = async (page) => {
+        searchData.pageIndex = page;
         const response = await getOrdersForAdminApi({...oldSearchData, pageIndex: page}, option)
-        console.log(response)
         setOrderData(response?.data)
         setCurrentPage(page)
-        searchData.pageIndex = page;
+        const resp = await getOrdersCountApi({...oldSearchData, pageIndex: page}, option);
+
+        const respLastPage = getLastPage(resp.data, 10);
+        setLastPage(respLastPage)
+        const respStartIndex = getStartIndex(page)
+        setStartIndex(respStartIndex)
+        const respEndIndex = getEndIndex(respStartIndex, respLastPage);
+        setEndIndex(respEndIndex)
+        const respTotalPageIndex = getTotalPageIndex(respStartIndex, respEndIndex)
+        setTotalPageIndex(respTotalPageIndex)
     }
 
 
