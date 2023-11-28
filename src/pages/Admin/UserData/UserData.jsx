@@ -73,7 +73,7 @@ function UserData(props) {
     }, [searchInput])
 
 
-    const getUserData = useQuery(["getUserData"], async () => {
+     const getUserData = useQuery(["getUserData"], async () => {
         try {
             const option = {
                 headers: {
@@ -91,6 +91,7 @@ function UserData(props) {
             setUserData(response)
         }
     });
+
 
     const getUserCount = useQuery(["getUserCount"], async () => {
         try {
