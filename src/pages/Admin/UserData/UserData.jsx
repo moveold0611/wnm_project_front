@@ -7,14 +7,40 @@ import { deleteAdminToUserApi, getUserCountApi, getUsersApi } from '../../../api
 import { useNavigate } from 'react-router-dom';
 import PageNation from '../../../utils/PageNation/PageNation';
 
+function getStartIndex(currentPage) {
+    const startIndex = parseInt(currentPage) % 5 === 0 ? parseInt(currentPage) - 4 : parseInt(currentPage) - (parseInt(currentPage) % 5) + 1;
+    return startIndex;
+}
+
+function getEndIndex(startIndex, lastPage) {
+    const endIndex = startIndex + 4 <= lastPage ? startIndex + 4 : lastPage;
+    return endIndex;
+}
+
+function getLastPage(totalCount, showCount) {
+    const lastPage = totalCount % showCount === 0 ? totalCount / showCount : Math.floor(totalCount / showCount) + 1;
+    return lastPage;
+}
+
+function getTotalPageIndex(startIndex, endIndex) {
+    const totalPageIndex = []
+    for(let i = startIndex; i <= endIndex; i++) {
+        totalPageIndex.push(i)
+    }
+    return totalPageIndex;
+}
+
 function UserData(props) {
-
     const navigate = useNavigate();
-
+    const [ currentPage, setCurrentPage ] = useState(1);
     const queryClient = useQueryClient();
     const principal = queryClient.getQueryState("getPrincipal");
 
     const [ userData, setUserData ] = useState([])
+    const [ oldSearchData, setOldSearchData ] = useState({
+        searchOption: "all",
+        searchValue: "",
+    })
     const [ searchData, setSearchData ] = useState({
         searchOption: "all",
         searchValue: "",
@@ -23,10 +49,14 @@ function UserData(props) {
     const [ userCount, setUserCount ] = useState();
 
     const searchOption = [
-        {value: "전체"},
-        {value: "이름"},
-        {value: "휴대전화"}
+        {value: "all", label: "전체"},
+        {value: "name", label: "이름"},
+        {value: "number", label: "전화번호"}
     ]
+    const [ lastPage, setLastPage ] = useState(0)
+    const [ startIndex, setStartIndex ] = useState(0);
+    const [ endIndex, setEndIndex ] = useState(0);
+    const [ totalPageIndex, setTotalPageIndex ] = useState([]);
 
     useEffect(() => {
         if(principal?.data?.data.roleName !== "ROLE_ADMIN" || !principal?.data) {
@@ -35,7 +65,15 @@ function UserData(props) {
         }
     }, [])
 
-    const getUserData = useQuery(["getUserData", searchData], async () => {
+    useEffect(() => {
+        setSearchData({
+            ...searchData,
+            searchValue: searchInput
+        })
+    }, [searchInput])
+
+
+    const getUserData = useQuery(["getUserData"], async () => {
         try {
             const option = {
                 headers: {
@@ -70,7 +108,14 @@ function UserData(props) {
         refetchOnWindowFocus: false,
         retry: 0,
         onSuccess: response => {
-            setUserCount(response?.data)
+            const respLastPage = getLastPage(response?.data, 10);
+            setLastPage(respLastPage)
+            const respStartIndex = getStartIndex(currentPage)
+            setStartIndex(respStartIndex)
+            const respEndIndex = getEndIndex(respStartIndex, respLastPage);
+            setEndIndex(respEndIndex)
+            const respTotalPageIndex = getTotalPageIndex(respStartIndex, respEndIndex)
+            setTotalPageIndex(respTotalPageIndex)
         }
     })
 
@@ -81,6 +126,7 @@ function UserData(props) {
         })
     }, [searchInput])
 
+    
     const handleSearchDataOnChange = (e) => {
         setSearchData({
             ...searchData,
@@ -93,6 +139,9 @@ function UserData(props) {
     }
     
     const handleSearchOnClick = () => {
+        searchData.pageIndex = 1;
+        setCurrentPage(1)
+        getUserCount.refetch();
         getUserData.refetch();
     }
 
@@ -121,10 +170,23 @@ function UserData(props) {
         }
     }
     
-    if(getUserData.isLoading) {
+    if(getUserData.isLoading || getUserCount.isLoading) {
         return <></>
     }
     
+
+    const handlePageClick = async (page) => {
+        const option = {
+            headers: {
+                Authorization: localStorage.getItem("accessToken")
+            }
+        }
+        const response = await getUsersApi({...oldSearchData, pageIndex: page}, option)
+        getUsersApi(response?.data)
+        setCurrentPage(page)
+        searchData.pageIndex = page;
+    }
+
     
 
     return (
@@ -136,7 +198,7 @@ function UserData(props) {
                 <div css={S.SSelectBox}>
                     <select option={searchOption} name='searchOption' onChange={handleSearchDataOnChange}>
                         {searchOption.map(op => {
-                            return <option key={op.value} value={op.value} label={op.value}/>
+                            return <option key={op.value} value={op.value} label={op.label}/>
                         })}
 
                     </select>
@@ -180,7 +242,31 @@ function UserData(props) {
                         </tbody>
                     </table>
                 </div>
-                <PageNation showCount={10} totalItemCount={userCount} searchData={searchData} setSearchData={setSearchData}/>
+                <div css={S.SPageButtonBox}>
+                    <button
+                        onClick={() => handlePageClick(searchData.pageIndex - 1)}
+                        disabled={currentPage === 1}
+                        >
+                            {"<"}
+                    </button>
+
+                    {totalPageIndex.map((page, index) => (
+                        <button 
+                            css={currentPage === page ? S.selectedPageButton : S.PageButton}
+                            name="totalPageIndex"
+                            onClick={() => handlePageClick(page)}
+                            key={index}>
+                            {page}
+                        </button>
+                    ))}
+
+                    <button
+                        onClick={() => handlePageClick(searchData.pageIndex + 1)}
+                        disabled={currentPage === lastPage}
+                        >
+                            {">"}
+                    </button>
+                </div>
             </div>
         </Mypage>
     );

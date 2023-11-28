@@ -7,6 +7,30 @@ import { useNavigate } from 'react-router-dom';
 import Mypage from '../../Mypage/Mypage';
 import PageNation from '../../../utils/PageNation/PageNation';
 
+function getStartIndex(currentPage) {
+    const startIndex = parseInt(currentPage) % 5 === 0 ? parseInt(currentPage) - 4 : parseInt(currentPage) - (parseInt(currentPage) % 5) + 1;
+    return startIndex;
+}
+
+function getEndIndex(startIndex, lastPage) {
+    const endIndex = startIndex + 4 <= lastPage ? startIndex + 4 : lastPage;
+    return endIndex;
+}
+
+function getLastPage(totalCount, showCount) {
+    const lastPage = totalCount % showCount === 0 ? totalCount / showCount : Math.floor(totalCount / showCount) + 1;
+    return lastPage;
+}
+
+function getTotalPageIndex(startIndex, endIndex) {
+    const totalPageIndex = []
+    for(let i = startIndex; i <= endIndex; i++) {
+        totalPageIndex.push(i)
+    }
+    return totalPageIndex;
+}
+
+
 function AdminOrder(props) {
     const queryClient = useQueryClient();
     const principal = queryClient.getQueryState("getPrincipal");
@@ -16,16 +40,27 @@ function AdminOrder(props) {
         }
     }
     const navigate = useNavigate()
+    const [ currentPage, setCurrentPage ] = useState(1);
     const [ orderData, setOrderData ] = useState();
     const [ orderCount, setOrderCount ] = useState();
     const [ orderStatus, setOrderStatus ] = useState(0)
+    const [ oldSearchData, setOldSearchData ] = useState({
+        searchOption: "all",
+        searchValue: "",
+        sortOption: "",
+        pageIndex: 1
+    });
     const [ searchData, setSearchData ] = useState({
         searchOption: "all",
         searchValue: "",
         sortOption: "",
         pageIndex: 1
     });
-
+    const [ lastPage, setLastPage ] = useState(0)
+    const [ startIndex, setStartIndex ] = useState(0);
+    const [ endIndex, setEndIndex ] = useState(0);
+    const [ totalPageIndex, setTotalPageIndex ] = useState([]);
+    const [ searchInput, setSearchInput ] = useState('');
     const searchOption = [
         {value: "받는사람"},
         {value: "전화번호"},
@@ -52,6 +87,17 @@ function AdminOrder(props) {
         }
     }, [])
 
+
+
+    useEffect(() => {
+        setSearchData({
+            ...searchData,
+            searchValue: searchInput
+        })
+    }, [searchInput])
+
+
+
     const getOrders = useQuery(["getOrders", searchData.pageIndex], async () => {
         try {
             const option = {
@@ -72,7 +118,7 @@ function AdminOrder(props) {
         }
     })
 
-    const getOrdersCount = useQuery(["getOrdersCount", searchData], async () => {
+    const getOrdersCount = useQuery(["getOrdersCount"], async () => {
         try {
             const option = {
                 headers: {
@@ -87,7 +133,14 @@ function AdminOrder(props) {
         retry: 0,
         refetchOnWindowFocus: false,
         onSuccess: response => {
-            setOrderCount(response?.data)
+            const respLastPage = getLastPage(response?.data, 10);
+            setLastPage(respLastPage)
+            const respStartIndex = getStartIndex(currentPage)
+            setStartIndex(respStartIndex)
+            const respEndIndex = getEndIndex(respStartIndex, respLastPage);
+            setEndIndex(respEndIndex)
+            const respTotalPageIndex = getTotalPageIndex(respStartIndex, respEndIndex)
+            setTotalPageIndex(respTotalPageIndex)
         }
     })
 
@@ -121,10 +174,16 @@ function AdminOrder(props) {
     }
 
     const handleSearchOrderClick = () => {
+
+        searchData.pageIndex = 1;
+        setCurrentPage(1)
+        getOrdersCount.refetch();
+
         if(orderData === undefined) {
             alert("검색된 상품이 존재하지 않습니다.");
             navigate('/admin/order')
         }
+
         getOrders.refetch()
     }
 
@@ -133,6 +192,20 @@ function AdminOrder(props) {
             handleSearchOrderClick();
         }
     }
+
+    const handleSearchInputChange = (e) => {
+        setSearchInput(e.target.value)
+    }
+
+
+    const handlePageClick = async (page) => {
+        const response = await getOrdersForAdmin({...oldSearchData, pageIndex: page}, option)
+        console.log(response)
+        setOrderData(response?.data)
+        setCurrentPage(page)
+        searchData.pageIndex = page;
+    }
+
 
     return (
         <Mypage>
@@ -151,7 +224,7 @@ function AdminOrder(props) {
                             return <option key={sort.value} value={sort.value} label={sort.value}></option>
                         })}
                     </select>
-                    <input type="text" name='searchValue' onKeyDown={handleOnKeyPress} onChange={handleSearchDataChange}/>
+                    <input type="text" name={searchInput} onKeyDown={handleOnKeyPress} onChange={handleSearchInputChange}/>
                     <button onClick={handleSearchOrderClick}>검색</button>
                 </div>
                 <div css={S.STableBox}>
@@ -172,7 +245,7 @@ function AdminOrder(props) {
                             </tr>
                         </thead>
                         <tbody>
-                            {getOrders?.data?.data.map(data => {
+                            {orderData?.map(data => {
                                 return <tr key={data.orderId} css={S.STdBox}>
                                     <td>
                                         {data.orderDate}<br/>
@@ -210,7 +283,31 @@ function AdminOrder(props) {
                         </tbody>
                     </table>
                 </div>
-                <PageNation showCount={10} totalItemCount={orderCount} searchData={searchData} setSearchData={setSearchData} />
+                <div css={S.SPageButtonBox}>
+                    <button
+                        onClick={() => handlePageClick(searchData.pageIndex - 1)}
+                        disabled={currentPage === 1}
+                        >
+                            {"<"}
+                    </button>
+
+                    {totalPageIndex.map((page, index) => (
+                        <button 
+                            css={currentPage === page ? S.selectedPageButton : S.PageButton}
+                            name="totalPageIndex"
+                            onClick={() => handlePageClick(page)}
+                            key={index}>
+                            {page}
+                        </button>
+                    ))}
+
+                    <button
+                        onClick={() => handlePageClick(searchData.pageIndex + 1)}
+                        disabled={currentPage === lastPage}
+                        >
+                            {">"}
+                    </button>
+                    </div>
             </div>
         </Mypage>
     );

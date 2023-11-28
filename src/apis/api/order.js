@@ -1,4 +1,3 @@
-import { async } from "q";
 import instance from "../config/instance"
 
 export const addOrderApi = async (orderData, option) => {

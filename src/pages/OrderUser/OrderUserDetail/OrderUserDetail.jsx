@@ -48,6 +48,7 @@ function OrderUserDetail(props) {
 
     const condition = getOrderDtl?.data?.data.orderStatus === 2 || getOrderDtl?.data?.data.orderStatus === 3;
 
+
     const handleUsersOrdersOnClick = () => {
         navigate(-1)
     }
@@ -56,7 +57,7 @@ function OrderUserDetail(props) {
         return <></>
     }
 
-    console.log(getOrderDtl?.data)
+
     return (
         <Mypage>
             <div css={S.SContainer}>
@@ -127,7 +128,7 @@ function OrderUserDetail(props) {
                         </tr>
                     </thead>
                     <tbody>
-                        {getOrderDtl?.data?.data.orderProducts.map(data => {
+                    {getOrderDtl?.data?.data.orderProducts.map(data => {
                             return <tr key={data.orderProductsId} css={S.STdBox}>
                                 <td>
                                     <img css={S.SImg}src={data.productDtl.productMst.productThumbnailUrl} alt="" />

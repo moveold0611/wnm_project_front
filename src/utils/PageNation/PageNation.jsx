@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 /** @jsxImportSource @emotion/react */
 import * as S from './Style';
 
+
 const PageNation = ({ showCount, totalItemCount, searchData, setSearchData }) => {
 
     const [ totalCount, setTotalCount ] = useState(0);
@@ -15,25 +16,59 @@ const PageNation = ({ showCount, totalItemCount, searchData, setSearchData }) =>
     const endIndex = startIndex + 4 <= lastPage ? startIndex + 4 : lastPage;
 
 
+function getLastPage(totalCount, showCount) {
+    const lastPage = totalCount % showCount === 0 ? totalCount / showCount : Math.floor(totalCount / showCount) + 1;
+    return lastPage;
+}
+
+function getTotalPageIndex(startIndex, endIndex) {
     const totalPageIndex = []
     for(let i = startIndex; i <= endIndex; i++) {
         totalPageIndex.push(i)
     }
-    
+    return totalPageIndex;
+}
+
+
+const PageNation = ({ showCount, totalItemCount, searchData, setSearchData }) => {
+
+    const [ totalCount, setTotalCount ] = useState(0);
+    const [ currentPage, setCurrentPage ] = useState(searchData?.pageIndex);
+    const [ totalPages, setTotalPages ] = useState([]);
+
+    const lastPage = getLastPage(totalCount, showCount);
+
+    const startIndex = getStartIndex(currentPage)
+
+    const endIndex = getEndIndex(startIndex, lastPage);
+
+    const totalPageIndex = getTotalPageIndex(startIndex, endIndex)
+
+
+    // 전체 페이지 갯수 => 문제 없음
     useEffect(() => {
         setTotalCount(totalItemCount)
     }, [totalItemCount])
-    
-    useEffect(() => {
-        setTotalPages(totalPageIndex);
-    }, [searchData.productCategoryName]);
-    
-    useEffect(() => {
-        console.log(currentPage)
+
+
+    // 카테고리 변경 시 페이지 1페이지로, 전체 페이지 갯수 초기화
+
+    useEffect(() => {        
+        // 1페이지로
+        setCurrentPage(1)
+
+        // 전체 페이지 갯수 초기화
+        setTotalCount(totalItemCount)
+
+        setSearchData({...searchData, pageIndex: 1});
+    }, [searchData.petTypeName]);
+  
         setSelectedPage(currentPage);
     }, [currentPage]);
     
+
     useEffect(() => {
+        setTotalPages(totalPageIndex);
         if(searchData.searchValue !== "") {
             setCurrentPage(totalPages[0]);
         } else {
@@ -41,21 +76,14 @@ const PageNation = ({ showCount, totalItemCount, searchData, setSearchData }) =>
         }
     }, [])
     
+
     const handlePageClick = (page) => {
         setCurrentPage(page);
     }
-    
-    useEffect(() => {
-        const newSearchData = {...searchData, pageIndex: currentPage};
-        setSearchData(newSearchData);
-    }, [currentPage]);
-    
-    useEffect(() => {
-        const newSearchData = {...searchData, pageIndex: 1};
-        setSearchData(newSearchData);
-        setCurrentPage(1)
-    }, [searchData.productCategoryName])
-    
+
+
+
+
     return (
         <div>
             <button
@@ -67,7 +95,7 @@ const PageNation = ({ showCount, totalItemCount, searchData, setSearchData }) =>
             
             {totalPageIndex.map((page, index) => (
                 <button 
-                    css={selectedPage === page ? S.selectedPageButton : S.PageButton}
+                    css={currentPage === page ? S.selectedPageButton : S.PageButton}
                     name="totalPageIndex"
                     onClick={() => handlePageClick(page)}
                     key={index}>

@@ -45,7 +45,7 @@ function Header(props) {
         const pathMap = {
             Dog: '/products/dog',
             Cat: '/products/cat',
-            CustomerService: ''
+            CustomerService: '/notice'
         }
 
         const path = pathMap[menuName];
@@ -68,7 +68,7 @@ function Header(props) {
                 Accessories: '/products/cat/fashion',
             },
             CustomerService: {
-                Notice: '/notice',
+                Notice: '',
             },
         };
         
