@@ -164,7 +164,7 @@ function OrderUserDetail(props) {
                                 <td>
                                     <div css={S.SBtnWrapper}>
                                     <button
-                                        disabled={!condition}
+                                        disabled={!!data?.review?.reviewId || !condition}
                                         onClick={() => {
                                             if (condition) {
                                             setModalOpen(true);
@@ -172,7 +172,7 @@ function OrderUserDetail(props) {
                                             }
                                         }}
                                         >
-                                        리뷰쓰기
+                                        {!!data?.review?.reviewId ? "등록완료" : "리뷰쓰기"}
                                         </button>
                                     </div>
                                 </td>
