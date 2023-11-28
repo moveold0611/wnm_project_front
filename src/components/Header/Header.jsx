@@ -68,7 +68,7 @@ function Header(props) {
                 Accessories: '/products/cat/fashion',
             },
             CustomerService: {
-                Notice: '',
+                Notice: '/notice',
             },
         };
         
