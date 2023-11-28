@@ -55,7 +55,7 @@ function EditProduct(props) {
     const [ lastPage, setLastPage ] = useState(0)
     const [ startIndex, setStartIndex ] = useState(0);
     const [ endIndex, setEndIndex ] = useState(0);
-    const [ totalPageIndex, setTotalPageIndex ] = useState(0);
+    const [ totalPageIndex, setTotalPageIndex ] = useState([]);
 
 
 
@@ -100,13 +100,7 @@ function EditProduct(props) {
     }, [searchInput])
 
 
-    
 
-    useEffect(() => {
-        setCurrentPage(searchData.pageIndex)
-        getProducts.refetch()
-        getProductCount.refetch()
-    },[searchData.pageIndex])
 
 
     const getProducts = useQuery(["getProducts"], async () => {
@@ -219,11 +213,11 @@ function EditProduct(props) {
 
 
 
-
-
     const handlePageClick = async (page) => {
+        const response = await getProductsApi({...oldSearchData, pageIndex: page})
+        setProductList(response?.data)
+        setCurrentPage(page)
         searchData.pageIndex = page;
-        setSearchData({...oldSearchData, pageIndex: page})
     }
 
 

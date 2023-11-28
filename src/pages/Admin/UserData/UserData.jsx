@@ -25,8 +25,9 @@ function UserData(props) {
     const searchOption = [
         {value: "전체"},
         {value: "이름"},
-        {value: "휴대전화"}
+        {value: "number"}
     ]
+    console.log(searchData)
 
     useEffect(() => {
         if(principal?.data?.data.roleName !== "ROLE_ADMIN" || !principal?.data) {

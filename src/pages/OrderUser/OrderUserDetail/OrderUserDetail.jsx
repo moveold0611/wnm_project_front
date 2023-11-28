@@ -49,25 +49,6 @@ function OrderUserDetail(props) {
     const condition = getOrderDtl?.data?.data.orderStatus === 2 || getOrderDtl?.data?.data.orderStatus === 3;
 
 
-    const getReviewbyUser = useQuery(["getReviewbyUser", userId], async () => {
-        try {
-            const option = {
-                headers: {
-                    Authorization: localStorage.getItem("accessToken")
-                }
-            }
-            const response = getReviewByUserApi(userId, option);
-            return await response;
-        } catch(error) {
-            console.log(error)
-        }
-    }, {
-        retry: 0,
-        refetchOnWindowFocus: false,
-        onSuccess: data => {
-            setGetReivew(data?.data)
-        }
-    })
 
     const handleUsersOrdersOnClick = () => {
         navigate(-1)
@@ -76,6 +57,8 @@ function OrderUserDetail(props) {
     if(getOrderDtl.isLoading) {
         return <></>
     }
+
+
 
     return (
         <Mypage>
@@ -147,7 +130,7 @@ function OrderUserDetail(props) {
                         </tr>
                     </thead>
                     <tbody>
-                        {getOrderDtl?.data?.data.orderProducts.map(data => {
+                    {getOrderDtl?.data?.data.orderProducts.map(data => {
                             return <tr key={data.orderProductsId} css={S.STdBox}>
                                 <td>
                                     <img css={S.SImg}src={data.productDtl.productMst.productThumbnailUrl} alt="" />
@@ -164,7 +147,7 @@ function OrderUserDetail(props) {
                                 <td>
                                     <div css={S.SBtnWrapper}>
                                     <button
-                                        disabled={!condition}
+                                        disabled={!!data?.review?.reviewId || !condition}
                                         onClick={() => {
                                             if (condition) {
                                             setModalOpen(true);
@@ -172,7 +155,7 @@ function OrderUserDetail(props) {
                                             }
                                         }}
                                         >
-                                        리뷰쓰기
+                                        {!!data?.review?.reviewId ? "등록완료" : "리뷰쓰기"}
                                         </button>
                                     </div>
                                 </td>
