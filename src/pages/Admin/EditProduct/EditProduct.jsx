@@ -55,12 +55,7 @@ function EditProduct(props) {
         }
     }, [])
     
-    useEffect(() => {
-        setSearchData({
-            ...searchData,
-            searchValue: searchInput
-        })
-    }, [searchInput])
+
 
     const getProducts = useQuery(["getProducts", searchData?.pageIndex], async () => {
         const response = await getProductsApi(searchData);
@@ -73,7 +68,7 @@ function EditProduct(props) {
             setProductList(response?.data)}
     });
 
-    const getProductCount = useQuery(["getProductCount"], async () => {
+    const getProductCount = useQuery(["getProductCount", searchData.searchValue], async () => {
         try {
             const response = getProductsCountApi(searchData);
             return response;
@@ -89,9 +84,36 @@ function EditProduct(props) {
         }
     }) 
 
-    if(getProducts.isLoading) {
-        return <></>
-    }
+    // petTypeName: "all",
+    // productCategoryName: "all",
+    // searchOption: 'all',
+    // searchValue: '',
+    // sortOption: 'number',
+    // pageIndex: 1});
+
+    useEffect(() => {
+        //     setSearchData({
+        //         ...searchData,
+        //         searchValue: searchInput
+        //     })
+        getProducts.refetch();
+        }, [searchData.petTypeName])
+    useEffect(() => {
+        getProducts.refetch();
+    }, [searchData.productCategoryName])
+    useEffect(() => {
+        getProducts.refetch();
+    }, [searchData.searchOption])
+    useEffect(() => {
+        getProducts.refetch();
+    }, [searchData.sortOption])
+    useEffect(() => {
+        getProducts.refetch();
+    }, [searchData.pageIndex])
+    
+    // if(getProducts.isLoading) {
+    //     return <></>
+    // }
 
     const handleSearchInputChange = (e) => {
         setSearchInput(e.target.value)
@@ -112,8 +134,7 @@ function EditProduct(props) {
         setSearchData({
             ...searchData,
             [e.target.name]: e.target.value
-        })
-        
+        })  
     }
 
     const handleNavigateJoinProductDetailPageClick = (productMstId) => {

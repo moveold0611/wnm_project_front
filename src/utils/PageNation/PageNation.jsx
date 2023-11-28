@@ -32,6 +32,7 @@ const PageNation = ({ showCount, totalItemCount, searchData, setSearchData }) =>
     }, [searchData.productCategoryName]);
     
     useEffect(() => {
+        console.log(currentPage)
         setSelectedPage(currentPage);
     }, [currentPage]);
     
@@ -41,7 +42,7 @@ const PageNation = ({ showCount, totalItemCount, searchData, setSearchData }) =>
         } else {
             setCurrentPage(currentPage)
         }
-    }, [searchData.searchValue])
+    }, [])
     
     const handlePageClick = (page) => {
         setCurrentPage(page);
