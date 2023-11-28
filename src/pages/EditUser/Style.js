@@ -38,6 +38,8 @@ export const SImgBox = css`
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
+    border-radius: 50%;
 
     & > img {
         width: 100px;

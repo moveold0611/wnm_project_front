@@ -160,6 +160,7 @@ function BuyProduct(props) {
 
     return (
         <RootContainer>
+            <div>
             <div css={S.SLayout}>
                 <div css={S.STopContainer} >
                     <div>
@@ -206,30 +207,31 @@ function BuyProduct(props) {
                     <img css={S.SDDetailImg} src={product.productDetailUrl} alt="" />
                 </div>
             </div>
-            <div css={S.SDetailContainer}>
-                <img css={S.SDDetailImg} src={product.productDetailUrl} alt="" />
-            </div>
-            <div>
-                <h1>구매후기</h1>
+            <div css={S.SReviewContainer}>
+                <div css={S.SH1}>고객님들의 소중한 구매후기 ⭐</div>
                 <ul>
                     {productReview.map(rev => {
                         return <li>
                             <div css={S.SReviewList}>
                                 <div css={S.SreviewHeader}>
-                                    <img src={rev.profileUrl} alt="" width={'80px'}/>
+                                    <img src={rev.profileUrl} alt=""/>
                                     <div css={S.SNickname}>{rev.nickname}</div>
-                                    <div css={S.SProductName}>{product.productName} /</div>
-                                    <div css={S.SSizeName}> {rev.sizeName}</div>
+                                    <div css={S.SProductSizeBox}>
+                                        <div>{product.productName} / </div>
+                                        <div> size {rev.sizeName}</div>
+                                    </div>
                                     <div css={S.SReivewDate}>{rev.reviewDate}</div>
                                 </div>
-                                <div><img src={rev.reviewImgUrl} alt="" css={S.SReviewImg}/></div>
-                                <div css={S.SReviewContent}>{rev.reviewContent}</div>
+                                <div css={S.SReviewContentBox}>
+                                    {!!rev.reviewImgUrl ? <div><img src={rev.reviewImgUrl} alt="" css={S.SReviewImg}/></div> : <div></div>}
+                                    <div css={S.SReviewContent}>{rev.reviewContent}</div>
+                                </div>
                             </div>
                         </li>
                     })}
                 </ul>
             </div>
-        </div>
+            </div>
         </RootContainer>
     );
 }

@@ -6,7 +6,7 @@ export const SLayout = css`
     justify-content: center;
     align-items: center;
 
-    margin: 25px;
+    margin: 25px auto;
     border-right: 2px solid #dbdbdb;
     border-bottom: 2px solid #dbdbdb;
     border-radius: 20px;
@@ -133,26 +133,37 @@ export const SDDetailImg = css`
 `;
 
 export const SReviewContainer = css`
-    border: 1px solid black;
-    width: 100%;
+    border-top: 1px solid #dbdbdb;
+    width: 91.4vw;
+    margin: 50px 0 0 20px;
 `;
 
 export const SReviewList = css`
     width: 85vw;
     height: 100%;
-    border: 1px solid #dbdbdb;
     border-radius: 50px;
     padding: 30px;
     background-color: #fff;
-    margin:0 auto 5px;
+    margin: 0 auto 5px;
+    border-right: 2px solid #dbdbdb;
+    border-bottom: 2px solid #dbdbdb;
+    border-radius: 20px;
+    width: 1400px;
 `;
 
 export const SreviewHeader = css`
     position: relative;
+
+    & > img {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+    }
 `;
 
 export const SReviewImg = css`
     width: 200px;
+    margin-right: 20px;
 `;
 
 export const SNickname = css`
@@ -162,19 +173,12 @@ export const SNickname = css`
     font-size: 18px;
 `;
 
-export const SProductName = css`
-    color: #6f6f6f;
+export const SProductSizeBox = css`
+    display: flex;
     position: absolute;
     top: 45px;
     left: 90px;
-`;
-
-export const SSizeName = css`
     color: #6f6f6f;
-    position: absolute;
-    top: 45px;
-    left: 280px;
-    
 `;
 
 export const SReivewDate = css`
@@ -185,7 +189,20 @@ export const SReivewDate = css`
     
 `;
 
+export const SH1 = css`
+    padding: 40px 180px;
+    font-size: 25px;
+`;
+
+export const SReviewContentBox = css`
+    display: flex;
+    margin-top: 15px;
+`;
+
 export const SReviewContent = css`
     height: 100%;
     width: 100%;
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
 `;
