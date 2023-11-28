@@ -10,8 +10,8 @@ export const getUsersApi = async (searchData, option) => {
     return response;
 }
 
-export const getUserCountApi = async (option) => {
-    const response = await instance.get("/api/admin/user/count", option);
+export const getUserCountApi = async (searchData, option) => {
+    const response = await instance.get("/api/admin/user/count", {...option, params: searchData});
     return response;
 } 
 
