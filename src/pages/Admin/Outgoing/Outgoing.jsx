@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 /** @jsxImportSource @emotion/react */
 import * as S from './Style';
-import { addOutgoing, getOutgoing } from '../../../apis/api/outgoing';
+import { addOutgoingApi, getOutgoingApi } from '../../../apis/api/outgoing';
 import { useNavigate } from 'react-router';
 import Mypage from '../../Mypage/Mypage';
 import { useQueryClient } from 'react-query';
@@ -34,7 +34,7 @@ function Outgoing(props) {
                     Authorization: localStorage.getItem("accessToken")
                 }
             }
-            const response = await getOutgoing(parseInt(productDtlIdInput), option);
+            const response = await getOutgoingApi(parseInt(productDtlIdInput), option);
             console.log(response)
             setGetData(response?.data)
         } catch (error) {            
@@ -49,7 +49,7 @@ function Outgoing(props) {
                     Authorization: localStorage.getItem("accessToken")
                 }
             }
-            const response = await addOutgoing(parseInt(productDtlId), parseInt(count), option);
+            const response = await addOutgoingApi(parseInt(productDtlId), parseInt(count), option);
             alert("상품이 출고되었습니다.")
         } catch (error) {
             console.log(error.response.data)
