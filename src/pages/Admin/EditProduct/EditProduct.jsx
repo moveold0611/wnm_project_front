@@ -216,10 +216,23 @@ function EditProduct(props) {
 
 
     const handlePageClick = async (page) => {
+        searchData.pageIndex = page;
+
         const response = await getProductsApi({...oldSearchData, pageIndex: page})
         setProductList(response?.data)
         setCurrentPage(page)
-        searchData.pageIndex = page;
+
+        const resp = await getProductsCountApi({...oldSearchData, pageIndex: page})
+
+        const respLastPage = getLastPage(resp.data, 10);
+        setLastPage(respLastPage)
+        const respStartIndex = getStartIndex(page)
+        setStartIndex(respStartIndex)
+        const respEndIndex = getEndIndex(respStartIndex, respLastPage);
+        setEndIndex(respEndIndex)
+        const respTotalPageIndex = getTotalPageIndex(respStartIndex, respEndIndex)
+        setTotalPageIndex(respTotalPageIndex)
+
     }
 
 
