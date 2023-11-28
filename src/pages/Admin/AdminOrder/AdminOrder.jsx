@@ -52,7 +52,7 @@ function AdminOrder(props) {
         }
     }, [])
 
-    const getOrders = useQuery(["getOrders", searchData], async () => {
+    const getOrders = useQuery(["getOrders", searchData.sortOption, searchData.pageIndex], async () => {
         try {
             const option = {
                 headers: {

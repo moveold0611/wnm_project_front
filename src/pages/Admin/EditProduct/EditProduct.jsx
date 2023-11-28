@@ -5,25 +5,60 @@ import { getProductsApi, getProductsCountApi, removeProductApi } from '../../../
 import { useQuery, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import Mypage from '../../Mypage/Mypage';
-import PageNation from '../../../utils/PageNation/PageNation';
+
+function getStartIndex(currentPage) {
+    const startIndex = parseInt(currentPage) % 5 === 0 ? parseInt(currentPage) - 4 : parseInt(currentPage) - (parseInt(currentPage) % 5) + 1;
+    return startIndex;
+}
+
+function getEndIndex(startIndex, lastPage) {
+    const endIndex = startIndex + 4 <= lastPage ? startIndex + 4 : lastPage;
+    return endIndex;
+}
+
+function getLastPage(totalCount, showCount) {
+    const lastPage = totalCount % showCount === 0 ? totalCount / showCount : Math.floor(totalCount / showCount) + 1;
+    return lastPage;
+}
+
+function getTotalPageIndex(startIndex, endIndex) {
+    const totalPageIndex = []
+    for(let i = startIndex; i <= endIndex; i++) {
+        totalPageIndex.push(i)
+    }
+    return totalPageIndex;
+}
 
 
 function EditProduct(props) {
-
     const queryClient = useQueryClient();
     const principal = queryClient.getQueryState("getPrincipal");
+    const [ currentPage, setCurrentPage ] = useState(1);
     const navigate = useNavigate();
     const [ productList, setProductList ] = useState([]);
     const [ productCount, setProductCount ] = useState();
     const [ searchInput, setSearchInput ] = useState('');
-    const [ searchData, setSearchData ] = useState({
+    const [ oldSearchData, setOldSearchData] = useState({
         petTypeName: "all",
         productCategoryName: "all",
-        searchOption: 'all',
+        searchOption: 'name',
         searchValue: '',
         sortOption: 'number',
         pageIndex: 1});
-        
+    const [ searchData, setSearchData ] = useState({
+        petTypeName: "all",
+        productCategoryName: "all",
+        searchOption: 'name',
+        searchValue: '',
+        sortOption: 'number',
+        pageIndex: 1});
+    const [ lastPage, setLastPage ] = useState(0)
+    const [ startIndex, setStartIndex ] = useState(0);
+    const [ endIndex, setEndIndex ] = useState(0);
+    const [ totalPageIndex, setTotalPageIndex ] = useState(0);
+
+
+
     const petType = [
         { value: "all", label: "전부"},
         { value: "dog", label: "강아지"},
@@ -54,7 +89,9 @@ function EditProduct(props) {
             navigate("/")
         }
     }, [])
-    
+
+
+
     useEffect(() => {
         setSearchData({
             ...searchData,
@@ -62,22 +99,33 @@ function EditProduct(props) {
         })
     }, [searchInput])
 
-    const getProducts = useQuery(["getProducts", searchData?.pageIndex], async () => {
+
+    
+
+    useEffect(() => {
+        setCurrentPage(searchData.pageIndex)
+        getProducts.refetch()
+        getProductCount.refetch()
+    },[searchData.pageIndex])
+
+
+    const getProducts = useQuery(["getProducts"], async () => {
         const response = await getProductsApi(searchData);
         return response;
     },
-    { 
+    {
         refetchOnWindowFocus: false,
         retry: 0,
         onSuccess: response => {
-            setProductList(response?.data)}
+            setOldSearchData(searchData)
+            setProductList(response?.data)
+        }
     });
 
     const getProductCount = useQuery(["getProductCount"], async () => {
         try {
             const response = getProductsCountApi(searchData);
             return response;
-
         } catch (error) {
             alert(error.message)
         }
@@ -85,22 +133,37 @@ function EditProduct(props) {
         refetchOnWindowFocus: false,
         retry: 0,
         onSuccess: response => {
-            setProductCount(response?.data)
+            const respLastPage = getLastPage(response?.data, 10);
+            setLastPage(respLastPage)
+            const respStartIndex = getStartIndex(currentPage)
+            setStartIndex(respStartIndex)
+            const respEndIndex = getEndIndex(respStartIndex, respLastPage);
+            setEndIndex(respEndIndex)
+            const respTotalPageIndex = getTotalPageIndex(respStartIndex, respEndIndex)
+            setTotalPageIndex(respTotalPageIndex)
         }
     }) 
 
-    if(getProducts.isLoading) {
+
+    if(getProductCount.isLoading || getProducts.isLoading) {
         return <></>
     }
+
 
     const handleSearchInputChange = (e) => {
         setSearchInput(e.target.value)
     }
 
+
     const handleSearchClick = () => {
         searchData.pageIndex = 1;
+        setCurrentPage(1)
+        getProductCount.refetch();
         getProducts.refetch();
     }
+
+
+
 
     const handleOnKeyPress = (e) => {
         if(e.key === 'Enter') {
@@ -108,21 +171,32 @@ function EditProduct(props) {
         }
     }
 
+
+
+
     const handleSearchSelectChange = (e) => {
         setSearchData({
             ...searchData,
-            [e.target.name]: e.target.value
+            [e.target.name]: e.target.value,
         })
-        
     }
+
+
+
 
     const handleNavigateJoinProductDetailPageClick = (productMstId) => {
         navigate(`/admin/product/join/${productMstId}`)
     }
-    
+
+
+
+
     const handleEditProductClick = (productMstId) => {
         navigate(`/admin/edit/product/${productMstId}`)
     }
+
+
+
 
     const handleRemoveProductClick = async (productMstId) => {
         try {
@@ -144,7 +218,14 @@ function EditProduct(props) {
     }
 
 
-    console.log("상품 페이지", searchData.productCategoryName)
+
+
+
+    const handlePageClick = async (page) => {
+        searchData.pageIndex = page;
+        setSearchData({...oldSearchData, pageIndex: page})
+    }
+
 
     return (
         <Mypage>
@@ -209,7 +290,7 @@ function EditProduct(props) {
                                     <td>
                                         <button css={S.SEditButton} onClick={()=>handleEditProductClick(product.productMstId)}>수정</button>
                                     </td>
-                                    <td>
+                                    <td >
                                         <button css={S.SDeleteButton} onClick={()=>handleRemoveProductClick(product.productMstId)}>삭제</button>  
                                     </td>
                                 </tr>
@@ -218,7 +299,29 @@ function EditProduct(props) {
                     </table>
                 </div>
                 <div css={S.SPageButtonBox}>
-                    <PageNation showCount={10} totalItemCount={productCount} searchData={searchData} setSearchData={setSearchData}  />
+                    <button
+                        onClick={() => handlePageClick(searchData.pageIndex - 1)}
+                        disabled={currentPage === 1}
+                        >
+                            {"<"}
+                    </button>
+
+                    {totalPageIndex.map((page, index) => (
+                        <button 
+                            css={currentPage === page ? S.selectedPageButton : S.PageButton}
+                            name="totalPageIndex"
+                            onClick={() => handlePageClick(page)}
+                            key={index}>
+                            {page}
+                        </button>
+                    ))}
+
+                    <button
+                        onClick={() => handlePageClick(searchData.pageIndex + 1)}
+                        disabled={currentPage === lastPage}
+                        >
+                            {">"}
+                    </button>
                 </div>
             </div>
         </Mypage>
