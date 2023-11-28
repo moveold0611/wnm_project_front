@@ -10,12 +10,9 @@ const PageNation = ({ showCount, totalItemCount, searchData, setSearchData }) =>
     const [ totalPages, setTotalPages ] = useState([]);
 
     const lastPage = totalCount % showCount === 0 ? totalCount / showCount : Math.floor(totalCount / showCount) + 1;
-    console.log("lastPage", lastPage)
         
     const startIndex = parseInt(currentPage) % 5 === 0 ? parseInt(currentPage) - 4 : parseInt(currentPage) - (parseInt(currentPage) % 5) + 1;
-    console.log("startIndex", startIndex)
     const endIndex = startIndex + 4 <= lastPage ? startIndex + 4 : lastPage;
-    console.log("endIndex", endIndex)
 
 
     const totalPageIndex = []
@@ -24,7 +21,7 @@ const PageNation = ({ showCount, totalItemCount, searchData, setSearchData }) =>
     }
     
     useEffect(() => {
-        setTotalCount(totalItemCount)   
+        setTotalCount(totalItemCount)
     }, [totalItemCount])
     
     useEffect(() => {

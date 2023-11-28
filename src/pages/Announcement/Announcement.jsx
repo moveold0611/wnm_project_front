@@ -82,7 +82,7 @@ function Announcement(props) {
                         </tbody>
                     </table>      
                 </div>
-              <PageNation showCount={10} totalItemCount={announcementsCount} searchData={searchData} setSearchData={setSearchData} />
+                <PageNation showCount={10} totalItemCount={announcementsCount} searchData={searchData} setSearchData={setSearchData} />
             </div>
         </RootContainer>
     );

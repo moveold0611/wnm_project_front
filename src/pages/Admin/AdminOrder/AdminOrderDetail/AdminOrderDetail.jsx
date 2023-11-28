@@ -3,7 +3,8 @@ import React, { useEffect, useState } from 'react';
 import * as S from './Style';
 import { useQuery, useQueryClient } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getOrdersForAdmin, updateOrderStatus } from '../../../../apis/api/order';
+
+import { getUserOrderDetailApi, updateOrderStatusApi } from '../../../../apis/api/order';
 import Mypage from '../../../Mypage/Mypage';
 
 function AdminOrderDetail(props) {
@@ -36,15 +37,12 @@ function AdminOrderDetail(props) {
     }, [])
 
     const getProduct = useQuery([], () => {
-        return getOrdersForAdmin({
-            searchOption: "주문번호",
-            searchValue: parseInt(orderId),
-            sortOption: ""
-        }, option);
+        return getUserOrderDetailApi(orderId, option);
     }, {
         refetchOnWindowFocus: false,
         retry: 0,
-        onSuccess: response => {response?.data[0].getUserOrderProductsRespDtos.forEach(element => {
+        onSuccess: response => {
+            response?.data.orderProducts.forEach(element => {
             price += element.productDtl.price * element.count
         })
         setTotalPrice(price)
@@ -65,11 +63,11 @@ function AdminOrderDetail(props) {
 
     const handleUpdateOrderStatusClick = async () => {
         try {
-            if(getProduct?.data?.data[0].orderStatus === orderStatus) {
+            if(getProduct?.data?.data.orderStatus === orderStatus) {
                 alert("같은 상태로는 변경할 수 없습니다.")
                 return;
             }
-            await updateOrderStatus(parseInt(getProduct?.data?.data[0].orderId), parseInt(orderStatus), option)
+            await updateOrderStatusApi(orderId, parseInt(orderStatus), option)
             alert("배송상태 수정 완료")
             getProduct.refetch()
         } catch (error) {
@@ -81,6 +79,7 @@ function AdminOrderDetail(props) {
         navigate(-1)
     }
 
+    console.log(getProduct?.data)
 
     return (
         <Mypage>
@@ -110,24 +109,24 @@ function AdminOrderDetail(props) {
                             </tr>
                         </thead>
                         <tbody>
-                                <tr key={getProduct?.data?.data[0].orderId} css={S.STdBox}>
+                                <tr key={getProduct?.data?.data.orderId} css={S.STdBox}>
                                     <td>
-                                        {getProduct?.data?.data[0].orderDate}<br/>
-                                        [{getProduct?.data?.data[0].orderId}]
+                                        {getProduct?.data?.data.orderDate}<br/>
+                                        [{getProduct?.data?.data.orderId}]
                                     </td>
-                                    <td>{getProduct?.data?.data[0].userId}</td>
-                                    <td>{getProduct?.data?.data[0].shippingName}</td>
-                                    <td>{getProduct?.data?.data[0].shippingPhone}</td>
+                                    <td>{getProduct?.data?.data.userId}</td>
+                                    <td>{getProduct?.data?.data.shippingName}</td>
+                                    <td>{getProduct?.data?.data.shippingPhone}</td>
                                     <td>
-                                        우편번호 :[{getProduct?.data?.data[0].shippingAddressNumber}]<br/>
-                                        {getProduct?.data?.data[0].shippingAddressName}<br/>
-                                        {getProduct?.data?.data[0].shippingAddressDetailName}
+                                        우편번호 :[{getProduct?.data?.data.shippingAddressNumber}]<br/>
+                                        {getProduct?.data?.data.shippingAddressName}<br/>
+                                        {getProduct?.data?.data.shippingAddressDetailName}
                                     </td>
                                     <td>
-                                        {getProduct?.data?.data[0].orderStatus === 0 && "배송 준비"}
-                                        {getProduct?.data?.data[0].orderStatus === 1 && "배송 중"}
-                                        {getProduct?.data?.data[0].orderStatus === 2 && "배송 완료"}
-                                        {getProduct?.data?.data[0].orderStatus === 3 && "구매 확정"}
+                                        {getProduct?.data?.data.orderStatus === 0 && "배송 준비"}
+                                        {getProduct?.data?.data.orderStatus === 1 && "배송 중"}
+                                        {getProduct?.data?.data.orderStatus === 2 && "배송 완료"}
+                                        {getProduct?.data?.data.orderStatus === 3 && "구매 확정"}
                                     </td>
                                     <td>
                                         <div css={S.SSettingBox}>
@@ -179,7 +178,7 @@ function AdminOrderDetail(props) {
                             </tr>
                         </thead>
                         <tbody>
-                            {getProduct?.data?.data[0].getUserOrderProductsRespDtos.map(data => {
+                            {getProduct?.data?.data.orderProducts.map(data => {
                                 return <tr key={data.orderProductsId} css={S.STdBox}>
                                     <td>{data.orderProductsId}</td>
                                     <td>{data.productDtl.productDtlId}</td>

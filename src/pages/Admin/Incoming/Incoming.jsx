@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 /** @jsxImportSource @emotion/react */
 import * as S from './Style';
-import { addIncoming, getIncoming } from '../../../apis/api/incoming';
+import { addIncomingApi, getIncomingApi } from '../../../apis/api/incoming';
 import { useNavigate } from 'react-router';
 import Mypage from '../../Mypage/Mypage';
 import { useQueryClient } from 'react-query';
@@ -34,7 +34,7 @@ function Incoming(props) {
                     Authorization: localStorage.getItem("accessToken")
                 }
             }
-            const response = await getIncoming(parseInt(productDtlIdInput), option);
+            const response = await getIncomingApi(parseInt(productDtlIdInput), option);
             setGetData(response?.data)
         } catch (error) {            
             console.log(error)
@@ -52,7 +52,7 @@ function Incoming(props) {
                     Authorization: localStorage.getItem("accessToken")
                 }
             }
-            const response = await addIncoming(parseInt(productDtlId), parseInt(count), option);
+            const response = await addIncomingApi(parseInt(productDtlId), parseInt(count), option);
             alert("상품이 입고되었습니다.")
         } catch (error) {
             console.log(error.response.data)
