@@ -101,8 +101,6 @@ function EditProduct(props) {
 
 
 
-
-
     const getProducts = useQuery(["getProducts"], async () => {
         const response = await getProductsApi(searchData);
         return response;
