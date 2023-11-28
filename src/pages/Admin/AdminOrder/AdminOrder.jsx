@@ -199,7 +199,7 @@ function AdminOrder(props) {
 
 
     const handlePageClick = async (page) => {
-        const response = await getOrdersForAdmin({...oldSearchData, pageIndex: page}, option)
+        const response = await getOrdersForAdminApi({...oldSearchData, pageIndex: page}, option)
         console.log(response)
         setOrderData(response?.data)
         setCurrentPage(page)
