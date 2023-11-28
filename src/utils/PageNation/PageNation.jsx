@@ -2,53 +2,76 @@ import { useEffect, useState } from "react";
 /** @jsxImportSource @emotion/react */
 import * as S from './Style';
 
-const PageNation = ({ showCount, totalItemCount, propsData, setPropsData }) => {
+const PageNation = ({ showCount, totalItemCount, searchData, setSearchData }) => {
 
-    const [ count, setCount ] = useState(0);
-    const [ currentPage, setCurrentPage ] = useState(propsData?.pageIndex);
-    const [selectedPage, setSelectedPage] = useState(currentPage);
+    const [ totalCount, setTotalCount ] = useState(0);
+    const [ currentPage, setCurrentPage ] = useState(searchData?.pageIndex);
+    const [ selectedPage, setSelectedPage ] = useState(currentPage);
+    const [ totalPages, setTotalPages ] = useState([]);
 
-    const [totalPages, setTotalPages] = useState([]);
+    const lastPage = totalCount % showCount === 0 ? totalCount / showCount : Math.floor(totalCount / showCount) + 1;
+    console.log("lastPage", lastPage)
+        
+    const startIndex = parseInt(currentPage) % 5 === 0 ? parseInt(currentPage) - 4 : parseInt(currentPage) - (parseInt(currentPage) % 5) + 1;
+    console.log("startIndex", startIndex)
+    const endIndex = startIndex + 4 <= lastPage ? startIndex + 4 : lastPage;
+    console.log("endIndex", endIndex)
+
+
+    const totalPageIndex = []
+    for(let i = startIndex; i <= endIndex; i++) {
+        totalPageIndex.push(i)
+    }
     
-    const totalPage = Math.ceil(count / showCount);
-    const ttPage = Array.from({ length: totalPage }, (_, index) => index + 1);
-
     useEffect(() => {
-        setCount(totalItemCount)   
+        setTotalCount(totalItemCount)   
     }, [totalItemCount])
     
     useEffect(() => {
-        setTotalPages(ttPage);
-    }, [totalPage]);
-
+        setTotalPages(totalPageIndex);
+    }, [searchData.productCategoryName]);
+    
     useEffect(() => {
+        console.log(currentPage)
         setSelectedPage(currentPage);
     }, [currentPage]);
     
+    useEffect(() => {
+        if(searchData.searchValue !== "") {
+            setCurrentPage(totalPages[0]);
+        } else {
+            setCurrentPage(currentPage)
+        }
+    }, [])
     
     const handlePageClick = (page) => {
         setCurrentPage(page);
     }
-
+    
     useEffect(() => {
-        const newSearchData = {...propsData, pageIndex: currentPage};
-        setPropsData(newSearchData);
-        
-    }, [currentPage , propsData?.productCategoryName, propsData?.pageIndex]);
+        const newSearchData = {...searchData, pageIndex: currentPage};
+        setSearchData(newSearchData);
+    }, [currentPage]);
+    
+    useEffect(() => {
+        const newSearchData = {...searchData, pageIndex: 1};
+        setSearchData(newSearchData);
+        setCurrentPage(1)
+    }, [searchData.productCategoryName])
     
     return (
         <div>
             <button
-            onClick={() => handlePageClick(propsData.pageIndex - 1)}
+            onClick={() => handlePageClick(searchData.pageIndex - 1)}
             disabled={currentPage === 1}
             >
                 {"<"}
             </button>
             
-            {totalPages.map((page, index) => (
+            {totalPageIndex.map((page, index) => (
                 <button 
                     css={selectedPage === page ? S.selectedPageButton : S.PageButton}
-                    name="pageIndex"
+                    name="totalPageIndex"
                     onClick={() => handlePageClick(page)}
                     key={index}>
                     {page}
@@ -56,8 +79,8 @@ const PageNation = ({ showCount, totalItemCount, propsData, setPropsData }) => {
             ))}
             
             <button
-            onClick={() => handlePageClick(propsData.pageIndex + 1)}
-            disabled={currentPage === totalPages.length}
+            onClick={() => handlePageClick(searchData.pageIndex + 1)}
+            disabled={currentPage === lastPage}
             >
                 {">"}
             </button>

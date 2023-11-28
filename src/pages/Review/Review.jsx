@@ -44,8 +44,6 @@ function Review() {
         }
     })
 
-    console.log("get" ,getReview)
-
     const handleEditClick = (review) => {
         setOpen(true);
         setSelectedReview(review);
@@ -71,11 +69,12 @@ function Review() {
         }
     };
 
+
     return (
         <Mypage>
             <div css={S.SLayout}>
                 {getReview?.map(rdata => {
-                    return <div css={S.SModalContainer}>
+                    return <div key={rdata.reviewId} css={S.SModalContainer}>
                                 <div css={S.SModalHeader}>
                                     <div css={S.SModalHeaderImg}>
                                         <img src={rdata.productThumbnailUrl} alt={rdata.productName} />

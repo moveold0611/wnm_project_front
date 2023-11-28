@@ -17,7 +17,12 @@ export const getUserOrderDetailApi = async (orderId, option) => {
 }
 
 export const getOrdersForAdmin = async (searchData, option) => {
-    const response = await instance.get(`/api/admin/orders`, {...option, params: searchData});
+    const response = await instance.get(`/api/admin/orders`, {...option, params: searchData}, option);
+    return response;
+}
+
+export const getOrdersCount = async (searchData, option) => {
+    const response = await instance.get(`/api/admin/order/count`, {...option, params: searchData}, option);
     return response;
 }
 
@@ -31,8 +36,8 @@ export const updateConfirmationApi = async (orderId, option) => {
     return response;
 }
 
-export const getOrderCount = async (option) => {
-    const response = await instance.get(`/api/admin/ordercount`, option);
+export const getOrderCountApi = async (searchData, option) => {
+    const response = await instance.get(`/api/admin/order/count`, {...option, params: searchData}, option);
     return response;
 }
 
