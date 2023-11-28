@@ -64,7 +64,7 @@ function BuyProduct(props) {
     const selectOnChange = (option) => {
         const productDtl = product.productDtlList.filter(pdt => pdt.productDtlId === option.value)[0];
 
-        if(productDtl.tempStock === 0) {
+        if(productDtl.tempStock <= 0) {
             alert("해당 상품은 품절입니다.");
             return;
         }
