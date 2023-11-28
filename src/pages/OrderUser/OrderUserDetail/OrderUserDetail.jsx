@@ -49,7 +49,6 @@ function OrderUserDetail(props) {
     const condition = getOrderDtl?.data?.data.orderStatus === 2 || getOrderDtl?.data?.data.orderStatus === 3;
 
 
-
     const handleUsersOrdersOnClick = () => {
         navigate(-1)
     }
@@ -57,7 +56,6 @@ function OrderUserDetail(props) {
     if(getOrderDtl.isLoading) {
         return <></>
     }
-
 
 
     return (

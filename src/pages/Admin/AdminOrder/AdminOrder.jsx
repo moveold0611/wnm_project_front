@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 /** @jsxImportSource @emotion/react */
 import * as S from './Style';
-import { getOrderCountApi, getOrdersForAdmin, updateOrderStatus } from '../../../apis/api/order';
+import { getOrdersCountApi, getOrdersForAdminApi, updateOrderStatusApi } from '../../../apis/api/order';
 import { useQuery, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import Mypage from '../../Mypage/Mypage';
@@ -88,6 +88,7 @@ function AdminOrder(props) {
     }, [])
 
 
+
     useEffect(() => {
         setSearchData({
             ...searchData,
@@ -96,15 +97,17 @@ function AdminOrder(props) {
     }, [searchInput])
 
 
-    const getOrders = useQuery(["getOrders"], async () => {
+
+    const getOrders = useQuery(["getOrders", searchData.pageIndex], async () => {
         try {
             const option = {
                 headers: {
                     Authorization: localStorage.getItem("accessToken")
                 }
             }
-            return await getOrdersForAdmin(searchData, option);
+            return await getOrdersForAdminApi(searchData, option);
         } catch (error) {
+            console.log(error.response.data)
             alert(error.response.data)
         }
     },{
@@ -122,7 +125,7 @@ function AdminOrder(props) {
                     Authorization: localStorage.getItem("accessToken")
                 }
             }
-            return await getOrderCountApi(searchData, option);
+            return await getOrdersCountApi(searchData, option);
         } catch (error) {
             alert(error.response.data)
         }
@@ -162,7 +165,7 @@ function AdminOrder(props) {
                 alert("같은 상태로는 변경할 수 없습니다.")
                 return;
             }
-            await updateOrderStatus(parseInt(data.orderId), parseInt(orderStatus), option)
+            await updateOrderStatusApi(parseInt(data.orderId), parseInt(orderStatus), option)
             alert("배송상태 수정 완료")
             getOrders.refetch()
         } catch (error) {
@@ -171,9 +174,16 @@ function AdminOrder(props) {
     }
 
     const handleSearchOrderClick = () => {
+
         searchData.pageIndex = 1;
         setCurrentPage(1)
         getOrdersCount.refetch();
+
+        if(orderData === undefined) {
+            alert("검색된 상품이 존재하지 않습니다.");
+            navigate('/admin/order')
+        }
+
         getOrders.refetch()
     }
 

@@ -2,13 +2,15 @@ import React, { useState } from 'react';
 /** @jsxImportSource @emotion/react */
 import * as S from './Style';
 import { useParams } from 'react-router';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import { deleteAnnouncementApi, getAnnouncementByIdApi } from '../../../apis/api/announcement';
 import RootContainer from '../../../components/RootContainer/RootContainer';
 import { useNavigate } from 'react-router';
 
 function AnnouncementDetail(props) {
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
+    const principal = queryClient.getQueryState("getPrincipal");
     const {announcementId} = useParams();
     const [ announcementData, setAnnouncementData ] = useState();
 
@@ -81,19 +83,22 @@ function AnnouncementDetail(props) {
                 <div css={S.SContentBox}>
                     <p>{announcementData?.content}</p>
                 </div>
-                <div css={S.SEditButtonBox}>
-                    <button css={S.SEditButton} onClick={() => handleEditClick(announcementData.announcementId)}>공지사항 수정</button>
-                    <button css={S.SCancelbutton} onClick={HandleCancle}>취소</button>
-                </div>
-                <div css={S.SDeleteButtonBox}>
-                    <button onClick={() => handleDeleteClick(announcementData.announcementId)}>
-                        공지사항 삭제
-                    </button>
-                </div>
-                {/* <div css={}>
-                    <button css={S.SEditButton}onClick={() => handleEditClick(announcementData.announcementId)}>수정</button>
-                    <button css={S.SDeleteButton}onClick={() => handleDeleteClick(announcementData.announcementId)}>삭제</button>
-                </div> */}
+                {principal?.data?.data?.roleName === "ROLE_ADMIN" 
+                ?
+                <>
+                    <div css={S.SEditButtonBox}>
+                        <button css={S.SEditButton} onClick={() => handleEditClick(announcementData.announcementId)}>공지사항 수정</button>
+                        <button css={S.SCancelbutton} onClick={HandleCancle}>취소</button>
+                    </div>
+                    <div css={S.SDeleteButtonBox}>
+                        <button onClick={() => handleDeleteClick(announcementData.announcementId)}>
+                            공지사항 삭제
+                        </button>
+                    </div>
+                </>
+                :
+                <></>
+                }   
             </div>
         </RootContainer>
     );

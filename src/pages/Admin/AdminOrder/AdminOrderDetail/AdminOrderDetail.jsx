@@ -3,7 +3,10 @@ import React, { useEffect, useState } from 'react';
 import * as S from './Style';
 import { useQuery, useQueryClient } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getUserOrderDetailApi, updateOrderStatus } from '../../../../apis/api/order';
+
+
+import { getUserOrderDetailApi, updateOrderStatusApi } from '../../../../apis/api/order';
+
 import Mypage from '../../../Mypage/Mypage';
 
 function AdminOrderDetail(props) {
@@ -66,7 +69,8 @@ function AdminOrderDetail(props) {
                 alert("같은 상태로는 변경할 수 없습니다.")
                 return;
             }
-            await updateOrderStatus(orderId, parseInt(orderStatus), option)
+
+            await updateOrderStatusApi(orderId, parseInt(orderStatus), option)
             alert("배송상태 수정 완료")
             getProduct.refetch()
         } catch (error) {
@@ -77,6 +81,7 @@ function AdminOrderDetail(props) {
         navigate(-1)
     }
 
+    console.log(getProduct?.data)
 
     return (
         <Mypage>

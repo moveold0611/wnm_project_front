@@ -21,8 +21,6 @@ import OrderUser from "./pages/OrderUser/OrderUser";
 
 import Incoming from "./pages/Admin/Incoming/Incoming";
 import Outgoing from "./pages/Admin/Outgoing/Outgoing";
-import AddIncoming from "./pages/Admin/Incoming/AddIncoming/AddIncoming";
-import AddOutgoing from "./pages/Admin/Outgoing/AddOutgoing/AddOutgoing";
 import JoinProductDetail from "./pages/Admin/JoinProductDetail/JoinProductDetail";
 import AdminOrder from "./pages/Admin/AdminOrder/AdminOrder";
 import AdminOrderDetail from "./pages/Admin/AdminOrder/AdminOrderDetail/AdminOrderDetail";
@@ -91,9 +89,7 @@ function App() {
         <Route path="/admin/product/edit/*" element={ <EditProduct/> }/>
         <Route path="/admin/edit/product/:productMstId" element={ <EditProductDetailPage/> }/> 
         <Route path="/admin/incoming" element={ <Incoming/> }/>       
-        <Route path="/admin/incoming/add" element={ <AddIncoming/> }/>  
         <Route path="/admin/outgoing" element={ <Outgoing/> }/>       
-        <Route path="/admin/outgoing/add" element={ <AddOutgoing/> }/>       
         <Route path="/admin/product/join/:productMstId" element={ <JoinProductDetail/> }/>  
         <Route path="/admin/order" element={ <AdminOrder/> }/>      
 

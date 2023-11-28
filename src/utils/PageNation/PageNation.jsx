@@ -2,15 +2,19 @@ import { useEffect, useState } from "react";
 /** @jsxImportSource @emotion/react */
 import * as S from './Style';
 
-function getStartIndex(currentPage) {
-    const startIndex = parseInt(currentPage) % 5 === 0 ? parseInt(currentPage) - 4 : parseInt(currentPage) - (parseInt(currentPage) % 5) + 1;
-    return startIndex;
-}
 
-function getEndIndex(startIndex, lastPage) {
+const PageNation = ({ showCount, totalItemCount, searchData, setSearchData }) => {
+
+    const [ totalCount, setTotalCount ] = useState(0);
+    const [ currentPage, setCurrentPage ] = useState(searchData?.pageIndex);
+    const [ selectedPage, setSelectedPage ] = useState(currentPage);
+    const [ totalPages, setTotalPages ] = useState([]);
+
+    const lastPage = totalCount % showCount === 0 ? totalCount / showCount : Math.floor(totalCount / showCount) + 1;
+        
+    const startIndex = parseInt(currentPage) % 5 === 0 ? parseInt(currentPage) - 4 : parseInt(currentPage) - (parseInt(currentPage) % 5) + 1;
     const endIndex = startIndex + 4 <= lastPage ? startIndex + 4 : lastPage;
-    return endIndex;
-}
+
 
 function getLastPage(totalCount, showCount) {
     const lastPage = totalCount % showCount === 0 ? totalCount / showCount : Math.floor(totalCount / showCount) + 1;
@@ -48,14 +52,6 @@ const PageNation = ({ showCount, totalItemCount, searchData, setSearchData }) =>
 
 
     // 카테고리 변경 시 페이지 1페이지로, 전체 페이지 갯수 초기화
-    useEffect(() => {
-        // 1페이지로
-        setCurrentPage(1)
-        // 전체 페이지 갯수 초기화
-        setTotalCount(totalItemCount)
-        setSearchData({...searchData, pageIndex: 1});
-    }, [searchData.productCategoryName])
-
 
     useEffect(() => {        
         // 1페이지로
@@ -66,6 +62,10 @@ const PageNation = ({ showCount, totalItemCount, searchData, setSearchData }) =>
 
         setSearchData({...searchData, pageIndex: 1});
     }, [searchData.petTypeName]);
+  
+        setSelectedPage(currentPage);
+    }, [currentPage]);
+    
 
     useEffect(() => {
         setTotalPages(totalPageIndex);
@@ -74,22 +74,8 @@ const PageNation = ({ showCount, totalItemCount, searchData, setSearchData }) =>
         } else {
             setCurrentPage(currentPage)
         }
-    },[totalCount])
-
-
-
-
-
-
-
-
-    useEffect(() => {
-        setSearchData({...searchData, pageIndex: currentPage});
-    }, [currentPage]);
-
-
-
-
+    }, [])
+    
 
     const handlePageClick = (page) => {
         setCurrentPage(page);

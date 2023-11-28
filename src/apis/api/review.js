@@ -15,8 +15,8 @@ export const addReviewApi = async (review, option) => {
     return response;
 }
 
-export const updateReviewApi = async (reviewId, editReview, option) => {
-    const response = await instance.put(`/api/review/${reviewId}`, editReview, option);
+export const updateReviewApi = async (reviewData, option) => {
+    const response = await instance.put(`/api/review/${reviewData.reviewId}`, reviewData, option);
     return response;
 }
 

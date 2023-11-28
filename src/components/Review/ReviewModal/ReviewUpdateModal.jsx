@@ -1,14 +1,14 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Modal from 'react-modal';
 /** @jsxImportSource @emotion/react */
 import * as S from './Style';
-import { addReviewApi } from '../../../apis/api/review';
-import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
+import { addReviewApi, updateReviewApi } from '../../../apis/api/review';
+import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { storage } from '../../../apis/firebase/firebase';
 import { Navigate, useNavigate, useParams } from 'react-router-dom'; 
 
 
-function ReviewModal({ isOpen, onRequestClose, product, userId }) {
+function ReviewUpdateModal({ isOpen, onRequestClose, reviewData }) {
 
     const navigate = useNavigate();
     const fileRef = useRef();
@@ -16,10 +16,19 @@ function ReviewModal({ isOpen, onRequestClose, product, userId }) {
     const [ previewImg, setPreviewImg ] = useState("");
 
     const [ review, setReview ] = useState({
-        orderProductsId: product.orderProductsId,
+        orderProductsId: "",
         reviewContent: "",
         reviewImgUrl: ""
     })
+
+    useEffect(() => {
+        setReview({
+            reviewId: reviewData?.reviewId,
+            reviewContent: reviewData?.reviewContent,
+            reviewImgUrl: reviewData?.reviewImgUrl
+        })
+        setPreviewImg(reviewData?.reviewImgUrl);
+    }, [isOpen]);
     
     const handleOpenFileClick = () => {
         fileRef.current.click();
@@ -46,6 +55,7 @@ function ReviewModal({ isOpen, onRequestClose, product, userId }) {
     }
 
     const handleSubmitClick = async () => {
+        // console.log(product)
             try { 
                 const option = {
                     headers: {
@@ -58,17 +68,23 @@ function ReviewModal({ isOpen, onRequestClose, product, userId }) {
                     await uploadBytesResumable(reviewImgStorageRef, reviewfiles);
                     const downLoadURL = await getDownloadURL(reviewImgStorageRef);
                     review.reviewImgUrl = downLoadURL
+                    try {
+                        const desertRef = ref(storage, reviewData?.reviewImgUrl); // 파일 참조 생성
+                        await deleteObject(desertRef);
+                    }catch(error) {
+                        console.error(error);
+                    }
+                    
                 }
-                if(window.confirm("리뷰 등록 하시겠습니까?")) {
-                    await addReviewApi(review, option);
-                    onRequestClose()
-                    navigate(`/mypage/${userId}/review`);
+                await updateReviewApi(review, option);
+                if(window.confirm("리뷰수정이 완료되었습니다!")) {
+                    onRequestClose();
+                    window.location.reload();
                 };
-                
             }catch(error) {
                 console.error(error);  
+        }
     }
-}
 
     return (
         <Modal
@@ -92,11 +108,11 @@ function ReviewModal({ isOpen, onRequestClose, product, userId }) {
                     <h2>리뷰작성</h2>
                     <div css={S.SModalHeader}>
                         <div css={S.SModalHeaderImg}>
-                            <img src={product?.productDtl?.productMst.productThumbnailUrl} alt={product?.productDtl.productDtlId} />
+                            <img src={reviewData?.productThumbnailUrl} alt={reviewData?.productName} />
                         </div>
                         <div>
-                            <h3>{product?.productDtl?.productMst.productName}</h3>
-                            <p>size: {product?.productDtl?.size.sizeName}</p>
+                            <h3>{reviewData?.productName}</h3>
+                            <p>size: {reviewData?.sizeName}</p>
                         </div>
                     </div>
                     <div css={S.SModalBody}>
@@ -104,10 +120,10 @@ function ReviewModal({ isOpen, onRequestClose, product, userId }) {
                             <img src={previewImg} alt="" />
                         </div>
                         <input type="file" name="reviewFile" ref={fileRef} onChange={handleChangeFile}/>
-                        <textarea name="reviewContent" onChange={handleContentChange}></textarea>
+                        <textarea name="reviewContent" value={review.reviewContent} onChange={handleContentChange}></textarea>
                     </div>
                     <button css={S.SModalSubmitButton} onClick={handleSubmitClick}>
-                        리뷰 등록하기
+                        리뷰 수정하기
                     </button>
                 </div>
             </div>
@@ -115,4 +131,4 @@ function ReviewModal({ isOpen, onRequestClose, product, userId }) {
     );
 }
 
-export default ReviewModal;
+export default ReviewUpdateModal;

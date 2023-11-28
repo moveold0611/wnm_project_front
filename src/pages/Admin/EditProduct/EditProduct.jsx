@@ -92,12 +92,14 @@ function EditProduct(props) {
 
 
 
+
     useEffect(() => {
         setSearchData({
             ...searchData,
             searchValue: searchInput
         })
     }, [searchInput])
+
 
 
 
@@ -114,7 +116,7 @@ function EditProduct(props) {
         }
     });
 
-    const getProductCount = useQuery(["getProductCount"], async () => {
+    const getProductCount = useQuery(["getProductCount", searchData.searchValue], async () => {
         try {
             const response = getProductsCountApi(searchData);
             return response;
@@ -137,9 +139,11 @@ function EditProduct(props) {
     }) 
 
 
+
     if(getProductCount.isLoading || getProducts.isLoading) {
         return <></>
     }
+
 
 
     const handleSearchInputChange = (e) => {
@@ -169,7 +173,7 @@ function EditProduct(props) {
     const handleSearchSelectChange = (e) => {
         setSearchData({
             ...searchData,
-            [e.target.name]: e.target.value,
+            [e.target.name]: e.target.value
         })
     }
 
