@@ -70,7 +70,7 @@ function Announcement(props) {
                             </tr>
                         </thead>
                         <tbody>
-                            {!getAnnouncements.isLoading && announcemensList?.map(ann => {
+                            {!getAnnouncements.isLoading && announcementsList?.map(ann => {
                                 return (
                                     <tr key={ann.announcementId} css={S.STdBox} onClick={() => handleAnnouncementClick(ann.announcementId)}>
                                         <td>{ann?.announcementId}</td>

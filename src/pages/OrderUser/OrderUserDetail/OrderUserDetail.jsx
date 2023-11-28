@@ -48,27 +48,6 @@ function OrderUserDetail(props) {
 
     const condition = getOrderDtl?.data?.data.orderStatus === 2 || getOrderDtl?.data?.data.orderStatus === 3;
 
-
-    const getReviewbyUser = useQuery(["getReviewbyUser", userId], async () => {
-        try {
-            const option = {
-                headers: {
-                    Authorization: localStorage.getItem("accessToken")
-                }
-            }
-            const response = getReviewByUserApi(userId, option);
-            return await response;
-        } catch(error) {
-            console.log(error)
-        }
-    }, {
-        retry: 0,
-        refetchOnWindowFocus: false,
-        onSuccess: data => {
-            setGetReivew(data?.data)
-        }
-    })
-
     const handleUsersOrdersOnClick = () => {
         navigate(-1)
     }
