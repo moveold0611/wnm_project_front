@@ -56,6 +56,7 @@ function OrderUserDetail(props) {
         return <></>
     }
 
+    console.log(getOrderDtl?.data)
     return (
         <Mypage>
             <div css={S.SContainer}>
