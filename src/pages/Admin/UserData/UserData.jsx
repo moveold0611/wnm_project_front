@@ -100,7 +100,7 @@ function UserData(props) {
                     Authorization: localStorage.getItem("accessToken")
                 }
             }
-            const response = await getUserCountApi(option)
+            const response = await getUserCountApi(searchData, option)
             return response;
         } catch (error) {
             
