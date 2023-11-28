@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import * as S from './Style';
 
 function getTotalPageIndex(startIndex, endIndex) {
-    console.log(startIndex, endIndex)
     const totalPageIndex = []
     for(let i = startIndex; i <= endIndex; i++) {
         totalPageIndex.push(i)
@@ -34,11 +33,8 @@ const PageNation = ({ showCount, totalItemCount, searchData, setSearchData }) =>
     const [ totalPages, setTotalPages ] = useState([]);
 
     const lastPage = getLastPage(showCount, totalItemCount);
-        
     const startIndex = getStartIndex(currentPage);
-
     const endIndex = getEndIndex(startIndex, lastPage);
-
     const totalPageIndex = getTotalPageIndex(startIndex, endIndex);
 
     useEffect(() => {
