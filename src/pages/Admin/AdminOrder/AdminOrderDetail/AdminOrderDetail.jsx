@@ -62,11 +62,11 @@ function AdminOrderDetail(props) {
 
     const handleUpdateOrderStatusClick = async () => {
         try {
-            if(getProduct?.data?.data[0].orderStatus === orderStatus) {
+            if(getProduct?.data?.data.orderStatus === orderStatus) {
                 alert("같은 상태로는 변경할 수 없습니다.")
                 return;
             }
-            await updateOrderStatus(parseInt(getProduct?.data?.data[0].orderId), parseInt(orderStatus), option)
+            await updateOrderStatus(orderId, parseInt(orderStatus), option)
             alert("배송상태 수정 완료")
             getProduct.refetch()
         } catch (error) {
