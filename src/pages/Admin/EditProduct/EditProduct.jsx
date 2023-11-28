@@ -116,7 +116,7 @@ function EditProduct(props) {
         }
     });
 
-    const getProductCount = useQuery(["getProductCount", searchData.searchValue], async () => {
+    const getProductCount = useQuery(["getProductCount"], async () => {
         try {
             const response = getProductsCountApi(searchData);
             return response;
