@@ -52,7 +52,7 @@ function AdminOrder(props) {
         }
     }, [])
 
-    const getOrders = useQuery(["getOrders", searchData], async () => {
+    const getOrders = useQuery(["getOrders", searchData.pageIndex], async () => {
         try {
             const option = {
                 headers: {
@@ -61,6 +61,7 @@ function AdminOrder(props) {
             }
             return await getOrdersForAdmin(searchData, option);
         } catch (error) {
+            console.log(error.response.data)
             alert(error.response.data)
         }
     },{
@@ -120,6 +121,10 @@ function AdminOrder(props) {
     }
 
     const handleSearchOrderClick = () => {
+        if(orderData === undefined) {
+            alert("검색된 상품이 존재하지 않습니다.");
+            navigate('/admin/order')
+        }
         getOrders.refetch()
     }
 
