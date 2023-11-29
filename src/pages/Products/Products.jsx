@@ -7,13 +7,51 @@ import RootContainer from '../../components/RootContainer/RootContainer';
 import { useNavigate, useParams } from 'react-router-dom';
 import PageNation from '../../utils/PageNation/PageNation';
 
-function Products({ location }) {
+function getStartIndex(currentPage) {
+    const startIndex = parseInt(currentPage) % 5 === 0 ? parseInt(currentPage) - 4 : parseInt(currentPage) - (parseInt(currentPage) % 5) + 1;
+    return startIndex;
+}
 
+function getEndIndex(startIndex, lastPage) {
+    const endIndex = startIndex + 4 <= lastPage ? startIndex + 4 : lastPage;
+    return endIndex;
+}
+
+function getLastPage(totalCount, showCount) {
+    const lastPage = totalCount % showCount === 0 ? totalCount / showCount : Math.floor(totalCount / showCount) + 1;
+    return lastPage;
+}
+
+function getTotalPageIndex(startIndex, endIndex) {
+    const totalPageIndex = []
+    for(let i = startIndex; i <= endIndex; i++) {
+        totalPageIndex.push(i)
+    }
+    return totalPageIndex;
+}
+
+
+
+function Products({ location }) {
     const navigate = useNavigate();
     const { type, category } = useParams();
     const [ searchValue, setSearchValue ] = useState("");
     const [ products, setProducts ] = useState();
     const [ count, setCount ] = useState(0);
+    const [ lastPage, setLastPage ] = useState(0)
+    const [ startIndex, setStartIndex ] = useState(0);
+    const [ endIndex, setEndIndex ] = useState(0);
+    const [ totalPageIndex, setTotalPageIndex ] = useState([]);
+    const [ currentPage, setCurrentPage ] = useState(1);
+    const [ searchInput, setSearchInput ] = useState('');
+    const [ oldSearchData, setOldSearchData ] = useState({
+        petTypeName: type,
+        productCategoryName: !!category ? category : 'all',
+        searchOption: "all",
+        searchValue: "",
+        sortOption: "name",
+        pageIndex: 1
+    });
 
     const sortOptions = [
         {value: "name", label: "상품명"},
@@ -30,7 +68,14 @@ function Products({ location }) {
         pageIndex: 1
     });
 
-    const getProducts = useQuery(["getProducts", searchData], async () => {
+    useEffect(() => {
+        setSearchData({
+            ...searchData,
+            searchValue: searchInput
+        })
+    }, [searchInput])
+
+    const getProducts = useQuery(["getProducts"], async () => {
         try {
             const response = getAllProductsApi(searchData);
             return await response
@@ -41,11 +86,18 @@ function Products({ location }) {
         retry: 0,
         refetchOnWindowFocus: false,
         onSuccess: response => {
+            setOldSearchData(searchData)
             setProducts(response?.data)
         }
     })
 
-    const getProductsPagenation = useQuery(["getProductsPageNation", searchData], async () => {
+    useEffect(() => {
+        getProducts.refetch()
+        getProductsPagenation.refetch()
+    }, [products])
+
+
+    const getProductsPagenation = useQuery(["getProductsPageNation"], async () => {
         try {
             const response = getProductsCountApi(searchData);
             return response;
@@ -56,41 +108,28 @@ function Products({ location }) {
     },
     {
         retry: 0,
+        refetchOnWindowFocus: false,
         onSuccess: response => {
-            setCount(response.data)
+            const respLastPage = getLastPage(response?.data, 12);
+            setLastPage(respLastPage)
+            const respStartIndex = getStartIndex(currentPage)
+            setStartIndex(respStartIndex)
+            const respEndIndex = getEndIndex(respStartIndex, respLastPage);
+            setEndIndex(respEndIndex)
+            const respTotalPageIndex = getTotalPageIndex(respStartIndex, respEndIndex)
+            setTotalPageIndex(respTotalPageIndex)
         }
     })
 
-    useEffect(() => {
-        setSearchValue("");
-        setSearchData({
-            ...searchData,
-            petTypeName: type,
-            productCategoryName: !!category ? category : 'all',
-            searchValue: ""
-        })
-    }, [type, category])
 
-    
-    useEffect(() => {
-        setSearchData({
-            ...searchData,
-            pageIndex: 1
-        })
-    }, [searchData?.searchValue])
-
-    useEffect(() => {
-
-    }, [location]) 
+    const handleSearchInputChange = (e) => {
+        setSearchInput(e.target.value)
+    }
 
     const handleSortOptionChange = (e) => {
         searchData.sortOption = e.target.value
-        getProducts.refetch();
     }
 
-    const handleSearchValueChange = (e) => {
-        setSearchValue(e.target.value);
-    }
 
     const handleOnKeyPress = (e) => {
         if(e.key === 'Enter') {
@@ -99,17 +138,44 @@ function Products({ location }) {
     }
 
     const handleSearchButtonClick = () => {
+        searchData.pageIndex = 1;
+        setCurrentPage(1)
+
         setSearchData({
             ...searchData,
-            searchValue
+            searchValue: searchInput,
+            pageIndex: 1
         })
+        getProductsPagenation.refetch();
         getProducts.refetch();
     }
+
 
     const handleProductOnclick = (e) => {
         navigate(`/product/${e.target.id}`)
     }
-    
+
+
+    const handlePageClick = async (page) => {
+        searchData.pageIndex = page;
+        setCurrentPage(page)
+
+        const response = await getAllProductsApi({...oldSearchData, pageIndex: page})
+        setProducts(response?.data)
+
+        const resp = await getProductsCountApi({...oldSearchData, pageIndex: page})
+        const respLastPage = getLastPage(resp.data, 12);
+        setLastPage(respLastPage)
+        const respStartIndex = getStartIndex(page)
+        setStartIndex(respStartIndex)
+        const respEndIndex = getEndIndex(respStartIndex, respLastPage);
+        setEndIndex(respEndIndex)
+        const respTotalPageIndex = getTotalPageIndex(respStartIndex, respEndIndex)
+        setTotalPageIndex(respTotalPageIndex)
+    }
+
+console.log(products)
+
     return (
         <RootContainer>
             <div css={S.SLayout}>
@@ -122,7 +188,7 @@ function Products({ location }) {
                                     return <option name='sortOption' key={option.label} value={option.value}>{option.label}</option>
                                 })}
                         </select> 
-                        <input type="text" name='value' onKeyDown={handleOnKeyPress} onChange={handleSearchValueChange} value={searchValue}/>
+                        <input type="text" name='value' onKeyDown={handleOnKeyPress} onChange={handleSearchInputChange} value={searchInput}/>
                         <button onClick={handleSearchButtonClick}>검색</button>
                     </div>
                 </div>
@@ -141,8 +207,30 @@ function Products({ location }) {
                                 </div>
                     })}
                 </div>
-                <div>
-                    <PageNation showCount={12} totalItemCount={count} searchData={searchData} setSearchData={setSearchData} />
+                <div css={S.SPageButtonBox}>
+                    <button
+                        onClick={() => handlePageClick(searchData.pageIndex - 1)}
+                        disabled={currentPage === 1}
+                        >
+                            {"<"}
+                    </button>
+
+                    {totalPageIndex.map((page, index) => (
+                        <button 
+                            css={currentPage === page ? S.selectedPageButton : S.PageButton}
+                            name="totalPageIndex"
+                            onClick={() => handlePageClick(page)}
+                            key={index}>
+                            {page}
+                        </button>
+                    ))}
+
+                    <button
+                        onClick={() => handlePageClick(searchData.pageIndex + 1)}
+                        disabled={currentPage === lastPage}
+                        >
+                            {">"}
+                    </button>
                 </div>
             </div>
         </RootContainer>

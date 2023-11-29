@@ -232,7 +232,6 @@ function EditProduct(props) {
         setEndIndex(respEndIndex)
         const respTotalPageIndex = getTotalPageIndex(respStartIndex, respEndIndex)
         setTotalPageIndex(respTotalPageIndex)
-
     }
 
 

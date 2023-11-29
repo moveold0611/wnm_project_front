@@ -73,7 +73,7 @@ function Header(props) {
         };
         
             const path = pathMap[menuName]?.[subMenu];
-            navigate(path);
+            window.location.replace(path)
         };
     
     return (

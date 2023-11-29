@@ -17,7 +17,7 @@ export const addProductApi = async (product, option) => {
 } 
 
 export const getProductsApi = async (searchData) => {
-    const response = await instance.get(`api/products/sizes`, {params: searchData});
+    const response = await instance.get(`/api/products/sizes`, {params: searchData});
     return response;
 }
 
