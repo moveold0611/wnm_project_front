@@ -174,8 +174,6 @@ function Products({ location }) {
         setTotalPageIndex(respTotalPageIndex)
     }
 
-console.log(products)
-
     return (
         <RootContainer>
             <div css={S.SLayout}>

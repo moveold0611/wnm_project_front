@@ -23,7 +23,6 @@ function Announcement(props) {
     const getAnnouncements = useQuery(["getAnnouncements"], async () => {
         try {
             const response = await getAnnouncementsApi();
-            console.log(response?.data);
             return  response;
         } catch (error) {
             console.log(error)
@@ -38,7 +37,6 @@ function Announcement(props) {
     const getAnnouncementsCount = useQuery(["getAnnouncementsCount"], async () => {
         try {
             const response = await getAnnouncementsCountApi();
-            console.log(response?.data);
             return  response;
         } catch (error) {
             console.log(error)

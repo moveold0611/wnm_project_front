@@ -81,8 +81,6 @@ function AdminOrderDetail(props) {
         navigate(-1)
     }
 
-    console.log(getProduct?.data)
-
     return (
         <Mypage>
             <div css={S.SContainer}>

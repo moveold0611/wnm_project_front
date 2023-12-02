@@ -44,7 +44,6 @@ export const SSubTitleBox = css`
 export const STableBox = css`
     display: flex;
     flex-direction: column;
-    align-items: start;
     justify-content: center;
     margin-bottom: 25px;
 
@@ -78,6 +77,8 @@ export const SThtdBox = css`
     & > td {
         border-radius: 10px;
         padding: 10px;
+        width: 50%;
+        height: 42px;
         text-align: center;
         background-color: #f1f1f1;
     }
@@ -103,7 +104,6 @@ export const SH2 = css`
 export const SMidBox = css`
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
 
     & > h3 {
@@ -112,10 +112,12 @@ export const SMidBox = css`
     }
     
 
-    & > p {
+    & > div {
         margin-bottom: 50px;
-        padding: 10px;
-        font-size: 17.5px;
+        width: 100%;
+        text-overflow: ellipsis;
+        word-wrap: break-word;
+        word-break: break-all;
         text-align: center;
     }
 `;

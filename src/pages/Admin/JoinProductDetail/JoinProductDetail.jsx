@@ -84,26 +84,26 @@ function JoinProductDetail(props) {
                     {getProduct?.data?.data.productDtlList?.map(dtl => {
                     return <table key={dtl.productDtlId} css={S.SBottomTable}>
                         <tbody>
-                        <tr css={S.SThtdBox}>
-                            <th>상품 상세(사이즈별) ID</th>
-                            <td>{dtl.productDtlId}</td>
-                        </tr>
-                        <tr css={S.SThtdBox}>
-                            <th>가격</th>
-                            <td>{dtl.price}</td>
-                        </tr>
-                        <tr css={S.SThtdBox}>
-                            <th>사이즈[사이즈ID]</th>
-                            <td>{dtl.size.sizeName}[{dtl.sizeId}]</td>
-                        </tr>
-                        <tr css={S.SThtdBox}>
-                            <th>실제 재고</th>
-                            <td>{dtl.actualStock}</td>
-                        </tr>
-                        <tr css={S.SThtdBox}>
-                            <th>임시 재고(실제 재고 - 주문재고)</th>
-                            <td>{dtl.tempStock}</td>
-                        </tr>
+                            <tr css={S.SThtdBox}>
+                                <th>상품 상세(사이즈별) ID</th>
+                                <td>{dtl.productDtlId}</td>
+                            </tr>
+                            <tr css={S.SThtdBox}>
+                                <th>가격</th>
+                                <td>{dtl.price}</td>
+                            </tr>
+                            <tr css={S.SThtdBox}>
+                                <th>사이즈[사이즈ID]</th>
+                                <td>{dtl.size.sizeName}[{dtl.sizeId}]</td>
+                            </tr>
+                            <tr css={S.SThtdBox}>
+                                <th>실제 재고</th>
+                                <td>{dtl.actualStock}</td>
+                            </tr>
+                            <tr css={S.SThtdBox}>
+                                <th>임시 재고(실제 재고 - 주문재고)</th>
+                                <td>{dtl.tempStock}</td>
+                            </tr>
                         </tbody>
                     </table>
                     })}
@@ -117,7 +117,7 @@ function JoinProductDetail(props) {
                     </div>
                     <div css={S.SMidBox}>
                         <h3>상품 메인 이미지 URL</h3>
-                        <p>{getProduct?.data?.data.productThumbnailUrl}</p>
+                        <div>{getProduct?.data?.data.productThumbnailUrl}</div>
                     </div>
                     <div>
                         <h2 css={S.SH2}>상품 상세 정보 이미지</h2>
@@ -127,7 +127,7 @@ function JoinProductDetail(props) {
                     </div>
                     <div css={S.SMidBox}>
                         <h3>상품 상세 정보 이미지 URL</h3>
-                        <p>{getProduct?.data?.data.productDetailUrl}</p>
+                        <div>{getProduct?.data?.data.productDetailUrl}</div>
                     </div>
                     <button css={S.SButton} onClick={handleReturnToEditPageClick}>전체 상품 리스트</button>
                 </div>

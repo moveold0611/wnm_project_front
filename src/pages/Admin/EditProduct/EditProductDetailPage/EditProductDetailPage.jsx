@@ -212,14 +212,14 @@ function EditProductDetailPage(props) {
                                 <h2>상품명</h2>
                                 <input type="text" 
                                     name='productName' 
-                                    defaultValue={getProduct?.data?.data[0]?.productName} 
+                                    value={productData.productName} 
                                     onChange={handleProductDataOnChange}/>
                             </div>
                             <div css={S.SInfoTextInput}>
                                 <h2>상품 설명</h2>
                                 <textarea type="text" 
                                     name='productDetailText' 
-                                    defaultValue={getProduct?.data?.data[0]?.productDetailText} 
+                                    value={productData.productDetailText} 
                                     onChange={handleProductDataOnChange}/>
                             </div>
                             <div css={S.SInfoSizeInput}>

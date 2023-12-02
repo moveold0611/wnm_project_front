@@ -27,8 +27,6 @@ function getEndIndex(startIndex, lastPage) {
 
 const PageNation = ({ showCount, totalItemCount, searchData, setSearchData }) => {
 
-    console.log(searchData.pageIndex)
-
     const [ totalCount, setTotalCount ] = useState(0);
     const [ currentPage, setCurrentPage ] = useState(searchData?.pageIndex);
     const [ selectedPage, setSelectedPage ] = useState(currentPage);
