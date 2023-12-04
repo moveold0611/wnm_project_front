@@ -13,15 +13,15 @@ function Signin(props) {
     }, [])
 
     const handleGoogleLogin = () => {
-        window.location.href = "http://localhost:8080/oauth2/authorization/google"
+        window.location.href = "http://43.202.36.28/oauth2/authorization/google"
     }
 
     const handleKakaoLogin = () => {
-        window.location.href = "http://localhost:8080/oauth2/authorization/kakao"
+        window.location.href = "http://43.202.36.28/oauth2/authorization/kakao"
     }
 
     const handleNaverLogin = () => {
-        window.location.href = "http://localhost:8080/oauth2/authorization/naver"
+        window.location.href = "http://43.202.36.28/oauth2/authorization/naver"
     }
 
     return (
